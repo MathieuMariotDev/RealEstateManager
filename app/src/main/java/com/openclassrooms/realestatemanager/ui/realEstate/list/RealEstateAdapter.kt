@@ -9,6 +9,7 @@ import androidx.core.net.toFile
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.UriLoader
+import com.bumptech.glide.request.RequestOptions
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ItemRealestateBinding
 import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
@@ -54,6 +55,7 @@ class RealEstateAdapter :
             binding.textRealEstateType.setText(item.type)
             Glide.with(binding.root)
                     .load(item.listPhoto[0])
+                    .centerCrop()  // For photo display correctly
                     .into(binding.imageRealEstate)
 
         }

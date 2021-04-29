@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView = binding.recyclerviewRealEstate
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
+        //val dividerItemDecoration = DI
         //viewModel.getLiveDataRealEstates().observe(this, listObserver)
         realEstateRepository.getRealEstates().observe(this,listObserver)
     }
