@@ -1,25 +1,21 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.RealEstateApplication
+import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.model.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.list.RealEstateAdapter
-import com.openclassrooms.realestatemanager.utils.debug.Mock
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,9 +25,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mToolbar: Toolbar
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
-    private val viewModel: RealEstateViewModel by viewModels()
+    private val adapter = RealEstateAdapter()
+
+    private val viewModel: RealEstateViewModel by viewModels(){
+        RealEstateViewModelFactory((application as RealEstateApplication).repository)
+    }
     private lateinit var listRealEstates: List<RealEstate>
-    private val realEstateRepository : RealEstateRepository = RealEstateRepository()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +57,11 @@ class MainActivity : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
         //val dividerItemDecoration = DI
-        //viewModel.getLiveDataRealEstates().observe(this, listObserver)
-        realEstateRepository.getRealEstates().observe(this,listObserver)
-    }
-
-
-    val listObserver = Observer<List<RealEstate>> { realEstates ->
-        val adapter = RealEstateAdapter()
         binding.recyclerviewRealEstate.adapter = adapter
-        adapter.data = realEstates  // TODO
+        //viewModel.getLiveDataRealEstates().observe(this, listObserver)
+        viewModel.listRealEstates.observe(this, Observer { listRealEstates->
+            listRealEstates?.let { adapter.data = it }
+        })
 
     }
 
@@ -89,8 +85,7 @@ class MainActivity : AppCompatActivity() {
         mToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.realestate_add -> {
-                    realEstateRepository.addMockRealEstate()
-                    viewModel.setLiveDataRealEstates()
+                    viewModel.insert()
                     true
                 }
                 else -> false

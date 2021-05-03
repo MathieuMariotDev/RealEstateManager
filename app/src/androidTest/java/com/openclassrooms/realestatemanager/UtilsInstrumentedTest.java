@@ -11,6 +11,7 @@ import androidx.test.uiautomator.UiDevice;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.utils.debug.Mock;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -29,7 +30,7 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest  {
+public class UtilsInstrumentedTest {
 
     Context appContext;
     private UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
@@ -56,6 +57,13 @@ public class ExampleInstrumentedTest  {
         device.executeShellCommand("svc data disable");
         Thread.sleep(1000);
         assertFalse(Utils.isInternetAvailable(appContext));
+    }
+
+    @After
+    public void enableNetwork() throws IOException, InterruptedException {
+        device.executeShellCommand("svc wifi enable");
+        device.executeShellCommand("svc data enable");
+        Thread.sleep(1000);
     }
 
 }

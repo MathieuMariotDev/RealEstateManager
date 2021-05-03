@@ -1,16 +1,22 @@
 package com.openclassrooms.realestatemanager.domain
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.openclassrooms.realestatemanager.BuildConfig
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
+import com.openclassrooms.realestatemanager.domain.model.RealEstate
 import com.openclassrooms.realestatemanager.utils.debug.Mock
+import kotlinx.coroutines.flow.Flow
 
-class RealEstateRepository {
+class RealEstateRepository(val database: RealEstateDao) {
+
 
     //private var realEstates = MutableLiveData<List<RealEstate>>()
-    private var mutableLiveDataRealEstate = MutableLiveData<List<RealEstate>>()  // NEED modification
+    private var flowRealEstate : Flow<List<RealEstate>> = database.getAll() // NEED modification Mutable ?
     private var listRealEstate :ArrayList<RealEstate> = ArrayList<RealEstate>()
-    fun addMockRealEstate() {
+
+    suspend fun addMockRealEstate() {
 
         if (BuildConfig.DEBUG) {
             val mock: Mock = Mock()
@@ -20,21 +26,20 @@ class RealEstateRepository {
                     surface = mock.getRandomSurface(),
                     nbRooms = mock.getRandomNbRooms(),
                     description = mock.getDefaultDescription(),
-                    listPhoto = listOf(mock.getRandomPhoto()),
                     address = mock.getRandomAddress(),
-                    nearbyPOI = null,
                     propertyStatus = false,
                     dateEntry = null,
                     dateSale = null,
-                    null)
-            //realEstates.postValue(realEstate)
-            listRealEstate.add(realEstate)
-            mutableLiveDataRealEstate.value = listRealEstate
-        }
+                    realEstateAgent = null
+                    )
+            database.insert(realEstate)
+            /*listRealEstate.add(realEstate)
+            mutableLiveDataRealEstate.value = listRealEstate*/
 
+        }
     }
 
 
-    fun getRealEstates() = mutableLiveDataRealEstate
+    fun getRealEstates() = flowRealEstate
 
 }

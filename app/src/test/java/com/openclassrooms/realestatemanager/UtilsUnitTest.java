@@ -15,13 +15,13 @@ import static org.junit.Assert.*;
 public class UtilsUnitTest {
 
     @Test
-    public void checkConvertdollarToEuro () {
+    public void checkConvertDollarToEuro () {
         assertEquals(81, Utils.convertDollarToEuro(100));
     }
 
 
     @Test
-    public void checkConverteuroToDollar(){
+    public void checkConvertEuroToDollar(){
         assertEquals(119,Utils.convertEuroToDollar(100));
     }
 
