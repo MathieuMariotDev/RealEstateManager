@@ -1,25 +1,23 @@
 package com.openclassrooms.realestatemanager.domain
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import com.openclassrooms.realestatemanager.BuildConfig
+import androidx.annotation.WorkerThread
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
-import com.openclassrooms.realestatemanager.domain.model.RealEstate
+import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import com.openclassrooms.realestatemanager.utils.debug.Mock
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
-class RealEstateRepository(val database: RealEstateDao) {
+class RealEstateRepository(val realEstateDao: RealEstateDao) {
 
 
-    //private var realEstates = MutableLiveData<List<RealEstate>>()
-    private var flowRealEstate : Flow<List<RealEstate>> = database.getAll() // NEED modification Mutable ?
-    private var listRealEstate :ArrayList<RealEstate> = ArrayList<RealEstate>()
+    private var flowRealEstate : Flow<List<RealEstate>> = realEstateDao.getAll() // NEED modification Mutable ?
+    private val mock: Mock = Mock()
+    private var floxRealEstateWithPhoto : Flow<List<RealEstateWithPhoto>> = realEstateDao.getRealEstateWithPhoto()
 
-    suspend fun addMockRealEstate() {
 
-        if (BuildConfig.DEBUG) {
-            val mock: Mock = Mock()
+    suspend fun addMockRealEstate() : RealEstate {
             val realEstate = RealEstate(
                     type = mock.getRandomPropertyType(),
                     price = mock.getRandomPrice(),
@@ -32,13 +30,16 @@ class RealEstateRepository(val database: RealEstateDao) {
                     dateSale = null,
                     realEstateAgent = null
                     )
-            database.insert(realEstate)
-            /*listRealEstate.add(realEstate)
-            mutableLiveDataRealEstate.value = listRealEstate*/
-
-        }
+        return realEstate
     }
 
+    @WorkerThread
+    suspend fun insertRealEstate(realEstate: RealEstate) = withContext(Dispatchers.IO){  //Used for take the value return(id autogenrate) by the insert method
+        realEstateDao.insert(realEstate)
+    }
+
+
+    fun getRealEstateWithPhotos() = floxRealEstateWithPhoto
 
     fun getRealEstates() = flowRealEstate
 

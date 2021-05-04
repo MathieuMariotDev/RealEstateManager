@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.domain.model
+package com.openclassrooms.realestatemanager.domain.pojo
 
 import android.net.Uri
 import androidx.room.ColumnInfo
@@ -8,7 +8,7 @@ import java.util.*
 @Entity(tableName = "real_estate_table")
 data class RealEstate(
         @PrimaryKey(autoGenerate = true)
-        var idRealEstate:Int=0,
+        var idRealEstate:Long=0,
 
         @ColumnInfo(name = "type")
         var type:String,

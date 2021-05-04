@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.domain.model
+package com.openclassrooms.realestatemanager.domain.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -13,7 +13,7 @@ data class NearbyPOI(
         val placeId:Int,
 
         /*      FOREIGNKEY          */
-        val realEstateId:Int,
+        val realEstateId:Long,
 
         @ColumnInfo(name = "latitude")
         val latitude:Int?,

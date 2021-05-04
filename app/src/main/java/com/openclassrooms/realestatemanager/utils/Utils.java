@@ -50,8 +50,6 @@ public class Utils {
      * @return
      */
     public static Boolean isInternetAvailable(Context context){
-        /*WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-        return wifi.isWifiEnabled();*/
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
             NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
@@ -70,7 +68,6 @@ public class Utils {
             if(activeNetwork !=null && activeNetwork.isConnected())
             return true;
         }
-
 
         Log.i("STATUT_CONNECTIVITY", "isInternetAvailable: FALSE ");
         return false;

@@ -13,8 +13,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.domain.RealEstateRepository
-import com.openclassrooms.realestatemanager.domain.model.RealEstate
+import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.list.RealEstateAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter = RealEstateAdapter()
 
     private val viewModel: RealEstateViewModel by viewModels(){
-        RealEstateViewModelFactory((application as RealEstateApplication).repository)
+        RealEstateViewModelFactory((application as RealEstateApplication).realEstateRepository,photoRepository = (application as RealEstateApplication).photoRepository)
     }
     private lateinit var listRealEstates: List<RealEstate>
 
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         setNavigationOnClick()
         setOnMenuItemClick()
 
-        //viewModel = ViewModelProvider(this).get(RealEstateViewModel::class.java)
     }
 
 
@@ -56,11 +54,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView = binding.recyclerviewRealEstate
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
-        //val dividerItemDecoration = DI
         binding.recyclerviewRealEstate.adapter = adapter
-        //viewModel.getLiveDataRealEstates().observe(this, listObserver)
-        viewModel.listRealEstates.observe(this, Observer { listRealEstates->
-            listRealEstates?.let { adapter.data = it }
+        viewModel.listRealEstateWithPhoto.observe(this, Observer { listRealEstatesWithPhoto->
+            listRealEstatesWithPhoto?.let { adapter.data=it }
         })
 
     }
@@ -86,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.realestate_add -> {
                     viewModel.insert()
+                    //viewModel.insertPhoto()
                     true
                 }
                 else -> false

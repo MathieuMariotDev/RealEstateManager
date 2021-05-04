@@ -8,13 +8,13 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.openclassrooms.realestatemanager.domain.dao.NearbyPoiDao
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
-import com.openclassrooms.realestatemanager.domain.model.NearbyPOI
-import com.openclassrooms.realestatemanager.domain.model.Photo
-import com.openclassrooms.realestatemanager.domain.model.RealEstate
+import com.openclassrooms.realestatemanager.domain.pojo.NearbyPOI
+import com.openclassrooms.realestatemanager.domain.pojo.Photo
+import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
 import kotlinx.coroutines.CoroutineScope
 
 
-@Database(entities = arrayOf(RealEstate::class, NearbyPOI::class, Photo::class), version = 1)
+@Database(entities = arrayOf(RealEstate::class, NearbyPOI::class, Photo::class), version = 22,exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 

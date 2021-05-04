@@ -13,7 +13,7 @@ class Mock {
     }
 
 
-    fun getRandomPrice() = Random.nextInt(100000, 1000000000)
+    fun getRandomPrice() = Random.nextInt(100000, 10000000)
 
     fun getRandomSurface() = Random.nextInt(30,1000) + Random.nextFloat()
 
@@ -28,7 +28,7 @@ class Mock {
 
 
     fun getRandomPhoto(): Int {
-        val randomPhoto = Random.nextInt(1,3)
+        val randomPhoto = Random.nextInt(PropertyPhoto.values().size)
 
         return PropertyPhoto.values()[randomPhoto].photoPath
     }

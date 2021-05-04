@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.databinding.ItemRealestateBinding
-import com.openclassrooms.realestatemanager.domain.model.RealEstate
+import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 
 class RealEstateAdapter :
         RecyclerView.Adapter<RealEstateAdapter.ViewHolder>() {
 
 
-    var data = listOf<RealEstate>()
+
+    var data = listOf<RealEstateWithPhoto>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -41,16 +42,19 @@ class RealEstateAdapter :
     class ViewHolder(val binding: ItemRealestateBinding) : RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(item: RealEstate) {
-            binding.textRealEstateCity.text = item.address
-            binding.textRealEstatePrice.text = item.price.toString()
-            binding.textRealEstateType.text = item.type
-            /*Glide.with(binding.root)//TODO
-                    .load(item.listPhoto[0])
-                    .centerCrop()  // For photo display correctly
-                    .into(binding.imageRealEstate)*/
+        fun bind(item: RealEstateWithPhoto) {
+            binding.textRealEstateCity.text = item.realEstate.address
+            binding.textRealEstatePrice.text = item.realEstate.price.toString()
+            binding.textRealEstateType.text = item.realEstate.type
 
-        }
+                Glide.with(binding.root)//TODO
+                        .load(item.photos?.path)
+                        .centerCrop()  // For photo display correctly
+                        .into(binding.imageRealEstate)
+            }
+
+
+
 
 
     }

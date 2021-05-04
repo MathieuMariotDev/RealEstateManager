@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.domain.model
+package com.openclassrooms.realestatemanager.domain.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -9,13 +9,13 @@ import androidx.room.PrimaryKey
 data class Photo(
 
         @PrimaryKey(autoGenerate = true)
-        val idPhoto : Int=0,
+        val idPhoto : Long=0,
 
         @ColumnInfo(name = "path")         //Corresponding to the path of the photo
         val path:Int,
 
         /*      FOREIGNKEY          */
-        val idProperty:Int,
+        val idProperty:Long,
 
         @ColumnInfo(name = "label")
-        val label:String)
+        val label:String?)

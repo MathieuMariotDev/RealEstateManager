@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager
 
 import android.app.Application
+import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.database.RealEstateDatabase
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
 import kotlinx.coroutines.CoroutineScope
@@ -14,8 +15,9 @@ class RealEstateApplication : Application() {
         RealEstateDatabase.getDatabase(this,applicationScope)
     }
 
-    val repository by lazy { RealEstateRepository(database.RealEstateDao()) }
+    val realEstateRepository by lazy { RealEstateRepository(database.RealEstateDao()) }
 
+    val photoRepository by lazy { PhotoRepository(database.PhotoDao()) }
 
 
 }

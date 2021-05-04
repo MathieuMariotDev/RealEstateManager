@@ -1,26 +1,33 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
 import androidx.lifecycle.*
+import com.openclassrooms.realestatemanager.BuildConfig
+import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
-import com.openclassrooms.realestatemanager.domain.model.RealEstate
+import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import kotlinx.coroutines.launch
 
-class RealEstateViewModel(private val realEstateRepository: RealEstateRepository) : ViewModel() {
+class RealEstateViewModel(private val realEstateRepository: RealEstateRepository, private val photoRepository: PhotoRepository) : ViewModel() {
 
-    //private val realEstateRepository :RealEstateRepository = RealEstateRepository()
-    //private var realEstates : LiveData<List<RealEstate>> = realEstateRepository.getRealEstates() //as MutableLiveData<List<RealEstate>>
+    //val listRealEstates: LiveData<List<RealEstate>> = realEstateRepository.getRealEstates().asLiveData()
 
-    val listRealEstates: LiveData<List<RealEstate>> = realEstateRepository.getRealEstates().asLiveData()
+    val listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = realEstateRepository.getRealEstateWithPhotos().asLiveData() // ?
 
-    fun insert(/*realEstate: RealEstate*/) = viewModelScope.launch { //TODO
-        realEstateRepository.addMockRealEstate()
+    val liveData = MutableLiveData<Long>()
+
+    fun insert() { //TODO SUSPEND
+        if (BuildConfig.DEBUG) {
+            viewModelScope.launch {
+                liveData.value = realEstateRepository.insertRealEstate(realEstateRepository.addMockRealEstate())
+                liveData.value?.let {
+                    photoRepository.insertPhoto(photoRepository.addMockPhoto(it))
+                }
+            }
+        }
     }
 
+    fun insertPhoto() {
 
-    fun getLiveDataRealEstates() = listRealEstates
-
-    fun setLiveDataRealEstates() {
-       // TODO
     }
 
 }

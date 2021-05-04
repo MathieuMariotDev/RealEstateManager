@@ -1,9 +1,9 @@
 package com.openclassrooms.realestatemanager.domain.dao
 
 import androidx.room.*
-import com.openclassrooms.realestatemanager.domain.model.RealEstate
-import com.openclassrooms.realestatemanager.domain.model.RealEstateWithNerbyPOI
-import com.openclassrooms.realestatemanager.domain.model.RealEstateWithPhoto
+import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithNerbyPOI
+import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import kotlinx.coroutines.flow.Flow
 
 
@@ -15,15 +15,15 @@ interface RealEstateDao {
 
     @Transaction
     @Query("SELECT * FROM real_estate_table")
-    suspend fun getRealEstateWithNearbyPOI() : List<RealEstateWithNerbyPOI>
+    fun getRealEstateWithNearbyPOI() : List<RealEstateWithNerbyPOI>
 
 
     @Transaction
     @Query("SELECT * FROM real_estate_table")
-    suspend fun getRealEstateWithPhoto() : List<RealEstateWithPhoto>
+    fun getRealEstateWithPhoto() : Flow<List<RealEstateWithPhoto>>
 
     @Insert
-    suspend fun insert(vararg realEstate: RealEstate)
+    suspend fun insert  ( realEstate: RealEstate): Long
 
     @Delete
     suspend fun delete(vararg realEstate: RealEstate)
