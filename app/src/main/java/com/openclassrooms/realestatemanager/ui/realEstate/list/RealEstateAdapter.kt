@@ -47,10 +47,13 @@ class RealEstateAdapter :
             binding.textRealEstatePrice.text = item.realEstate.price.toString()
             binding.textRealEstateType.text = item.realEstate.type
 
+            if(item.photos !=null){
                 Glide.with(binding.root)//TODO
-                        .load(item.photos?.get(0)?.path)
+                        .load(item.photos[0].path)
                         .centerCrop()  // For photo display correctly
                         .into(binding.imageRealEstate)
+            }
+
             }
 
 

@@ -28,6 +28,8 @@ class Mock {
 
     fun getRandomNearbyPOI() = Random.nextBoolean()
 
+    fun getRandomNbRoom() = Random.nextInt(1,5)
+
     fun getRandomPhoto(): Int {
         val randomPhoto = Random.nextInt(PropertyPhoto.values().size)
 

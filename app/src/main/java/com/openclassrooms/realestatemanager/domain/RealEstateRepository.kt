@@ -23,6 +23,8 @@ class RealEstateRepository(val realEstateDao: RealEstateDao) {
                     price = mock.getRandomPrice(),
                     surface = mock.getRandomSurface(),
                     nbRooms = mock.getRandomNbRooms(),
+                    nbBathrooms = mock.getRandomNbRoom(),
+                    nbBedrooms = mock.getRandomNbRoom(),
                     description = mock.getDefaultDescription(),
                     address = mock.getRandomAddress(),
                     propertyStatus = false,

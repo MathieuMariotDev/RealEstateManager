@@ -12,7 +12,7 @@ import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
 import kotlinx.coroutines.CoroutineScope
 
 
-@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 24,exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 25,exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 
