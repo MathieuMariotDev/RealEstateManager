@@ -3,33 +3,41 @@ package com.openclassrooms.realestatemanager.domain.pojo
 import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.*
+
 @Entity(tableName = "real_estate_table")
 data class RealEstate(
         @PrimaryKey(autoGenerate = true)
-        var idRealEstate:Long=0,
+        var idRealEstate: Long = 0,
 
         @ColumnInfo(name = "type")
-        var type:String,
+        var type: String,
 
         @ColumnInfo(name = "price")
-        var price:Int,
+        var price: Int,
 
-        @ColumnInfo(name="surface")
-        var surface:Float,
+        @ColumnInfo(name = "surface")
+        var surface: Float,
 
-        @ColumnInfo(name = "nbRooms")
-        var nbRooms:Int,
+        @ColumnInfo(name = "nb_rooms")
+        var nbRooms: Int,
+
+        @ColumnInfo(name = "nb_bedrooms")
+        var nbBedrooms: Int,
+
+        @ColumnInfo(name = "nb_bathrooms")
+        var nbBathrooms: Int,
 
         @ColumnInfo(name = "description")
-        var description:String,
+        var description: String,
 
         @ColumnInfo(name = "address")
-        var address:String,
+        var address: String,
 
         @ColumnInfo(name = "property_status")
-        var propertyStatus:Boolean,
+        var propertyStatus: Boolean,
 
         @ColumnInfo(name = "date_entry")
         var dateEntry: Long?,
@@ -37,5 +45,27 @@ data class RealEstate(
         @ColumnInfo(name = "date_sale")
         var dateSale: Long?,
 
-        @ColumnInfo(name = "realEstateAgent")
-        var realEstateAgent:String?)
+        @ColumnInfo(name = "real_estate_agent")
+        var realEstateAgent: String?,
+
+        @ColumnInfo(name = "latitude")
+        var latitude: Float?,
+
+        @ColumnInfo(name = "longitude")
+        var longitude: Float?,
+
+        @ColumnInfo(name = "nearby_store")
+        var nearbyStore: Boolean,
+
+        @ColumnInfo(name = "nearby_park")
+        var nearbyPark: Boolean,
+
+        @ColumnInfo(name = "nearby_restaurant")
+        var nearbyRestaurant : Boolean,
+
+        @ColumnInfo(name = "nearbySchool")
+        var nearbySchool: Boolean)
+
+
+
+

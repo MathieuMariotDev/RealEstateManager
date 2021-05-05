@@ -5,20 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.openclassrooms.realestatemanager.domain.dao.NearbyPoiDao
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
-import com.openclassrooms.realestatemanager.domain.pojo.NearbyPOI
 import com.openclassrooms.realestatemanager.domain.pojo.Photo
 import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
 import kotlinx.coroutines.CoroutineScope
 
 
-@Database(entities = arrayOf(RealEstate::class, NearbyPOI::class, Photo::class), version = 22,exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 24,exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
-
-    abstract fun NearbyPoiDao(): NearbyPoiDao
 
     abstract fun PhotoDao(): PhotoDao
 

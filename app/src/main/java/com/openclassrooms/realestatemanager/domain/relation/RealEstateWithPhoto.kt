@@ -11,5 +11,5 @@ data class RealEstateWithPhoto(
                 parentColumn = "idRealEstate",
                 entityColumn = "idProperty"
         )
-        val photos: Photo?
+        val photos: List<Photo>?
 )

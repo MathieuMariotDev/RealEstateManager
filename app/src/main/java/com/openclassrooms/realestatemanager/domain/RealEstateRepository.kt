@@ -28,7 +28,13 @@ class RealEstateRepository(val realEstateDao: RealEstateDao) {
                     propertyStatus = false,
                     dateEntry = null,
                     dateSale = null,
-                    realEstateAgent = null
+                    realEstateAgent = null,
+                    latitude = null,
+                    longitude = null,
+                    nearbyStore = mock.getRandomNearbyPOI(),
+                    nearbyPark = mock.getRandomNearbyPOI(),
+                    nearbyRestaurant = mock.getRandomNearbyPOI(),
+                    nearbySchool = mock.getRandomNearbyPOI()
                     )
         return realEstate
     }

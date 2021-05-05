@@ -26,6 +26,7 @@ class Mock {
         return PropertyAddress.values()[randomAddress].address
     }
 
+    fun getRandomNearbyPOI() = Random.nextBoolean()
 
     fun getRandomPhoto(): Int {
         val randomPhoto = Random.nextInt(PropertyPhoto.values().size)

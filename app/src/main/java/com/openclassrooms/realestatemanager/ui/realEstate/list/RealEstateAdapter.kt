@@ -48,7 +48,7 @@ class RealEstateAdapter :
             binding.textRealEstateType.text = item.realEstate.type
 
                 Glide.with(binding.root)//TODO
-                        .load(item.photos?.path)
+                        .load(item.photos?.get(0)?.path)
                         .centerCrop()  // For photo display correctly
                         .into(binding.imageRealEstate)
             }

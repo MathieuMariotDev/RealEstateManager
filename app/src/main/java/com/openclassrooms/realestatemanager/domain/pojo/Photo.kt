@@ -5,7 +5,10 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "photo_table")
+@Entity(foreignKeys = [ForeignKey(entity = RealEstate::class,
+        parentColumns = arrayOf("idRealEstate"),
+        childColumns = arrayOf("idProperty"),
+onDelete = ForeignKey.CASCADE)],tableName = "photo_table")
 data class Photo(
 
         @PrimaryKey(autoGenerate = true)
@@ -15,6 +18,7 @@ data class Photo(
         val path:Int,
 
         /*      FOREIGNKEY          */
+        @ColumnInfo(index = true)
         val idProperty:Long,
 
         @ColumnInfo(name = "label")

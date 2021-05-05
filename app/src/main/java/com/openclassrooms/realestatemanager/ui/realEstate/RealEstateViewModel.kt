@@ -11,7 +11,8 @@ class RealEstateViewModel(private val realEstateRepository: RealEstateRepository
 
     //val listRealEstates: LiveData<List<RealEstate>> = realEstateRepository.getRealEstates().asLiveData()
 
-    val listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = realEstateRepository.getRealEstateWithPhotos().asLiveData() // ?
+    val listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = realEstateRepository.getRealEstateWithPhotos().asLiveData()
+            // ?
 
     val liveData = MutableLiveData<Long>()
 
