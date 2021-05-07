@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,12 +15,11 @@ import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
 import com.openclassrooms.realestatemanager.ui.realEstate.list.RealEstateAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    //private var textViewMain;
-    //private var textViewQuantity;
     private lateinit var binding: ActivityMainBinding
     private lateinit var mToolbar: Toolbar
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -81,8 +81,10 @@ class MainActivity : AppCompatActivity() {
         mToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.realestate_add -> {
-                    viewModel.insert()
-                    //viewModel.insertPhoto()
+                    //viewModel.insert()
+                    val createIntent = Intent(this,
+                            CreateRealEstateActivity::class.java)
+                    startActivity(createIntent)
                     true
                 }
                 else -> false

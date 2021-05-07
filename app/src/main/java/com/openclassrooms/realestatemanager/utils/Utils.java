@@ -2,12 +2,14 @@ package com.openclassrooms.realestatemanager.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.ConnectivityManager.NetworkCallback;
+import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,7 @@ import java.util.Date;
 
 public class Utils {
 
+    public static boolean isNetWorkConnected;
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
@@ -49,10 +52,17 @@ public class Utils {
      * @param context
      * @return
      */
-    public static Boolean isInternetAvailable(Context context){
+    public static boolean isInternetAvailable(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            Network nw = cm.getActiveNetwork();
+            if(nw == null) {
+                return false;
+            }
+            NetworkCapabilities capabilities = cm.getNetworkCapabilities(nw);
+            if(capabilities ==null){
+                return false;
+            }
             if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
                 return true;
             }
@@ -67,9 +77,11 @@ public class Utils {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             if(activeNetwork !=null && activeNetwork.isConnected())
             return true;
+
         }
 
         Log.i("STATUT_CONNECTIVITY", "isInternetAvailable: FALSE ");
         return false;
+
     }
 }

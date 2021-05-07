@@ -9,5 +9,7 @@
 
     </style>
 
-
+<style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="android:padding">3dp</item>
+</style>
 </resources>

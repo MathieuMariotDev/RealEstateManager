@@ -1,12 +1,19 @@
 package com.openclassrooms.realestatemanager;
 
+import android.app.Instrumentation;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.provider.Settings;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
+import androidx.test.uiautomator.UiSelector;
 
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.utils.debug.Mock;
@@ -22,6 +29,7 @@ import org.junit.runners.Suite;
 
 import java.io.IOException;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
 import static org.junit.Assert.*;
 
 /**
@@ -34,28 +42,29 @@ public class UtilsInstrumentedTest {
 
     Context appContext;
     private UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+    private Instrumentation sInstrumentation;
 
 
     @Before
     public void useAppContext() throws Exception {
         // Context of the app under test.
         appContext = ApplicationProvider.getApplicationContext();
-        //assertEquals("com.openclassrooms.realestatemanager", appContext.getPackageName());
+
     }
 
     @Test
     public void checkIsConnected() throws IOException, InterruptedException {
         device.executeShellCommand("svc wifi enable");
         device.executeShellCommand("svc data enable");
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         assertTrue(Utils.isInternetAvailable(appContext));
     }
 
     @Test
-    public void checkWithNetworkOff() throws IOException, InterruptedException {
+    public void checkWithNetworkOff() throws IOException, InterruptedException, UiObjectNotFoundException {
         device.executeShellCommand("svc wifi disable");
         device.executeShellCommand("svc data disable");
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         assertFalse(Utils.isInternetAvailable(appContext));
     }
 
@@ -63,7 +72,7 @@ public class UtilsInstrumentedTest {
     public void enableNetwork() throws IOException, InterruptedException {
         device.executeShellCommand("svc wifi enable");
         device.executeShellCommand("svc data enable");
-        Thread.sleep(1000);
+
     }
 
 }

@@ -55,16 +55,16 @@ data class RealEstate(
         var longitude: Float?,
 
         @ColumnInfo(name = "nearby_store")
-        var nearbyStore: Boolean,
+                var nearbyStore: Boolean?,
 
         @ColumnInfo(name = "nearby_park")
-        var nearbyPark: Boolean,
+        var nearbyPark: Boolean?,
 
         @ColumnInfo(name = "nearby_restaurant")
-        var nearbyRestaurant : Boolean,
+        var nearbyRestaurant : Boolean?,
 
         @ColumnInfo(name = "nearbySchool")
-        var nearbySchool: Boolean)
+        var nearbySchool: Boolean?)
 
 
 
