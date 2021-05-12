@@ -14,8 +14,8 @@ data class Photo(
         @PrimaryKey(autoGenerate = true)
         val idPhoto : Long=0,
 
-        @ColumnInfo(name = "path")         //Corresponding to the path of the photo
-        val path:Int,
+        @ColumnInfo(name = "path")         //Corresponding to the file name of the photo
+        var path:String,
 
         /*      FOREIGNKEY          */
         @ColumnInfo(index = true)

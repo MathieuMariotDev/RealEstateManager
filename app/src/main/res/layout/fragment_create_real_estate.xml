@@ -170,13 +170,12 @@
                 android:drawableBottom="@drawable/ic_baseline_photo_24" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_realEstate"
+            <ImageView
+                android:id="@+id/imageView_test"
                 android:layout_width="250dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center|left"
-                android:orientation="vertical"
-                tools:listitem="@layout/item_photo" />
+                />
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_price"

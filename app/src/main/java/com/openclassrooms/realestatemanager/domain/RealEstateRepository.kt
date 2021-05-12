@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
+
 class RealEstateRepository(val realEstateDao: RealEstateDao) {
 
 
@@ -52,3 +53,5 @@ class RealEstateRepository(val realEstateDao: RealEstateDao) {
     fun getRealEstates() = flowRealEstate
 
 }
+
+

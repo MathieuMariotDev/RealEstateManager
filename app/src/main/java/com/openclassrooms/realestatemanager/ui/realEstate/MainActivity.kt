@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: RealEstateViewModel by viewModels(){
         RealEstateViewModelFactory((application as RealEstateApplication).realEstateRepository,photoRepository = (application as RealEstateApplication).photoRepository)
     }
-    private lateinit var listRealEstates: List<RealEstate>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

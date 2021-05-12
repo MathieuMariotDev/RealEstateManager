@@ -30,10 +30,10 @@ class Mock {
 
     fun getRandomNbRoom() = Random.nextInt(1,5)
 
-    fun getRandomPhoto(): Int {
+    fun getRandomPhoto(): String {
         val randomPhoto = Random.nextInt(PropertyPhoto.values().size)
 
-        return PropertyPhoto.values()[randomPhoto].photoPath
+        return PropertyPhoto.values()[randomPhoto].photoPath.toString()
     }
 
     enum class PropertyPhoto(val photoPath: Int){

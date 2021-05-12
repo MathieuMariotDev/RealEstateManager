@@ -14,9 +14,7 @@ import java.net.URLClassLoader.newInstance
 class CreateRealEstateActivity : AppCompatActivity() {
 
     var createRealEstateFragment = CreateRealEstateFragment()
-    private val viewModel: CreateRealEstateViewModel by viewModels(){
-        RealEstateViewModelFactory((application as RealEstateApplication).realEstateRepository,photoRepository = (application as RealEstateApplication).photoRepository)
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_real_estate)
