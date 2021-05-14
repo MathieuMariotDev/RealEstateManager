@@ -1,8 +1,9 @@
+
 package com.openclassrooms.realestatemanager.domain
 
 import androidx.annotation.WorkerThread
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
-import com.openclassrooms.realestatemanager.domain.pojo.Photo
+import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.utils.debug.Mock
 
 class PhotoRepository(private val photoDao: PhotoDao) {

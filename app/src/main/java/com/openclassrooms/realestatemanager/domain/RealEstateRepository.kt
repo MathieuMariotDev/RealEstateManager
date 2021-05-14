@@ -2,7 +2,7 @@ package com.openclassrooms.realestatemanager.domain
 
 import androidx.annotation.WorkerThread
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import com.openclassrooms.realestatemanager.utils.debug.Mock
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 
-class RealEstateRepository(val realEstateDao: RealEstateDao) {
+class RealEstateRepository(private val realEstateDao: RealEstateDao) {
 
 
     private var flowRealEstate : Flow<List<RealEstate>> = realEstateDao.getAll() // NEED modification Mutable ?

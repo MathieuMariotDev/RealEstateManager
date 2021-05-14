@@ -1,11 +1,9 @@
-package com.openclassrooms.realestatemanager.domain.pojo
+package com.openclassrooms.realestatemanager.domain.models
 
-import android.net.Uri
+import android.content.ContentValues
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "real_estate_table")
 data class RealEstate(
@@ -64,7 +62,17 @@ data class RealEstate(
         var nearbyRestaurant : Boolean?,
 
         @ColumnInfo(name = "nearbySchool")
-        var nearbySchool: Boolean?)
+        var nearbySchool: Boolean?){
+/*
+        companion object fun  fromContentValues(values : ContentValues){
+                val RealEstate : RealEstate
+                if(values.containsKey()) //TODO
+
+
+
+
+        }*/
+}
 
 
 

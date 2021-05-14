@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.ui.create
 
-import android.annotation.TargetApi
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -24,8 +23,8 @@ import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentCreateRealEstateBinding
-import com.openclassrooms.realestatemanager.domain.pojo.Photo
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.models.Photo
+import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import java.io.File
 import java.text.SimpleDateFormat

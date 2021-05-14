@@ -4,7 +4,10 @@ import android.net.Uri
 import com.openclassrooms.realestatemanager.R
 import kotlin.random.Random
 
-class Mock {
+ class Mock {
+
+
+
 
 
     fun getRandomPropertyType(): String {

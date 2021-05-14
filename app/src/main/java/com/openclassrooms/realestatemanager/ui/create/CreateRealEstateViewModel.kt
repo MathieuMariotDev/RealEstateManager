@@ -1,15 +1,12 @@
 package com.openclassrooms.realestatemanager.ui.create
 
-import android.net.Uri
-import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
-import com.openclassrooms.realestatemanager.domain.pojo.Photo
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.models.Photo
+import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import kotlinx.coroutines.launch
 
 class CreateRealEstateViewModel(

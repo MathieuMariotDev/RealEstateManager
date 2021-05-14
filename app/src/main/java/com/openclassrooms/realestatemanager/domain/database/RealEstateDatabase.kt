@@ -7,12 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
-import com.openclassrooms.realestatemanager.domain.pojo.Photo
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
+import com.openclassrooms.realestatemanager.domain.models.Photo
+import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import kotlinx.coroutines.CoroutineScope
 
 
-@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 33,exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 34,exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 

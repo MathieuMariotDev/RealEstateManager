@@ -14,7 +14,6 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.domain.pojo.RealEstate
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
 import com.openclassrooms.realestatemanager.ui.realEstate.list.RealEstateAdapter
 
