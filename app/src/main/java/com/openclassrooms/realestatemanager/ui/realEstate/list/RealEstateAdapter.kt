@@ -67,7 +67,7 @@ class RealEstateAdapter :
             val context = binding.root.context
             val file : File
             val bitmap : Bitmap
-            val mock : Boolean = false
+            val mock = true
             binding.textRealEstateCity.text = item.realEstate.address
             binding.textRealEstatePrice.text = item.realEstate.price.toString()
             binding.textRealEstateType.text = item.realEstate.type

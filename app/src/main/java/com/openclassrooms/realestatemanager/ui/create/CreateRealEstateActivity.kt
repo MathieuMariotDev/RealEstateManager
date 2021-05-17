@@ -20,7 +20,7 @@ class CreateRealEstateActivity : AppCompatActivity() {
         setContentView(R.layout.create_real_estate)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_view,createRealEstateFragment)
+                    .replace(R.id.fragment_container_view,CreateRealEstateFragment.newInstance())
                     .commit()
         }
     }

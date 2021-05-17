@@ -27,4 +27,8 @@ interface RealEstateDao {
     @Delete
     suspend fun delete(vararg realEstate: RealEstate)
 
+
+    @Query("DELETE FROM REAL_ESTATE_TABLE")
+    suspend fun AllDelete()
+
 }

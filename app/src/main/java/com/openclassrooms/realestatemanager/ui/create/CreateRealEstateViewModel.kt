@@ -26,19 +26,19 @@ class CreateRealEstateViewModel(
         }
     }
 
-    fun insertMockRealEstate() {
-        viewModelScope.launch {
-            liveData.value =
-                realEstateRepository.insertRealEstate(realEstateRepository.addMockRealEstate())
-        }
-    }
-
 
     fun insertPhoto(photo: Photo) {
         viewModelScope.launch {
             photoRepository.insertPhoto(photo)
         }
 
+    }
+
+    fun insertMockRealEstate() {
+        viewModelScope.launch {
+            liveData.value =
+                realEstateRepository.insertRealEstate(realEstateRepository.addMockRealEstate())
+        }
     }
 
     fun insertMockPhoto() {

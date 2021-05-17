@@ -10,6 +10,8 @@ import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Database(entities = arrayOf(RealEstate::class, Photo::class), version = 34,exportSchema = false)
@@ -56,12 +58,18 @@ private class RealEstateDatabaseCallback(
         super.onCreate(db)
         // If you want to keep the data through app restarts,
         // comment out the following line.
-        /*INSTANCE?.let { database ->
+        INSTANCE?.let { database ->
             scope.launch(Dispatchers.IO) {
-                //populateDatabase(database.wordDao())
+                //deleteDatabase(database.RealEstateDao())  // Clean db for more ez dev
             }
-        }*/
+        }
     }
+
+    suspend fun deleteDatabase(realEstateDao: RealEstateDao) {
+        // Start the app with a clean database every time.
+        // Not needed if you only populate on creation.
+        realEstateDao.AllDelete()
+
 }
 
 
@@ -70,12 +78,7 @@ private class RealEstateDatabaseCallback(
  * If you want to start with more words, just add them.
  */
 
-/*suspend fun populateDatabase(realEstateDao: RealEstateDao) {
-    // Start the app with a clean database every time.
-    // Not needed if you only populate on creation.
-
 
 }
 }
-*/
-}
+

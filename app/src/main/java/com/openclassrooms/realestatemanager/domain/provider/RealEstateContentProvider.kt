@@ -19,8 +19,6 @@ class RealEstateContentProvider : ContentProvider() {
         val AUTHORITY: String = "com.openclassrooms.realestatemanager.domain.provider"
         val TABLE_REAL_ESTATE: String = RealEstate::class.java.simpleName
         val URI_REAL_ESTATE = Uri.parse("content://$AUTHORITY/$TABLE_REAL_ESTATE")
-        val TABLE_PHOTO: String = Photo::class.java.simpleName
-        val URI_PHOTO = Uri.parse("content://$AUTHORITY/$TABLE_PHOTO")
     }
 
     override fun onCreate(): Boolean {
@@ -35,17 +33,13 @@ class RealEstateContentProvider : ContentProvider() {
         sortOrder: String?
     ): Cursor {
         if (context != null) {
-            /*if(uri.path?.contains(TABLE_PHOTO) == true){
-
-            }
-            else if(uri.path?.contains(TABLE_REAL_ESTATE) == true){*/
                 val idRealEstate = ContentUris.parseId(uri)
                 val cursor: Cursor =
                     RealEstateDatabase.getDatabase(context!!, CoroutineScope(SupervisorJob()))
                         .RealEstateDao().getRealEstateWithCursor(idRealEstate)
                 cursor.setNotificationUri(context!!.contentResolver, uri)
                 return cursor
-            //}
+
         }
         throw IllegalArgumentException("Failed to query row for uri -> $uri")
     }
@@ -55,11 +49,11 @@ class RealEstateContentProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        TODO("Not yet implemented")
+        return null
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        TODO("Not yet implemented")
+        return 0
     }
 
     override fun update(
@@ -68,7 +62,7 @@ class RealEstateContentProvider : ContentProvider() {
         selection: String?,
         selectionArgs: Array<out String>?
     ): Int {
-        TODO("Not yet implemented")
+        return 0
     }
 
 

@@ -42,7 +42,6 @@ public class UtilsInstrumentedTest {
 
     Context appContext;
     private UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-    private Instrumentation sInstrumentation;
 
 
     @Before

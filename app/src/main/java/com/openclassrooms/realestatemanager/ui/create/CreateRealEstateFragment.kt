@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.create
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -26,15 +27,11 @@ import com.openclassrooms.realestatemanager.databinding.FragmentCreateRealEstate
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
+import com.openclassrooms.realestatemanager.utils.Notification
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -44,12 +41,25 @@ private const val ARG_PARAM2 = "param2"
 class CreateRealEstateFragment : Fragment() {
 
     lateinit var bitmap: Bitmap
-
-    //private lateinit var uri : Uri
     private lateinit var uri : Uri
-
-    private val mock : Boolean = false
+    private val mock : Boolean = true
     private var listFileName = ArrayList<String>()
+    private lateinit var notification : Notification
+
+    companion object{
+        fun newInstance() = CreateRealEstateFragment()
+    }
+
+
+    private val viewModel: CreateRealEstateViewModel by viewModels() {
+        RealEstateViewModelFactory(
+            (activity?.application as RealEstateApplication).realEstateRepository,
+            photoRepository = (activity?.application as RealEstateApplication).photoRepository
+        )
+    }
+    private lateinit var createBinding: FragmentCreateRealEstateBinding
+
+
 
     private val getPicture =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -63,16 +73,6 @@ class CreateRealEstateFragment : Fragment() {
 
         }
 
-
-    private val viewModel: CreateRealEstateViewModel by viewModels() {
-        RealEstateViewModelFactory(
-            (activity?.application as RealEstateApplication).realEstateRepository,
-            photoRepository = (activity?.application as RealEstateApplication).photoRepository
-        )
-    }
-    private lateinit var createBinding: FragmentCreateRealEstateBinding
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -85,7 +85,10 @@ class CreateRealEstateFragment : Fragment() {
         return createBinding.root
     }
 
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        notification = Notification(context)
+    }
 
     fun autoFillHints() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){ // Not supported above
@@ -135,6 +138,8 @@ class CreateRealEstateFragment : Fragment() {
                     )
                     viewModel.insertPhoto(photo)
                 }
+                notification.createNotificationChannel()
+                notification.buildNotif()
                 val intent = Intent(requireContext(),MainActivity::class.java)
                 startActivity(intent)
             })
@@ -160,12 +165,6 @@ class CreateRealEstateFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.TakePicture()) { sucess ->
             if (sucess) {
                 val nameFile : Int
-                /*val source =
-                    ImageDecoder.createSource(requireActivity().application.contentResolver, uri)
-                bitmap = ImageDecoder.decodeBitmap(source)
-                createBinding.imageViewTest.setImageBitmap(bitmap)*/
-
-
                 uri.let {
                     requireContext().contentResolver.query(uri,null,null,null,null)
                 }?.use {
@@ -195,5 +194,6 @@ class CreateRealEstateFragment : Fragment() {
             storageDir
         )
     }
+
 
 }
