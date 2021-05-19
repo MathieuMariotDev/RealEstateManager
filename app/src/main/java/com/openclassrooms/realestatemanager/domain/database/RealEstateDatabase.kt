@@ -1,9 +1,7 @@
 package com.openclassrooms.realestatemanager.domain.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
@@ -14,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 34,exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 35,exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 

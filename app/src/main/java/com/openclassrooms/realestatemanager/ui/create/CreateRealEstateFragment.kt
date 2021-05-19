@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +31,7 @@ import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.utils.Notification
+import com.openclassrooms.realestatemanager.utils.Utils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,13 +46,15 @@ class CreateRealEstateFragment : Fragment() {
 
     lateinit var bitmap: Bitmap
     private lateinit var uri : Uri
-    private val mock : Boolean = true
+    private val mock : Boolean = false
     private var listFileName = ArrayList<String>()
     private lateinit var notification : Notification
-
+    private lateinit var geocoder : Geocoder
+    private lateinit var latlng : Address
     companion object{
         fun newInstance() = CreateRealEstateFragment()
     }
+
 
 
     private val viewModel: CreateRealEstateViewModel by viewModels() {
@@ -101,9 +107,13 @@ class CreateRealEstateFragment : Fragment() {
         createBinding.ButtonAdd.setOnClickListener {
 
             if(BuildConfig.DEBUG && mock){
-                viewModel.insertMockRealEstate()
+                //viewModel.insertMockRealEstate()
             }
             else{
+                getLatLong()
+                viewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { liveDataAddress ->
+                    latlng = liveDataAddress.get(0)
+                    Log.d("LatLong geocoder", "getLatLong:" + latlng.latitude + latlng.longitude)
                 val realEstate = RealEstate(
                     type = createBinding.textFieldType.editText?.text.toString(),
                     price = createBinding.textFieldPrice.editText?.text.toString().toInt(),
@@ -114,17 +124,18 @@ class CreateRealEstateFragment : Fragment() {
                     description = createBinding.textFieldDescription.editText?.text.toString(),
                     address = createBinding.textFieldAdresse.editText?.text.toString(),
                     propertyStatus = false,
-                    dateEntry = null,
+                    dateEntry = Utils.getTodayDateInLong(Utils.getTodayDate()),
                     dateSale = null,
                     realEstateAgent = createBinding.textFieldRealEstateAgent.editText?.text.toString(),
-                    latitude = null,
-                    longitude = null,
+                    latitude = latlng.latitude.toFloat(),
+                    longitude = latlng.longitude.toFloat(),
                     nearbyStore = null,
                     nearbyPark = null,
                     nearbyRestaurant = null,
                     nearbySchool = null
                 )
                 viewModel.insertRealEstate(realEstate)
+            })
             }
             viewModel.liveData.observe(viewLifecycleOwner,Observer { livedata ->
                 if(BuildConfig.DEBUG && mock){
@@ -195,5 +206,10 @@ class CreateRealEstateFragment : Fragment() {
         )
     }
 
+
+    private fun getLatLong(){
+            val address = createBinding.textFieldAdresse.editText?.text.toString()
+            viewModel.updateWithLatLng(requireContext(),address)
+    }
 
 }

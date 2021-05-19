@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,61 +23,71 @@ import java.util.Date;
 public class Utils {
 
     public static boolean isNetWorkConnected;
+
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
+     *
      * @param dollars
      * @return
      */
-    public static int convertDollarToEuro(int dollars){
+    public static int convertDollarToEuro(int dollars) {
         return (int) Math.round(dollars * 0.812);
     }
 
-    public static int convertEuroToDollar(int euros){
-        return (int) Math.round(euros *  1.188);
+    public static int convertEuroToDollar(int euros) {
+        return (int) Math.round(euros * 1.188);
     }
 
     /**
      * Conversion de la date d'aujourd'hui en un format plus approprié
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
+     *
      * @return
      */
-    public static String getTodayDate(){
+    public static String getTodayDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  // yyyy/MM/dd -> dd/MM/yyyy
         return dateFormat.format(new Date());
     }
 
+    public static Long getTodayDateInLong(String dateString) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = dateFormat.parse(dateString);
+        return date.getTime();
+    }
+
+
     /**
      * Vérification de la connexion réseau
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
+     *
      * @param context
      * @return
      */
-    public static boolean isInternetAvailable(Context context){
+    public static boolean isInternetAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Network nw = cm.getActiveNetwork();
-            if(nw == null) {
+            if (nw == null) {
                 return false;
             }
             NetworkCapabilities capabilities = cm.getNetworkCapabilities(nw);
-            if(capabilities ==null){
+            if (capabilities == null) {
                 return false;
             }
-            if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                 return true;
             }
-            if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                 return true;                                                      // TODO
             }
-            if(capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)){
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
                 return true;                                                      // TODO
             }
-        }
-        else {
+        } else {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            if(activeNetwork !=null && activeNetwork.isConnected())
-            return true;
+            if (activeNetwork != null && activeNetwork.isConnected())
+                return true;
 
         }
 

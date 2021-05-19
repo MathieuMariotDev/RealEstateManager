@@ -17,7 +17,7 @@ import com.openclassrooms.realestatemanager.RealEstateApplication
 class Notification constructor(context: Context) : ContextWrapper(context){
 
     val CHANNEL_ID = "channel1"
-    var notificationId = 1  // Unique ID for notif
+    var notificationId = 1  // Unique ID for notif // Need to check
 
 
     fun buildNotif(){

@@ -10,11 +10,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        multiDexEnabled = true
     }
     buildTypes {
+        debug{
+            buildConfigField 'String', "ApiKey" , API_KEY
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "ApiKey", API_KEY
         }
     }
     repositories {
@@ -40,12 +45,18 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation("androidx.multidex:multidex:2.0.1") // For over 65,536 methods
+
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'// For Material Design
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'// For Material Design
 
     /* FOR TEST  */
     testImplementation 'junit:junit:4.13.2'
@@ -97,6 +108,9 @@ dependencies {
     def fragment_version = "1.3.3"
     // Kotlin fragment
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    // For NearbySeach
+    implementation 'com.google.maps:google-maps-services:0.18.0'
 
 }
 repositories {

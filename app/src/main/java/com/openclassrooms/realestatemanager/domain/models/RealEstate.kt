@@ -1,9 +1,9 @@
 package com.openclassrooms.realestatemanager.domain.models
 
-import android.content.ContentValues
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "real_estate_table")
 data class RealEstate(
@@ -38,7 +38,7 @@ data class RealEstate(
         var propertyStatus: Boolean,
 
         @ColumnInfo(name = "date_entry")
-        var dateEntry: Long?,
+        var dateEntry: Long,
 
         @ColumnInfo(name = "date_sale")
         var dateSale: Long?,
@@ -53,13 +53,13 @@ data class RealEstate(
         var longitude: Float?,
 
         @ColumnInfo(name = "nearby_store")
-                var nearbyStore: Boolean?,
+        var nearbyStore: Boolean?,
 
         @ColumnInfo(name = "nearby_park")
         var nearbyPark: Boolean?,
 
         @ColumnInfo(name = "nearby_restaurant")
-        var nearbyRestaurant : Boolean?,
+        var nearbyRestaurant: Boolean?,
 
         @ColumnInfo(name = "nearbySchool")
         var nearbySchool: Boolean?){

@@ -17,7 +17,7 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
     private val mock: Mock = Mock()
     private var floxRealEstateWithPhoto : Flow<List<RealEstateWithPhoto>> = realEstateDao.getRealEstateWithPhoto()
 
-
+/*
     suspend fun addMockRealEstate() : RealEstate {
             val realEstate = RealEstate(
                     type = mock.getRandomPropertyType(),
@@ -40,7 +40,7 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
                     nearbySchool = mock.getRandomNearbyPOI()
                     )
         return realEstate
-    }
+    }*/
 
     @WorkerThread
     suspend fun insertRealEstate(realEstate: RealEstate) = withContext(Dispatchers.IO){  //Used for take the value return(id autogenrate) by the insert method
