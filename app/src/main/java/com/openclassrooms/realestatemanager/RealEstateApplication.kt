@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager
 
 import android.app.Application
+import android.content.Context
+import com.openclassrooms.realestatemanager.domain.GeocoderRepository
 import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.database.RealEstateDatabase
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
@@ -11,9 +13,22 @@ class RealEstateApplication : Application() {
     // No need to cancel this scope as it'll be torn down with the process
     val applicationScope = CoroutineScope(SupervisorJob())
 
+    companion object {
+        lateinit var instance : Application
+    }
+
+
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
     val database by lazy{
         RealEstateDatabase.getDatabase(this,applicationScope)
     }
+
+    val geocoderRepository by lazy { GeocoderRepository(context = instance)}
 
     val realEstateRepository by lazy { RealEstateRepository(database.RealEstateDao()) }
 

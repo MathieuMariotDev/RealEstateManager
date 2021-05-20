@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
+    apply plugin: 'kotlin-kapt'
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.openclassrooms.realestatemanager"
@@ -36,7 +37,6 @@ android {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
 
-    apply plugin: 'kotlin-kapt'
     kotlinOptions {
         jvmTarget = "1.8"
     }

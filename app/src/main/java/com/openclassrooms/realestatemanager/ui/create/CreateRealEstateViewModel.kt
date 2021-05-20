@@ -1,13 +1,10 @@
 package com.openclassrooms.realestatemanager.ui.create
 
-import android.app.Application
-import android.content.Context
 import android.location.Address
-import android.location.Geocoder
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.realestatemanager.domain.GeocoderRepository
 import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.models.Photo
@@ -17,8 +14,12 @@ import kotlinx.coroutines.launch
 
 class CreateRealEstateViewModel(
     private val realEstateRepository: RealEstateRepository,
-    private val photoRepository: PhotoRepository
-) : ViewModel() {
+    private val photoRepository: PhotoRepository,
+    private val geocoderRepository: GeocoderRepository,
+) : ViewModel()  {
+
+
+
 
     val liveData: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
@@ -28,7 +29,7 @@ class CreateRealEstateViewModel(
         MutableLiveData<List<Address>>()
     }
 
-    private lateinit var geocoder : Geocoder
+
 
     fun insertRealEstate(realEstate: RealEstate?) {
         viewModelScope.launch {
@@ -58,12 +59,14 @@ class CreateRealEstateViewModel(
         }
     }
 
-    fun updateWithLatLng(context : Context,textAddress : String){
+    fun updateWithLatLng(textAddress : String){
         viewModelScope.launch(Dispatchers.IO) {
-            geocoder = Geocoder(context.applicationContext)
-            liveDataAddress.postValue(geocoder.getFromLocationName(textAddress,1))
+            liveDataAddress.postValue(geocoderRepository.getLatLng(textAddress))
         }
     }
+
+
+
 
 
 }

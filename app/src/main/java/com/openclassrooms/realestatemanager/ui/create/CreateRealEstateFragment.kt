@@ -23,10 +23,12 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
+import com.google.maps.model.PlacesSearchResult
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentCreateRealEstateBinding
+import com.openclassrooms.realestatemanager.domain.GeocoderRepository
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
@@ -51,6 +53,7 @@ class CreateRealEstateFragment : Fragment() {
     private lateinit var notification : Notification
     private lateinit var geocoder : Geocoder
     private lateinit var latlng : Address
+    private var placeSearchResults = PlacesSearchResult()
     companion object{
         fun newInstance() = CreateRealEstateFragment()
     }
@@ -60,7 +63,7 @@ class CreateRealEstateFragment : Fragment() {
     private val viewModel: CreateRealEstateViewModel by viewModels() {
         RealEstateViewModelFactory(
             (activity?.application as RealEstateApplication).realEstateRepository,
-            photoRepository = (activity?.application as RealEstateApplication).photoRepository
+            photoRepository = (activity?.application as RealEstateApplication).photoRepository,(activity?.application as RealEstateApplication).geocoderRepository
         )
     }
     private lateinit var createBinding: FragmentCreateRealEstateBinding
@@ -209,7 +212,7 @@ class CreateRealEstateFragment : Fragment() {
 
     private fun getLatLong(){
             val address = createBinding.textFieldAdresse.editText?.text.toString()
-            viewModel.updateWithLatLng(requireContext(),address)
+            viewModel.updateWithLatLng(address)
     }
 
 }

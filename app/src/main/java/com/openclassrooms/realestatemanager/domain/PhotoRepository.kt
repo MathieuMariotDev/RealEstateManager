@@ -1,6 +1,7 @@
 
 package com.openclassrooms.realestatemanager.domain
 
+import android.app.Application
 import androidx.annotation.WorkerThread
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.models.Photo
