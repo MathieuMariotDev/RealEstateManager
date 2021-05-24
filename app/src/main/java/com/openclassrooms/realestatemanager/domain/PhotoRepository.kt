@@ -6,6 +6,8 @@ import androidx.annotation.WorkerThread
 import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.utils.debug.Mock
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class PhotoRepository(private val photoDao: PhotoDao) {
 
@@ -13,7 +15,7 @@ class PhotoRepository(private val photoDao: PhotoDao) {
 
 
     @WorkerThread
-    suspend fun insertPhoto(photo: Photo) {
+    suspend fun insertPhoto(photo: Photo)= withContext(Dispatchers.IO) {
         photoDao.insert(photo)
     }
 

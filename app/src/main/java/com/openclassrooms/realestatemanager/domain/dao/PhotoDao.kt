@@ -10,6 +10,6 @@ interface PhotoDao {
 
 
     @Insert
-    suspend fun insert(vararg photo: Photo)
+    suspend fun insert(photo: Photo) :Long
 
 }

@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.domain.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 

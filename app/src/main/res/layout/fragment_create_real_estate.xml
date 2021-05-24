@@ -169,7 +169,13 @@
                 android:background="@color/colorPrimary"
                 android:drawableBottom="@drawable/ic_baseline_photo_24" />
 
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/Button_add_photo_from_folder"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center|right|bottom"
+                android:background="@color/colorPrimary"
+                android:drawableBottom="@drawable/ic_baseline_folder_upload_24" />
             <ImageView
                 android:id="@+id/imageView_test"
                 android:layout_width="250dp"

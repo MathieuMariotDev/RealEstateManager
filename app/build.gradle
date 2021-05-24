@@ -25,6 +25,8 @@ android {
     }
     repositories {
         google()
+        mavenCentral()
+        jcenter()
     }
     buildFeatures {
         viewBinding true  //For use View Binding
@@ -54,9 +56,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.3.0'// For Material Design
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'// For Material Design
+
 
     /* FOR TEST  */
     testImplementation 'junit:junit:4.13.2'
@@ -110,9 +112,9 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // For NearbySeach
-    implementation 'com.google.maps:google-maps-services:0.18.0'
+    implementation 'com.google.maps:google-maps-services:0.18.1'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+    //*
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+}
 
-}
-repositories {
-    mavenCentral()
-}

@@ -21,14 +21,15 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
+import com.google.maps.model.LatLng
 import com.google.maps.model.PlacesSearchResult
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentCreateRealEstateBinding
-import com.openclassrooms.realestatemanager.domain.GeocoderRepository
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
@@ -47,27 +48,26 @@ import kotlin.collections.ArrayList
 class CreateRealEstateFragment : Fragment() {
 
     lateinit var bitmap: Bitmap
-    private lateinit var uri : Uri
-    private val mock : Boolean = false
+    private lateinit var uri: Uri
+    private val mock: Boolean = false
     private var listFileName = ArrayList<String>()
-    private lateinit var notification : Notification
-    private lateinit var geocoder : Geocoder
-    private lateinit var latlng : Address
-    private var placeSearchResults = PlacesSearchResult()
-    companion object{
+    private lateinit var notification: Notification
+    private lateinit var latlng: Address
+
+
+    companion object {
         fun newInstance() = CreateRealEstateFragment()
     }
-
 
 
     private val viewModel: CreateRealEstateViewModel by viewModels() {
         RealEstateViewModelFactory(
             (activity?.application as RealEstateApplication).realEstateRepository,
-            photoRepository = (activity?.application as RealEstateApplication).photoRepository,(activity?.application as RealEstateApplication).geocoderRepository
+            photoRepository = (activity?.application as RealEstateApplication).photoRepository,
+            (activity?.application as RealEstateApplication).geocoderRepository
         )
     }
     private lateinit var createBinding: FragmentCreateRealEstateBinding
-
 
 
     private val getPicture =
@@ -91,6 +91,7 @@ class CreateRealEstateFragment : Fragment() {
         autoFillHints()
         onClickAdd()
         onClickPhoto()
+        notificationIfAddCorrectly()
         return createBinding.root
     }
 
@@ -100,51 +101,61 @@ class CreateRealEstateFragment : Fragment() {
     }
 
     fun autoFillHints() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){ // Not supported above
-        createBinding.textViewAdresse.setAutofillHints(AUTOFILL_HINT_POSTAL_ADDRESS)
-        createBinding.textFieldRealEstateAgent.setAutofillHints(AUTOFILL_HINT_NAME)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Not supported above
+            createBinding.textViewAdresse.setAutofillHints(AUTOFILL_HINT_POSTAL_ADDRESS)
+            createBinding.textFieldRealEstateAgent.setAutofillHints(AUTOFILL_HINT_NAME)
         }
     }
 
     fun onClickAdd() {
         createBinding.ButtonAdd.setOnClickListener {
 
-            if(BuildConfig.DEBUG && mock){
+            if (BuildConfig.DEBUG && mock) {
                 //viewModel.insertMockRealEstate()
-            }
-            else{
+            } else {
                 getLatLong()
                 viewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { liveDataAddress ->
+
                     latlng = liveDataAddress.get(0)
                     Log.d("LatLong geocoder", "getLatLong:" + latlng.latitude + latlng.longitude)
-                val realEstate = RealEstate(
-                    type = createBinding.textFieldType.editText?.text.toString(),
-                    price = createBinding.textFieldPrice.editText?.text.toString().toInt(),
-                    surface = createBinding.textFieldSurface.editText?.text.toString().toFloat(),
-                    nbRooms = createBinding.textFieldNbRooms.editText?.text.toString().toInt(),
-                    nbBathrooms = createBinding.textFieldNbBathrooms.editText?.text.toString().toInt(),
-                    nbBedrooms = createBinding.textFieldNbBedrooms.editText?.text.toString().toInt(),
-                    description = createBinding.textFieldDescription.editText?.text.toString(),
-                    address = createBinding.textFieldAdresse.editText?.text.toString(),
-                    propertyStatus = false,
-                    dateEntry = Utils.getTodayDateInLong(Utils.getTodayDate()),
-                    dateSale = null,
-                    realEstateAgent = createBinding.textFieldRealEstateAgent.editText?.text.toString(),
-                    latitude = latlng.latitude.toFloat(),
-                    longitude = latlng.longitude.toFloat(),
-                    nearbyStore = null,
-                    nearbyPark = null,
-                    nearbyRestaurant = null,
-                    nearbySchool = null
-                )
-                viewModel.insertRealEstate(realEstate)
-            })
+                    viewModel.getNearbyPoi(LatLng(latlng.latitude, latlng.longitude))
+                    viewModel.liveDataNearbyPOI.observe(
+                        viewLifecycleOwner,
+                        Observer { liveDataNearbyPOI ->
+
+                            val realEstate = RealEstate(
+                                type = createBinding.textFieldType.editText?.text.toString(),
+                                price = createBinding.textFieldPrice.editText?.text.toString()
+                                    .toInt(),
+                                surface = createBinding.textFieldSurface.editText?.text.toString()
+                                    .toFloat(),
+                                nbRooms = createBinding.textFieldNbRooms.editText?.text.toString()
+                                    .toInt(),
+                                nbBathrooms = createBinding.textFieldNbBathrooms.editText?.text.toString()
+                                    .toInt(),
+                                nbBedrooms = createBinding.textFieldNbBedrooms.editText?.text.toString()
+                                    .toInt(),
+                                description = createBinding.textFieldDescription.editText?.text.toString(),
+                                address = createBinding.textFieldAdresse.editText?.text.toString(),
+                                propertyStatus = false,
+                                dateEntry = Utils.getTodayDateInLong(Utils.getTodayDate()),
+                                dateSale = null,
+                                realEstateAgent = createBinding.textFieldRealEstateAgent.editText?.text.toString(),
+                                latitude = latlng.latitude.toFloat(),
+                                longitude = latlng.longitude.toFloat(),
+                                nearbyStore = liveDataNearbyPOI.nearbyStore,
+                                nearbyPark = liveDataNearbyPOI.nearbyPark,
+                                nearbyRestaurant = liveDataNearbyPOI.nearbyRestaurant,
+                                nearbySchool = liveDataNearbyPOI.nearbySchool
+                            )
+                            viewModel.insertRealEstate(realEstate)
+                        })
+                })
             }
-            viewModel.liveData.observe(viewLifecycleOwner,Observer { livedata ->
-                if(BuildConfig.DEBUG && mock){
+            viewModel.liveData.observe(viewLifecycleOwner, Observer { livedata ->
+                if (BuildConfig.DEBUG && mock) {
                     viewModel.insertMockPhoto()
-                }
-                else{
+                } else {
                     val photo = Photo(
                         path = listFileName[0],
                         label = null,
@@ -152,10 +163,7 @@ class CreateRealEstateFragment : Fragment() {
                     )
                     viewModel.insertPhoto(photo)
                 }
-                notification.createNotificationChannel()
-                notification.buildNotif()
-                val intent = Intent(requireContext(),MainActivity::class.java)
-                startActivity(intent)
+
             })
         }
     }
@@ -164,7 +172,7 @@ class CreateRealEstateFragment : Fragment() {
         createBinding.ButtonAddPhoto.setOnClickListener {
             uri = FileProvider.getUriForFile(
                 requireContext(),
-                BuildConfig.APPLICATION_ID +".provider",
+                BuildConfig.APPLICATION_ID + ".provider",
                 createImageFile()
             )
             takePitcure.launch(uri)
@@ -173,29 +181,27 @@ class CreateRealEstateFragment : Fragment() {
     }
 
 
-
-
     private val takePitcure =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { sucess ->
             if (sucess) {
-                val nameFile : Int
+                val nameFile: Int
                 uri.let {
-                    requireContext().contentResolver.query(uri,null,null,null,null)
+                    requireContext().contentResolver.query(uri, null, null, null, null)
                 }?.use {
                     nameFile = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                     it.moveToFirst()
                     listFileName.add(it.getString(nameFile))
                     Glide.with(requireActivity())
-                        .load(File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),listFileName[0]))
+                        .load(
+                            File(
+                                requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                                listFileName[0]
+                            )
+                        )
                         .centerCrop()
                         .into(createBinding.imageViewTest)
-
                 }
-
-
-
             }
-
         }
 
     private fun createImageFile(): File {
@@ -210,9 +216,18 @@ class CreateRealEstateFragment : Fragment() {
     }
 
 
-    private fun getLatLong(){
-            val address = createBinding.textFieldAdresse.editText?.text.toString()
-            viewModel.updateWithLatLng(address)
+    private fun getLatLong() {
+        val address = createBinding.textFieldAdresse.editText?.text.toString()
+        viewModel.getLatLng(address)
+    }
+
+    private fun notificationIfAddCorrectly() {
+        viewModel.liveDataValidation.observe(viewLifecycleOwner, Observer {
+            notification.createNotificationChannel()
+            notification.buildNotif()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+        })
     }
 
 }
