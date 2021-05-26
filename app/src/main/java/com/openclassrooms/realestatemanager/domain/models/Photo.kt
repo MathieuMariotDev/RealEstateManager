@@ -15,11 +15,11 @@ data class Photo(
         val idPhoto : Long=0,
 
         @ColumnInfo(name = "path")         //Corresponding to the file name of the photo
-        var path:String,
+        var path:String="NoPath",
 
         /*      FOREIGNKEY          */
         @ColumnInfo(index = true)
-        val idProperty:Long,
+        val idProperty:Long=0,
 
         @ColumnInfo(name = "label")
-        val label:String?)
+        var label:String="NoLabel")

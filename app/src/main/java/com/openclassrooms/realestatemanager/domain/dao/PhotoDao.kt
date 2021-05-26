@@ -7,8 +7,6 @@ import com.openclassrooms.realestatemanager.domain.models.Photo
 @Dao
 interface PhotoDao {
 
-
-
     @Insert
     suspend fun insert(photo: Photo) :Long
 

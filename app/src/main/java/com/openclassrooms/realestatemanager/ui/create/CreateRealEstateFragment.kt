@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.location.Address
-import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,15 +17,19 @@ import android.view.View
 import android.view.View.AUTOFILL_HINT_NAME
 import android.view.View.AUTOFILL_HINT_POSTAL_ADDRESS
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.model.LatLng
-import com.google.maps.model.PlacesSearchResult
 import com.openclassrooms.realestatemanager.BuildConfig
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentCreateRealEstateBinding
@@ -36,6 +39,8 @@ import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.utils.Notification
 import com.openclassrooms.realestatemanager.utils.Utils
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -50,9 +55,13 @@ class CreateRealEstateFragment : Fragment() {
     lateinit var bitmap: Bitmap
     private lateinit var uri: Uri
     private val mock: Boolean = false
-    private var listFileName = ArrayList<String>()
+    private var listPhoto = ArrayList<Photo>()
     private lateinit var notification: Notification
     private lateinit var latlng: Address
+    private var photo = Photo()
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var recyclerView: RecyclerView
+    private var adapter = PhotoAdapter()
 
 
     companion object {
@@ -70,18 +79,6 @@ class CreateRealEstateFragment : Fragment() {
     private lateinit var createBinding: FragmentCreateRealEstateBinding
 
 
-    private val getPicture =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-
-            if (uri != null) {
-                val source =
-                    ImageDecoder.createSource(requireActivity().application.contentResolver, uri)
-                bitmap = ImageDecoder.decodeBitmap(source)
-                createBinding.imageViewTest.setImageBitmap(bitmap)
-            }
-
-        }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,7 +88,9 @@ class CreateRealEstateFragment : Fragment() {
         autoFillHints()
         onClickAdd()
         onClickPhoto()
+        onClickPhotoFromFile()
         notificationIfAddCorrectly()
+        setupRecyclerView()
         return createBinding.root
     }
 
@@ -154,16 +153,15 @@ class CreateRealEstateFragment : Fragment() {
             }
             viewModel.liveData.observe(viewLifecycleOwner, Observer { livedata ->
                 if (BuildConfig.DEBUG && mock) {
-                    viewModel.insertMockPhoto()
+                    //viewModel.insertMockPhoto()
                 } else {
                     val photo = Photo(
-                        path = listFileName[0],
-                        label = null,
+                        path = listPhoto[0].path,
+                        label = listPhoto[0].label,
                         idProperty = livedata
                     )
                     viewModel.insertPhoto(photo)
                 }
-
             })
         }
     }
@@ -176,7 +174,12 @@ class CreateRealEstateFragment : Fragment() {
                 createImageFile()
             )
             takePitcure.launch(uri)
+        }
+    }
 
+    private fun onClickPhotoFromFile(){
+        createBinding.ButtonAddPhotoFromFolder.setOnClickListener {
+            getPicture.launch("image/*")
         }
     }
 
@@ -190,17 +193,9 @@ class CreateRealEstateFragment : Fragment() {
                 }?.use {
                     nameFile = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                     it.moveToFirst()
-                    listFileName.add(it.getString(nameFile))
-                    Glide.with(requireActivity())
-                        .load(
-                            File(
-                                requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                                listFileName[0]
-                            )
-                        )
-                        .centerCrop()
-                        .into(createBinding.imageViewTest)
+                    photo.path = it.getString(nameFile)
                 }
+                alertDialog()
             }
         }
 
@@ -214,6 +209,24 @@ class CreateRealEstateFragment : Fragment() {
             storageDir
         )
     }
+
+
+    private val getPicture =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                val filename = createImageFile()
+                photo.path=filename.name
+                val fileOutputStream = FileOutputStream(filename)
+                fileOutputStream.write(readBytes(uri))
+                alertDialog()
+            }
+        }
+
+    @Throws(IOException::class)
+    private fun readBytes(uri: Uri) : ByteArray? =
+            requireContext().contentResolver.openInputStream(uri)?.buffered().use {
+                it?.readBytes()
+            }
 
 
     private fun getLatLong() {
@@ -230,4 +243,40 @@ class CreateRealEstateFragment : Fragment() {
         })
     }
 
+
+    private fun alertDialog(){
+        var editText = EditText(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Enter Photo Name")
+            .setView(editText)
+            .setPositiveButton(requireContext().resources.getString(R.string.validate)){ dialog,which ->
+                if(!editText.text.isNullOrEmpty()){
+                    photo.label = editText.text.toString()
+                    listPhoto.add(photo)
+                    photo = Photo()
+                    viewModel.setPhoto(listPhoto)
+                    dialog.dismiss()
+                }
+            }
+
+            .show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    private fun updateRecycler() {
+        viewModel.liveDataListPhoto.observe(viewLifecycleOwner, Observer{
+            it.let { adapter.data = it }
+        })
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView = createBinding.recyclerviewPhoto
+        linearLayoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = linearLayoutManager
+        createBinding.recyclerviewPhoto.adapter = adapter
+        updateRecycler()
+    }
 }

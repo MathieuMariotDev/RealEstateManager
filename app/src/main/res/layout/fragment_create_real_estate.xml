@@ -176,11 +176,13 @@
                 android:layout_gravity="center|right|bottom"
                 android:background="@color/colorPrimary"
                 android:drawableBottom="@drawable/ic_baseline_folder_upload_24" />
-            <ImageView
-                android:id="@+id/imageView_test"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_photo"
                 android:layout_width="250dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center|left"
+                tools:listitem="@layout/item_photo"
+                android:orientation="horizontal"
                 />
         </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.textfield.TextInputLayout

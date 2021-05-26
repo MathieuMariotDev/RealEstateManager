@@ -86,7 +86,7 @@ class ContentProviderTest {
             description = "Proche de ST Emilion, Superbe propriété en pierre composée : d'une Girondine, 385 m2 hab., décorée avec goût, les volumes des pièces sont très spacieux, tournés vers le parc de 1.3 Hectares parfaitement entretenu. Une entrée vous mènera à un salon avec grande cheminée, prolongé par un jardin d'hiver. Au centre de la bâtisse, une cuisine équipée est encadrée par des arches en pierre, le coin repas offre une approche moderne , une cheminée avec insert à bois la complète. Une buanderie, une salle de bains, et wc au rez-de-chaussée.",
             address = "600 Maryland Ave SW, Washington, DC 20002, États-Unis",
             propertyStatus = false,
-            dateEntry = null,
+            dateEntry = 1.toLong(),
             dateSale = null,
             realEstateAgent = null,
             latitude = null,

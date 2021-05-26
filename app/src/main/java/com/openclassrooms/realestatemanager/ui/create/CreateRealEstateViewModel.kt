@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.create
 
 import android.location.Address
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
+import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -38,6 +40,10 @@ class CreateRealEstateViewModel(
 
     val liveDataValidation by lazy{
         MutableLiveData<Long>()
+    }
+
+    val liveDataListPhoto by lazy {
+        MutableLiveData<List<Photo>>()
     }
 
     lateinit var PlacesSearchResult: Array<PlacesSearchResult>
@@ -70,12 +76,12 @@ class CreateRealEstateViewModel(
                 realEstateRepository.insertRealEstate(realEstateRepository.addMockRealEstate())
         }
     }*/
-
+/*
     fun insertMockPhoto() {
         viewModelScope.launch {
             photoRepository.insertPhoto(photoRepository.addMockPhoto(liveData.value!!))
         }
-    }
+    }*/
 
     fun getLatLng(textAddress: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -113,5 +119,9 @@ class CreateRealEstateViewModel(
         var nearbyPark: Boolean = false,
         var nearbyStore: Boolean = false
     )
+
+    fun setPhoto(listPhoto: List<Photo>){
+        liveDataListPhoto.value = listPhoto
+    }
 
 }
