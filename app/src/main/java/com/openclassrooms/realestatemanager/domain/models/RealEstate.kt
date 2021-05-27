@@ -62,7 +62,7 @@ data class RealEstate(
         @ColumnInfo(name = "nearby_restaurant")
         var nearbyRestaurant: Boolean?,
 
-        @ColumnInfo(name = "nearbySchool")
+        @ColumnInfo(name = "nearby_school")
         var nearbySchool: Boolean?){
 /*
         companion object fun  fromContentValues(values : ContentValues){
