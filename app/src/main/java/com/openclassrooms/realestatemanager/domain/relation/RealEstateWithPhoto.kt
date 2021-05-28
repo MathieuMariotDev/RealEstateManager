@@ -8,8 +8,8 @@ import com.openclassrooms.realestatemanager.domain.models.RealEstate
 data class RealEstateWithPhoto(
         @Embedded val realEstate: RealEstate,
         @Relation(
-                parentColumn = "idRealEstate",
-                entityColumn = "idProperty"
+                parentColumn = "id_realestate",
+                entityColumn = "id_property"
         )
         val photos: List<Photo>?
 )

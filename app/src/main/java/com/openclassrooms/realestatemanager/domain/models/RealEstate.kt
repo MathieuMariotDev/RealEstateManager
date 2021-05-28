@@ -9,6 +9,7 @@ import java.util.*
 @Entity(tableName = "real_estate_table")
 data class RealEstate(
         @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "id_realestate")
         var idRealEstate: Long = 0,
 
         @ColumnInfo(name = "type")

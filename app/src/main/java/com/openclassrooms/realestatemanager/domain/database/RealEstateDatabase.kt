@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 38,exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 39,exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 
