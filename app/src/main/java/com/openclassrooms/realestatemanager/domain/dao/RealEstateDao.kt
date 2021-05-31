@@ -25,7 +25,7 @@ interface RealEstateDao {
     fun getRealEstateWithPhoto(): Flow<List<RealEstateWithPhoto>>
 
     @Transaction
-    @Query("SELECT * FROM REAL_ESTATE_TABLE WHERE surface BETWEEN :minSurface AND :maxSurface ")
+    @Query("SELECT * FROM REAL_ESTATE_TABLE WHERE surface BETWEEN :minSurface AND :maxSurface")
     fun getRealEstateBetweenTwoSurface(
         minSurface: Float,
         maxSurface: Float
@@ -50,10 +50,22 @@ interface RealEstateDao {
         nbPhoto: Int? = null
     ): Flow<List<RealEstateWithPhoto>> {
         var whereOrAnd: Boolean = true
-        var queryString = "SELECT * FROM REAL_ESTATE_TABLE"
-        if (minSurface != null && maxSurface != null) {
-            queryString += " WHERE surface BETWEEN $minSurface AND $maxSurface"
+        var queryString : String
+        if (nbPhoto != null){
+            queryString = "SELECT *, COUNT(p.id_property) FROM real_estate_table r LEFT JOIN PHOTO_TABLE p ON r.id_realestate=p.id_property GROUP BY r.id_realestate HAVING COUNT(p.id_property) >= $nbPhoto"
             whereOrAnd = false
+        }else{
+            queryString = "SELECT * FROM REAL_ESTATE_TABLE"
+        }
+
+        if (minSurface != null && maxSurface != null) {
+            if (whereOrAnd) {
+                queryString += " WHERE"
+                whereOrAnd = false
+            } else {
+                queryString += " AND"
+            }
+            queryString += " surface BETWEEN $minSurface AND $maxSurface"
         }
         if (minPrice != null && maxPrice != null) {
             if (whereOrAnd) {
@@ -123,11 +135,8 @@ interface RealEstateDao {
             }
             queryString += " address LIKE '%$city%'"
         }
-        if (nbPhoto != null){
-                 queryString = "SELECT *, COUNT(p.id_property) FROM real_estate_table r LEFT JOIN PHOTO_TABLE p ON r.id_realestate=p.id_property GROUP BY r.id_realestate HAVING COUNT(p.id_property) >= 3"
-            }
 
-        val query = SimpleSQLiteQuery(queryString)
+    val query = SimpleSQLiteQuery(queryString)
         return getRealEstateBetweenSurfaceAndPrice(query)
     }
 

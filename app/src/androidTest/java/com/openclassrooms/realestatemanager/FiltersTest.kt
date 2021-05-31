@@ -63,6 +63,7 @@ class FiltersTest {
             .getRealEstateBetweenTwoSurface(750.toFloat(), 1000.toFloat()).asLiveData()
         //assertThat(liveDataListRealEstate.getOrAwaitValue().size, `is`(2))
         data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.realEstate.surface >= 750)
             assertTrue(realEstate.realEstate.surface <= 1000)
@@ -87,6 +88,7 @@ class FiltersTest {
             )
             .asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.realEstate.price >= 100000)
             assertTrue(realEstate.realEstate.price <= 150000)
@@ -112,13 +114,13 @@ class FiltersTest {
             null, null
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.realEstate.nearbyStore == nearbyStore)
             assertTrue(realEstate.realEstate.nearbyPark == nearbyPark)
             assertTrue(realEstate.realEstate.nearbyRestaurant == nearbyRestaurant)
             assertTrue(realEstate.realEstate.nearbySchool == nearbySchool)
         }
-
     }
 
     @Test
@@ -136,6 +138,7 @@ class FiltersTest {
             null
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             //assertTrue(realEstate.dateEntry <= Utils.getTodayDateInLong(test(date2)))
             assertTrue(realEstate.realEstate.dateEntry >= Utils.getTodayDateInLong(test(date1)))
@@ -157,10 +160,10 @@ class FiltersTest {
             sold = true
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.realEstate.dateSale != null)
             assertTrue(realEstate.realEstate.dateSale!! >= Utils.getTodayDateInLong(test(date1)))
-
         }
     }
 
@@ -180,6 +183,7 @@ class FiltersTest {
             "Long Island"
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.realEstate.address.contains("Long Island"))
         }
@@ -206,7 +210,37 @@ class FiltersTest {
         assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.photos!!.isNotEmpty())
-            assertTrue(realEstate.photos?.size!! >= 2)
+            assertTrue(realEstate.photos?.size!! >= 3)
+        }
+    }
+
+    @Test
+    fun multiFilter(){
+        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+            500.toFloat(),
+            1500.toFloat(),
+            100000,
+            200000,
+            null,
+            null,
+            true,
+            null,
+            minDateInLong = Utils.getTodayDateInLong(test(date1)),
+            sold = null,
+            "Washington",
+            3
+        ).asLiveData()
+        data = liveDataListRealEstate.getOrAwaitValue()
+        assertTrue(data.isNotEmpty())
+        for(realEstate in data){
+            assertTrue(realEstate.photos?.size!! >= 3)
+            assertTrue(realEstate.realEstate.address.contains("Washington"))
+            assertTrue(realEstate.realEstate.dateEntry >= Utils.getTodayDateInLong(test(date1)))
+            assertTrue(realEstate.realEstate.nearbyRestaurant == true)
+            assertTrue(realEstate.realEstate.price >= 100000)
+            assertTrue(realEstate.realEstate.price <= 200000)
+            assertTrue(realEstate.realEstate.surface >= 750)
+            assertTrue(realEstate.realEstate.surface <= 1500)
         }
 
 
@@ -231,7 +265,7 @@ class FiltersTest {
                 longitude = null,
                 nearbyStore = true,
                 nearbyPark = false,
-                nearbyRestaurant = false,
+                nearbyRestaurant = true,
                 nearbySchool = true
             )
         )
@@ -296,13 +330,18 @@ class FiltersTest {
                 nearbySchool = true
             )
         )
+        realEstateDatabase.PhotoDao().insert(
+            photo = Photo(
+                idProperty = idRealEstate,
+                path = getRandomPhoto()
+            )
+        )
 
     }
 
 
     fun getRandomPhoto(): String {
         val randomPhoto = Random.nextInt(PropertyPhoto.values().size)
-
         return PropertyPhoto.values()[randomPhoto].photoPath.toString()
     }
 
