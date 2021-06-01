@@ -13,9 +13,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private val adapter = RealEstateAdapter()
+    private var isLargeLayout = false
 
     private val viewModel: RealEstateViewModel by viewModels(){
         RealEstateViewModelFactory((application as RealEstateApplication).realEstateRepository,photoRepository = (application as RealEstateApplication).photoRepository,
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         setNavigationOnClick()
         setOnMenuItemClick()
-
+        isLargeLayout = resources.getBoolean(R.bool.large_layout)
     }
 
 
@@ -93,9 +96,32 @@ class MainActivity : AppCompatActivity() {
                     startActivity(createIntent)
                     true
                 }
+                R.id.realestate_filters -> {
+                    showDialog()
+                    true
+                }
                 else -> false
             }
         }
     }
 
+    fun showDialog() {
+        val fragmentManager = supportFragmentManager
+        val newFragment = FilterDialogFragment()
+        if (isLargeLayout) {
+            // The device is using a large layout, so show the fragment as a dialog
+            newFragment.show(fragmentManager, "dialog")
+        } else {
+            // The device is smaller, so show the fragment fullscreen
+            val transaction = fragmentManager.beginTransaction()
+            // For a little polish, specify a transition animation
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            // To make it fullscreen, use the 'content' root view as the container
+            // for the fragment, which is always the root view for the activity
+            transaction
+                .add(android.R.id.content, newFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
 }

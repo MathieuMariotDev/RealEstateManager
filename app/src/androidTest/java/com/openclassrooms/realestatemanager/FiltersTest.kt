@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.openclassrooms.realestatemanager.domain.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.database.RealEstateDatabase
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
@@ -14,7 +15,6 @@ import com.openclassrooms.realestatemanager.utils.Utils
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.annotations.NotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,6 +40,7 @@ class FiltersTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
+    lateinit var realEstateRepo : RealEstateRepository
 
     fun test(date: Date): String {
         return dateFormat.format(date)
@@ -53,14 +54,14 @@ class FiltersTest {
         )
             .allowMainThreadQueries()
             .build()
-        cleanDataBase()
+        //cleanDataBase()
         insertRealEstate()
+        realEstateRepo = RealEstateRepository(realEstateDatabase.RealEstateDao())
     }
 
     @Test
     fun surfaceFilter() {
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao()
-            .getRealEstateBetweenTwoSurface(750.toFloat(), 1000.toFloat()).asLiveData()
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(750.toFloat(), 1000.toFloat()).asLiveData()
         //assertThat(liveDataListRealEstate.getOrAwaitValue().size, `is`(2))
         data = liveDataListRealEstate.getOrAwaitValue()
         assertTrue(data.isNotEmpty())
@@ -73,8 +74,7 @@ class FiltersTest {
 
     @Test
     fun PriceFilter() {
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao()
-            .customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
                 750.toFloat(),
                 1000.toFloat(),
                 100000,
@@ -102,7 +102,7 @@ class FiltersTest {
         val nearbyPark = false
         val nearbyRestaurant = true
         val nearbySchool = false
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
             750.toFloat(),
             1000.toFloat(),
             100000,
@@ -125,7 +125,7 @@ class FiltersTest {
 
     @Test
     fun dateFilter() {
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
             750.toFloat(),
             1000.toFloat(),
             null,
@@ -147,7 +147,7 @@ class FiltersTest {
 
     @Test
     fun soldDateFilter() {
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
             100.toFloat(),
             2000.toFloat(),
             null,
@@ -169,7 +169,7 @@ class FiltersTest {
 
     @Test
     fun regionFilter() {
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
             null,
             null,
             null,
@@ -191,7 +191,7 @@ class FiltersTest {
 
     @Test
     fun nbPhotoFilter() {
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
             null,
             null,
             null,
@@ -216,7 +216,7 @@ class FiltersTest {
 
     @Test
     fun multiFilter(){
-        liveDataListRealEstate = realEstateDatabase.RealEstateDao().customQuery(
+        liveDataListRealEstate = realEstateRepo.customQueryOrGetSimpleFlow(
             500.toFloat(),
             1500.toFloat(),
             100000,
@@ -352,7 +352,7 @@ class FiltersTest {
     }
 
     fun cleanDataBase() = runBlocking {
-        realEstateDatabase.RealEstateDao().AllDelete()
+        realEstateDatabase.RealEstateDao().allDelete()
     }
 
 }

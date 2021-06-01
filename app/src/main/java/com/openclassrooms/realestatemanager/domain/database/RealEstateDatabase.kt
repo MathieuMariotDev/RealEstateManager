@@ -66,7 +66,7 @@ private class RealEstateDatabaseCallback(
     suspend fun deleteDatabase(realEstateDao: RealEstateDao) {
         // Start the app with a clean database every time.
         // Not needed if you only populate on creation.
-        realEstateDao.AllDelete()
+        realEstateDao.allDelete()
 
 }
 

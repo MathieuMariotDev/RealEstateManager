@@ -99,6 +99,6 @@ class ContentProviderTest {
     }
 
     fun cleanDataBase()= runBlocking{
-        realEstateDatabase.RealEstateDao().AllDelete()
+        realEstateDatabase.RealEstateDao().allDelete()
     }
 }

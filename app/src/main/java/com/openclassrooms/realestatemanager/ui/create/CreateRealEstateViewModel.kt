@@ -69,19 +69,6 @@ class CreateRealEstateViewModel(
         }
 
     }
-/*
-    fun insertMockRealEstate() {
-        viewModelScope.launch {
-            liveData.value =
-                realEstateRepository.insertRealEstate(realEstateRepository.addMockRealEstate())
-        }
-    }*/
-/*
-    fun insertMockPhoto() {
-        viewModelScope.launch {
-            photoRepository.insertPhoto(photoRepository.addMockPhoto(liveData.value!!))
-        }
-    }*/
 
     fun getLatLng(textAddress: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -109,7 +96,6 @@ class CreateRealEstateViewModel(
             }
         }
         liveDataNearbyPOI.postValue(nearbyPoi)
-        //  }
     }
 
 

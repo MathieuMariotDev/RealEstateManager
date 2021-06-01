@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -62,7 +63,7 @@ class CreateRealEstateFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private var adapter = PhotoAdapter()
-
+    private lateinit var createBinding: FragmentCreateRealEstateBinding
 
     companion object {
         fun newInstance() = CreateRealEstateFragment()
@@ -76,7 +77,6 @@ class CreateRealEstateFragment : Fragment() {
             (activity?.application as RealEstateApplication).geocoderRepository
         )
     }
-    private lateinit var createBinding: FragmentCreateRealEstateBinding
 
 
     override fun onCreateView(

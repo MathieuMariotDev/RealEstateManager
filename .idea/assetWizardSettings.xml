@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/W:/Sdk/icons/material/materialicons/drive_folder_upload/baseline_drive_folder_upload_24.xml" />
+                                      <entry key="url" value="file:/W:/Sdk/icons/material/materialicons/check/baseline_check_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -34,7 +34,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_baseline_drive_folder_upload_24" />
+                            <entry key="outputName" value="ic_baseline_check_24" />
                             <entry key="sourceFile" value="F:\Dev\RealEstateManager" />
                           </map>
                         </option>
