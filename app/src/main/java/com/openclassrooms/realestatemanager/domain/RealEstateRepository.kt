@@ -68,7 +68,7 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
         var queryString : String
         var queryStringEnd : String? = null
         if (nbPhoto != null){
-            queryString = "SELECT *, COUNT(p.id_property) FROM real_estate_table r LEFT JOIN PHOTO_TABLE p ON r.id_realestate=p.id_property WHERE 1=1"
+            queryString = "SELECT * FROM real_estate_table r LEFT JOIN PHOTO_TABLE p ON r.id_realestate=p.id_property WHERE 1=1"
             queryStringEnd = " GROUP BY r.id_realestate HAVING COUNT(p.id_property) >= $nbPhoto"
         }else{
             queryString = "SELECT * FROM REAL_ESTATE_TABLE WHERE 1 = 1"
