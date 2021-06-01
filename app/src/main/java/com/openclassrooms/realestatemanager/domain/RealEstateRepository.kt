@@ -65,94 +65,49 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
         city: String? = null,
         nbPhoto: Int? = null
     ): Flow<List<RealEstateWithPhoto>> {
-        var whereOrAnd: Boolean = true
         var queryString : String
+        var queryStringEnd : String? = null
         if (nbPhoto != null){
-            queryString = "SELECT *, COUNT(p.id_property) FROM real_estate_table r LEFT JOIN PHOTO_TABLE p ON r.id_realestate=p.id_property WHERE 1=1 GROUP BY r.id_realestate HAVING COUNT(p.id_property) >= $nbPhoto"
-            whereOrAnd = false
+            queryString = "SELECT *, COUNT(p.id_property) FROM real_estate_table r LEFT JOIN PHOTO_TABLE p ON r.id_realestate=p.id_property WHERE 1=1"
+            queryStringEnd = " GROUP BY r.id_realestate HAVING COUNT(p.id_property) >= $nbPhoto"
         }else{
             queryString = "SELECT * FROM REAL_ESTATE_TABLE WHERE 1 = 1"
         }
 
         if (minSurface != null && maxSurface != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " surface BETWEEN $minSurface AND $maxSurface"
+            queryString += " AND surface BETWEEN $minSurface AND $maxSurface"
         }
         if (minPrice != null && maxPrice != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " price BETWEEN $minPrice AND $maxPrice"
+            queryString += " AND price BETWEEN $minPrice AND $maxPrice"
         }
 
         if (nearbyStore != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " nearby_store = ${convertToInt(nearbyStore)}"
+            queryString += " AND nearby_store = ${convertToInt(nearbyStore)}"
         }
         if (nearbyPark != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " nearby_park = ${convertToInt(nearbyPark)}"
+            queryString += " AND nearby_park = ${convertToInt(nearbyPark)}"
         }
         if (nearbyRestaurant != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " nearby_restaurant = ${convertToInt(nearbyRestaurant)}"
+            queryString += " AND nearby_restaurant = ${convertToInt(nearbyRestaurant)}"
         }
         if (nearbySchool != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " nearby_school = ${convertToInt(nearbySchool)}"
+            queryString += " AND nearby_school = ${convertToInt(nearbySchool)}"
         }
         if (minDateInLong != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
             if (sold == null) {
-                queryString += " date_entry >= $minDateInLong"
+                queryString += " AND date_entry >= $minDateInLong"
             } else if (sold == true) {
-                queryString += " date_sale IS NOT NULL AND date_sale >= $minDateInLong"
+                queryString += " AND date_sale IS NOT NULL AND date_sale >= $minDateInLong"
             }
         }
         if (city != null) {
-            if (whereOrAnd) {
-                queryString += " WHERE"
-                whereOrAnd = false
-            } else {
-                queryString += " AND"
-            }
-            queryString += " address LIKE '%$city%'"
+            queryString += " AND address LIKE '%$city%'"
         }
+        if(queryStringEnd != null){
+            queryString += queryStringEnd
+        }
+        val query = SimpleSQLiteQuery((queryString))
 
-        val query = SimpleSQLiteQuery(queryString)
         return realEstateDao.getRealEstateWithQuery(query)
     }
 

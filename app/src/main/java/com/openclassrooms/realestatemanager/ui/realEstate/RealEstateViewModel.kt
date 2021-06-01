@@ -53,8 +53,8 @@ class RealEstateViewModel(
 
     var listRealEstateWithPhoto = realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
     var realEstate = MutableLiveData<RealEstate>()
-
-    /*var listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = Transformations.switchMap(liveDataMinSurface){  ->
+/*
+    var listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = Transformations.switchMap(liveDatarealmanager){  ->
         realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
     }*/
 
@@ -141,7 +141,7 @@ class RealEstateViewModel(
             city = liveDataCity.value,
             nbPhoto = liveDataNbPhoto.value
         ).asLiveData()
-        
+
     }
 
 }
