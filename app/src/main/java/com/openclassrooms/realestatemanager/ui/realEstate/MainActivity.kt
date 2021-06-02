@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             // The device is using a large layout, so show the fragment as a dialog
             newFragment.show(fragmentManager, "dialog")
         } else {
-            // The device is smaller, so show the fragment fullscreen
+            /*// The device is smaller, so show the fragment fullscreen
             val transaction = fragmentManager.beginTransaction()
             // For a little polish, specify a transition animation
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -121,7 +121,8 @@ class MainActivity : AppCompatActivity() {
             transaction
                 .add(android.R.id.content, newFragment)
                 .addToBackStack(null)
-                .commit()
+                .commit()*/
+            FilterDialogFragment().show(fragmentManager,"test")
         }
     }
 }

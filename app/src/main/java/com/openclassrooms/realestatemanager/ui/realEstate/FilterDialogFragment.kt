@@ -1,11 +1,13 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -38,6 +40,7 @@ class FilterDialogFragment : DialogFragment(){
     }
 
     /** The system calls this only when creating the layout in a dialog. */
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // The only reason you might override this method when using onCreateView() is
         // to modify any dialog characteristics. For example, the dialog includes a
@@ -45,6 +48,7 @@ class FilterDialogFragment : DialogFragment(){
         // remove the dialog title, but you must call the superclass to get the Dialog.
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
 
         return dialog
     }
@@ -60,10 +64,10 @@ class FilterDialogFragment : DialogFragment(){
         filterBinding.ButtonValidationFilter.setOnClickListener {
                 viewModel.setMinPrice(
                     filterBinding.textFieldPriceMin.editText?.text.toString()
-                    .toInt())
+                    .toIntOrNull())
             viewModel.setMaxPrice(
                 filterBinding.textFieldPriceMax.editText?.text.toString()
-                    .toInt())
+                    .toIntOrNull())
             viewModel.setMinSurface(
                 filterBinding.textFieldSurfaceMin.editText?.text.toString().toFloatOrNull())
             viewModel.setMaxSurface(

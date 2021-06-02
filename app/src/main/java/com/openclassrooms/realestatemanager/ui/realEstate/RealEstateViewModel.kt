@@ -4,12 +4,15 @@ import androidx.lifecycle.*
 import com.openclassrooms.realestatemanager.domain.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
+import com.openclassrooms.realestatemanager.domain.models.RealEstateRequest
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 
 class RealEstateViewModel(
     private val realEstateRepository: RealEstateRepository,
     private val photoRepository: PhotoRepository
 ) : ViewModel() {
+
+    private val liveDataRealEstateRequest = MutableLiveData<RealEstateRequest>(RealEstateRequest())
 
     val liveDataMinSurface: MutableLiveData<Float?> by lazy {
         MutableLiveData<Float?>()
@@ -49,99 +52,93 @@ class RealEstateViewModel(
         MutableLiveData<Int?>()
     }
 
-    //val listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = realEstateRepository.getRealEstateWithPhotos().asLiveData()
 
-    var listRealEstateWithPhoto = realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
+
+    //var listRealEstateWithPhoto = realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
     var realEstate = MutableLiveData<RealEstate>()
-/*
-    var listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = Transformations.switchMap(liveDatarealmanager){  ->
-        realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
-    }*/
+
+    var listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = Transformations.switchMap(liveDataRealEstateRequest){ realEstateRequest ->
+        realEstateRepository.customQueryOrGetSimpleFlow(
+            realEstateRequest.minSurface,
+            realEstateRequest.maxSurface,
+            realEstateRequest.minPrice,
+            realEstateRequest.maxPrice,
+            realEstateRequest.nearbyStore,
+            realEstateRequest.nearbyPark,
+            realEstateRequest.nearbyRestaurant,
+            realEstateRequest.nearbySchool,
+            realEstateRequest.minDateInLong,
+            realEstateRequest.sold,
+            realEstateRequest.city,
+            realEstateRequest.nbPhoto).asLiveData()
+    }
 
     fun setMinSurface(minSurface: Float?) {
-        this.liveDataMinSurface.setValue(minSurface)
+        liveDataRealEstateRequest.value?.minSurface = minSurface
     }
 
     fun setMaxSurface(maxSurface: Float?) {
-        this.liveDataMaxSurface.value = maxSurface
+        liveDataRealEstateRequest.value?.maxSurface = maxSurface
     }
 
     fun setMinPrice(minPrice: Int?) {
-        this.liveDataMinPrice.value = minPrice
+        liveDataRealEstateRequest.value?.minPrice = minPrice
     }
 
     fun setMaxPrice(maxPrice: Int?) {
-        this.liveDataMaxPrice.value = maxPrice
+        liveDataRealEstateRequest.value?.maxPrice = maxPrice
     }
 
     fun setNearbyStore(nearbyStore: Boolean) {
         if (nearbyStore == false) {
-            this.liveDataNearbyStore.value = null
+            liveDataRealEstateRequest.value?.nearbyStore = null
         } else {
-            this.liveDataNearbyStore.value = nearbyStore
+            liveDataRealEstateRequest.value?.nearbyStore = nearbyStore
         }
     }
 
     fun setNearbyPark(nearbyPark: Boolean) {
         if (nearbyPark == false) {
-            this.liveDataNearbyPark.value = null
+            liveDataRealEstateRequest.value?.nearbyPark = null
         } else {
-            this.liveDataNearbyPark.value = nearbyPark
+            liveDataRealEstateRequest.value?.nearbyPark = nearbyPark
         }
     }
 
     fun setNearbySchool(nearbySchool: Boolean) {
         if (nearbySchool == false) {
-            this.liveDataNearbySchool.value = null
+            liveDataRealEstateRequest.value?.nearbySchool = null
         } else {
-            this.liveDataNearbySchool.value = nearbySchool
+            liveDataRealEstateRequest.value?.nearbySchool = nearbySchool
         }
     }
 
     fun setNearbyRestaurant(nearbyRestaurant: Boolean) {
         if (nearbyRestaurant == false) {
-            this.liveDataNearbyRestaurant.value = null
+            liveDataRealEstateRequest.value?.nearbyRestaurant = null
         } else {
-            this.liveDataNearbyRestaurant.value = nearbyRestaurant
+            liveDataRealEstateRequest.value?.nearbyRestaurant = nearbyRestaurant
         }
     }
 
     fun setMinDate(date: Long?) {
-        this.liveDataMinDateInLong.value = null //TODO
+        liveDataRealEstateRequest.value?.minDateInLong = null//TODO
     }
 
     fun setSold(sold: Boolean?) {
-        if (sold == false) {
-            this.liveDataSold.value = null
-        } else {
-            this.liveDataSold.value = sold
-        }
+        liveDataRealEstateRequest.value?.sold = sold
     }
 
     fun setNbPhoto(nbPhoto: Int?) {
-        this.liveDataNbPhoto.value = nbPhoto
+        liveDataRealEstateRequest.value?.nbPhoto = nbPhoto
     }
 
     fun setCityName(cityName: String?) {
-        this.liveDataCity.value = cityName
+        liveDataRealEstateRequest.value?.city = cityName
     }
 
     fun validationUpdateQuery() {
-        listRealEstateWithPhoto = realEstateRepository.customQueryOrGetSimpleFlow(
-            minSurface = liveDataMinSurface.value,
-            maxSurface = liveDataMaxSurface.value,
-            minPrice = liveDataMinPrice.value,
-            maxPrice = liveDataMaxPrice.value,
-            nearbyStore = liveDataNearbyStore.value,
-            nearbyPark = liveDataNearbyPark.value,
-            nearbySchool = liveDataNearbySchool.value,
-            nearbyRestaurant = liveDataNearbyRestaurant.value,
-            minDateInLong = null,
-            sold = liveDataSold.value,
-            city = liveDataCity.value,
-            nbPhoto = liveDataNbPhoto.value
-        ).asLiveData()
-
+        liveDataRealEstateRequest.value = liveDataRealEstateRequest.value
     }
 
 }

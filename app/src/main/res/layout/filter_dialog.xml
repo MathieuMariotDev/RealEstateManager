@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="horizontal">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center_vertical"
@@ -16,7 +14,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_surface_min"
             style="@style/TextInputLayout"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Surface minimum"
             app:startIconDrawable="@drawable/ic_baseline_aspect_ratio_24">
@@ -29,7 +27,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_surface_max"
             style="@style/TextInputLayout"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
 
             android:hint="Surface maximum"
@@ -43,7 +41,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_city"
             style="@style/TextInputLayout"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Region"
             app:startIconDrawable="@drawable/ic_baseline_add_location_24">
@@ -56,7 +54,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_price_min"
             style="@style/TextInputLayout"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Price minimum"
             app:startIconDrawable="@drawable/ic_baseline_money_24">
@@ -69,7 +67,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_price_max"
             style="@style/TextInputLayout"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Price maximum"
             app:startIconDrawable="@drawable/ic_baseline_money_24">
@@ -81,7 +79,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_photo_min"
             style="@style/TextInputLayout"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Number of photos"
             app:startIconDrawable="@drawable/ic_baseline_photo_24">
@@ -149,12 +147,14 @@
                 android:hint="Sold" />
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Button_validation_filter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|right"
+            android:background="@color/colorPrimary"
+            android:drawableBottom="@drawable/ic_baseline_check_24" />
+
     </LinearLayout>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/Button_validation_filter"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:drawableBottom="@drawable/ic_baseline_check_24"
-        android:layout_gravity="bottom|right"/>
-</FrameLayout>
+
+</LinearLayout>
