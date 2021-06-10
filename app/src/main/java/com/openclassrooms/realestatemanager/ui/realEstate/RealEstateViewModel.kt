@@ -1,18 +1,22 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
 import androidx.lifecycle.*
-import com.openclassrooms.realestatemanager.domain.PhotoRepository
-import com.openclassrooms.realestatemanager.domain.RealEstateRepository
+import com.openclassrooms.realestatemanager.domain.repository.PhotoRepository
+import com.openclassrooms.realestatemanager.domain.repository.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.domain.models.RealEstateRequest
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 
-class RealEstateViewModel(
+class
+RealEstateViewModel(
     private val realEstateRepository: RealEstateRepository,
     private val photoRepository: PhotoRepository
 ) : ViewModel() {
 
+
     private val liveDataRealEstateRequest = MutableLiveData<RealEstateRequest>(RealEstateRequest())
+
+
 
     val liveDataMinSurface: MutableLiveData<Float?> by lazy {
         MutableLiveData<Float?>()
@@ -122,7 +126,7 @@ class RealEstateViewModel(
     }
 
     fun setMinDate(date: Long?) {
-        liveDataRealEstateRequest.value?.minDateInLong = null//TODO
+        liveDataRealEstateRequest.value?.minDateInLong = date
     }
 
     fun setSold(sold: Boolean?) {

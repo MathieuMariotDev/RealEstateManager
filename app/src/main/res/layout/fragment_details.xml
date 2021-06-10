@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.openclassrooms.realestatemanager.ui.details.DetailsFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Media"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_photo_details"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center|left"
+        tools:listitem="@layout/item_photo"
+        android:orientation="horizontal"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textStyle="bold" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView_description"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:hint="Default desicription ////////////////////////////////////////////////////////////////////////////////////////////////////////////////" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_aspect_ratio_24"
+                        android:drawableTint="#000000"
+                        android:hint="Surface"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                    <TextView
+                        android:id="@+id/nb_Surface"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:hint="Surface Descritpion"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_gravity="bottom"
+                        />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_home_24"
+                        android:hint="Number of rooms"
+                        android:drawableTint="#000000"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                    <TextView
+                        android:id="@+id/nb_Rooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:hint="X"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_gravity="bottom"
+                        />
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_bath_24"
+                        android:hint="Number of bathrooms"
+                        android:drawableTint="#000000"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                    <TextView
+                        android:id="@+id/nb_Bathrooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:hint="X"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_gravity="bottom"
+                        />
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_home_24"
+                        android:hint="Number of bedrooms"
+                        android:drawableTint="#000000"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                    <TextView
+                        android:id="@+id/nb_Bedroooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:hint="X"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_gravity="bottom"
+                        />
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_home_24"
+                        android:hint="Location"
+                        android:drawableTint="#000000"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                    <TextView
+                        android:id="@+id/textView_adresse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:layout_marginLeft="22dp"
+                        android:hint="444 Rue victor hugo , 49000 Angers"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_gravity="bottom"
+                        />
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:padding="8dp">
+            <fragment
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:id="@+id/map_fragment"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+        </FrameLayout>
+
+        </LinearLayout>
+</LinearLayout>
+</FrameLayout>

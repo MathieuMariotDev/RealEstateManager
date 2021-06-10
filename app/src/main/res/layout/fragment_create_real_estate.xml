@@ -209,7 +209,6 @@
             style="@style/TextInputLayout"
             android:hint="Your name"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/materialButton3"
             app:layout_constraintStart_toEndOf="@+id/textField_price"
             app:startIconDrawable="@drawable/ic_baseline_people_24">
 

@@ -19,6 +19,11 @@ interface RealEstateDao {
     @Query("SELECT * FROM real_estate_table WHERE id_realestate = :idRealEstate")
     fun getRealEstateWithCursor(vararg idRealEstate: Long): Cursor
 
+    @Query("SELECT * FROM real_estate_table WHERE id_realestate= :idRealEstate")
+    fun getRealEstateWithId(vararg idRealEstate: Long): Flow<RealEstateWithPhoto>
+
+    @Query("SELECT * FROM REAL_ESTATE_TABLE")
+    fun getRealEstate() : Flow<List<RealEstate>>
 
     @Transaction
     @Query("SELECT * FROM real_estate_table")

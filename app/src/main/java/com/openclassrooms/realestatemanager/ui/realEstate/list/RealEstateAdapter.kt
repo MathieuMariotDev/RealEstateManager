@@ -1,15 +1,20 @@
 package com.openclassrooms.realestatemanager.ui.realEstate.list
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ItemRealestateBinding
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
+import com.openclassrooms.realestatemanager.ui.details.DetailsActivity
+import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import java.io.File
 
 
@@ -56,6 +61,11 @@ class RealEstateAdapter :
             binding.textRealEstatePrice.text = item.realEstate.price.toString()
             binding.textRealEstateType.text = item.realEstate.type
 
+            binding.constraintlayoutItemRealestate.setOnClickListener {
+                val intent = Intent(context,DetailsActivity::class.java)
+                intent.putExtra("idRealEstate",item.realEstate.idRealEstate)
+                context.startActivity(intent)
+            }
 
 
             if (item.photos?.isNotEmpty() == true) {  // TODO TRY DON T DUPLICATE CODE

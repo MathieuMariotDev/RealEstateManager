@@ -1,11 +1,10 @@
 package com.openclassrooms.realestatemanager
 
 import android.app.Application
-import android.content.Context
-import com.openclassrooms.realestatemanager.domain.GeocoderRepository
-import com.openclassrooms.realestatemanager.domain.PhotoRepository
+import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
+import com.openclassrooms.realestatemanager.domain.repository.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.database.RealEstateDatabase
-import com.openclassrooms.realestatemanager.domain.RealEstateRepository
+import com.openclassrooms.realestatemanager.domain.repository.RealEstateRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
@@ -28,7 +27,7 @@ class RealEstateApplication : Application() {
         RealEstateDatabase.getDatabase(this,applicationScope)
     }
 
-    val geocoderRepository by lazy { GeocoderRepository(context = instance)}
+    val geocoderRepository by lazy { GeocoderRepository(context = instance) }
 
     val realEstateRepository by lazy { RealEstateRepository(database.RealEstateDao()) }
 

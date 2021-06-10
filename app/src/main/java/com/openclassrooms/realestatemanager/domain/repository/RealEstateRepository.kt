@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.domain
+package com.openclassrooms.realestatemanager.domain.repository
 
 import androidx.annotation.WorkerThread
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -14,9 +14,12 @@ import kotlinx.coroutines.withContext
 class RealEstateRepository(private val realEstateDao: RealEstateDao) {
 
 
-    private var flowRealEstate : Flow<List<RealEstate>> = realEstateDao.getAll() // NEED modification Mutable ?
-    private val mock: Mock = Mock()
     private var floxRealEstateWithPhoto : Flow<List<RealEstateWithPhoto>> = realEstateDao.getRealEstateWithPhoto()
+
+    private var flowListRealEstate = realEstateDao.getRealEstate()
+
+
+    fun getFlowListRealEstate() = flowListRealEstate
 
 /*
     suspend fun addMockRealEstate() : RealEstate {
@@ -48,8 +51,9 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
         realEstateDao.insert(realEstate)
     }
 
-
-    fun getRealEstateWithPhotos() = floxRealEstateWithPhoto
+    fun getRealEstateWithId(id : Long) : Flow<RealEstateWithPhoto>{
+        return realEstateDao.getRealEstateWithId(id)
+    }
 
     fun customQueryOrGetSimpleFlow(
         minSurface: Float? = null,
@@ -94,7 +98,7 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
             queryString += " AND nearby_school = ${convertToInt(nearbySchool)}"
         }
         if (minDateInLong != null) {
-            if (sold == null) {
+            if (sold == false) {
                 queryString += " AND date_entry >= $minDateInLong"
             } else if (sold == true) {
                 queryString += " AND date_sale IS NOT NULL AND date_sale >= $minDateInLong"

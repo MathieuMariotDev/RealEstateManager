@@ -1,43 +1,34 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.domain.GeocoderRepository
+import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
-import com.openclassrooms.realestatemanager.ui.realEstate.list.RealEstateAdapter
+import com.openclassrooms.realestatemanager.ui.details.DetailsFragment
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var mFragmentRealEstate: RealEstateFragment
+    private lateinit var mFragmentDetails: DetailsFragment
     private lateinit var binding: ActivityMainBinding
     private lateinit var mToolbar: Toolbar
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var recyclerView: RecyclerView
-    private val adapter = RealEstateAdapter()
     private var isLargeLayout = false
 
-    private val viewModel: RealEstateViewModel by viewModels(){
-        RealEstateViewModelFactory((application as RealEstateApplication).realEstateRepository,photoRepository = (application as RealEstateApplication).photoRepository,
-        GeocoderRepository(context = applicationContext))
+    private val viewModel: RealEstateViewModel by viewModels() {
+        RealEstateViewModelFactory(
+            (application as RealEstateApplication).realEstateRepository,
+            photoRepository = (application as RealEstateApplication).photoRepository,
+            GeocoderRepository(context = applicationContext)
+        )
     }
 
 
@@ -45,31 +36,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
+        //viewModel = ViewModelProvider(this).get(RealEstateViewModel::class.java)
+
         setContentView(view)
         setupToolbar()
-        setupRecyclerView()
         setNavigationOnClick()
         setOnMenuItemClick()
         isLargeLayout = resources.getBoolean(R.bool.large_layout)
+        showFragments()
+
     }
+
+    fun showFragments() {
+            mFragmentRealEstate = RealEstateFragment()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.frame_layout_real_estate, mFragmentRealEstate)
+                .commit()
+        if(isLargeLayout){
+            mFragmentDetails = DetailsFragment()
+
+            supportFragmentManager.beginTransaction()
+                .add(R.id.frame_layout_details, mFragmentDetails)
+                .commit()
+
+
+        }
+    }
+
 
 
     fun setupToolbar() {
         mToolbar = binding.materialToolbar
         setSupportActionBar(mToolbar)
     }
-
-    fun setupRecyclerView() {
-        recyclerView = binding.recyclerviewRealEstate
-        linearLayoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = linearLayoutManager
-        binding.recyclerviewRealEstate.adapter = adapter
-        viewModel.listRealEstateWithPhoto.observe(this, Observer { listRealEstatesWithPhoto->
-            listRealEstatesWithPhoto?.let { adapter.data=it }
-        })
-
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -91,8 +90,10 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.realestate_add -> {
                     //viewModel.insert()
-                    val createIntent = Intent(this,
-                            CreateRealEstateActivity::class.java)
+                    val createIntent = Intent(
+                        this,
+                        CreateRealEstateActivity::class.java
+                    )
                     startActivity(createIntent)
                     true
                 }
@@ -122,7 +123,9 @@ class MainActivity : AppCompatActivity() {
                 .add(android.R.id.content, newFragment)
                 .addToBackStack(null)
                 .commit()*/
-            FilterDialogFragment().show(fragmentManager,"test")
+            FilterDialogFragment().show(fragmentManager, "test")
         }
     }
 }
+
+

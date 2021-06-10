@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- To request foreground location access -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".RealEstateApplication"
         android:allowBackup="true"
@@ -30,6 +33,8 @@
         </activity>
         <activity android:name=".ui.create.CreateRealEstateActivity"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.details.DetailsActivity"
+            />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -44,6 +49,13 @@
             android:authorities="com.openclassrooms.realestatemanager.domain.provider"
             android:name=".domain.provider.RealEstateContentProvider"
             android:exported="true" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBD5CWCujhWa9sCDQPHrGFnJUfF0MnFtY4"/>
+
+
+
 </application>
+
 
 </manifest>

@@ -13,7 +13,6 @@ import java.net.URLClassLoader.newInstance
 
 class CreateRealEstateActivity : AppCompatActivity() {
 
-    var createRealEstateFragment = CreateRealEstateFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

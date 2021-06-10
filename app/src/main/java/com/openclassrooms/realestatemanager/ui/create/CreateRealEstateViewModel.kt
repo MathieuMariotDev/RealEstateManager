@@ -1,22 +1,18 @@
 package com.openclassrooms.realestatemanager.ui.create
 
 import android.location.Address
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.maps.model.LatLng
 import com.google.maps.model.PlaceType
-import com.google.maps.model.PlacesSearchResponse
 import com.google.maps.model.PlacesSearchResult
-import com.openclassrooms.realestatemanager.domain.GeocoderRepository
-import com.openclassrooms.realestatemanager.domain.PhotoRepository
-import com.openclassrooms.realestatemanager.domain.RealEstateRepository
+import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
+import com.openclassrooms.realestatemanager.domain.repository.PhotoRepository
+import com.openclassrooms.realestatemanager.domain.repository.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
-import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CreateRealEstateViewModel(
@@ -46,7 +42,7 @@ class CreateRealEstateViewModel(
         MutableLiveData<List<Photo>>()
     }
 
-    lateinit var PlacesSearchResult: Array<PlacesSearchResult>
+    var PlacesSearchResult: Array<PlacesSearchResult>? = null
 
     val listPlaceType = listOf<com.google.maps.model.PlaceType>(
         com.google.maps.model.PlaceType.RESTAURANT,
@@ -82,7 +78,8 @@ class CreateRealEstateViewModel(
         for (type in listPlaceType) {
             PlacesSearchResult =
                 (geocoderRepository.getNearbyPoi(location = location, type).results)
-            for (placeSearchResult in PlacesSearchResult) {
+            if(PlacesSearchResult !=null){
+            for (placeSearchResult in PlacesSearchResult!!) {
                 for (placeType in placeSearchResult.types) {
                     when (placeType) {
                         PlaceType.RESTAURANT.toString() -> nearbyPoi.nearbyRestaurant = true
@@ -94,16 +91,17 @@ class CreateRealEstateViewModel(
                     }
                 }
             }
+            }
         }
         liveDataNearbyPOI.postValue(nearbyPoi)
     }
 
 
     data class NearbyPOI(
-        var nearbySchool: Boolean = false,
-        var nearbyRestaurant: Boolean = false,
-        var nearbyPark: Boolean = false,
-        var nearbyStore: Boolean = false
+        var nearbySchool: Boolean? = null,
+        var nearbyRestaurant: Boolean? = null,
+        var nearbyPark: Boolean? = null,
+        var nearbyStore: Boolean? = null
     )
 
     fun setPhoto(listPhoto: List<Photo>){

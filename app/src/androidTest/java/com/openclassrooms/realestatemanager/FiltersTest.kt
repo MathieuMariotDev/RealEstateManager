@@ -6,21 +6,19 @@ import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.openclassrooms.realestatemanager.domain.RealEstateRepository
+import com.openclassrooms.realestatemanager.domain.repository.RealEstateRepository
 import com.openclassrooms.realestatemanager.domain.database.RealEstateDatabase
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import com.openclassrooms.realestatemanager.utils.Utils
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.random.Random
 
@@ -31,8 +29,6 @@ class FiltersTest {
     var idRealEstate: Long = 0
     lateinit var liveDataListRealEstate: LiveData<List<RealEstateWithPhoto>>
     lateinit var data: List<RealEstateWithPhoto>
-    lateinit var flowRealEstate: Flow<List<RealEstate>>
-    val dateFormat2 = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val dateFormat = SimpleDateFormat("dd/MM/yyyy")
     val date1: Date = GregorianCalendar(2021, Calendar.MAY, 10).time
     val date2: Date = GregorianCalendar(2021, Calendar.MAY, 20).time
@@ -42,7 +38,7 @@ class FiltersTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
     lateinit var realEstateRepo : RealEstateRepository
 
-    fun test(date: Date): String {
+    fun dateFormat(date: Date): String {
         return dateFormat.format(date)
     }
 
@@ -134,14 +130,14 @@ class FiltersTest {
             null,
             null,
             null,
-            Utils.getTodayDateInLong(test(date2)),
+            Utils.getTodayDateInLong(dateFormat(date2)),
             null
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
         assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             //assertTrue(realEstate.dateEntry <= Utils.getTodayDateInLong(test(date2)))
-            assertTrue(realEstate.realEstate.dateEntry >= Utils.getTodayDateInLong(test(date1)))
+            assertTrue(realEstate.realEstate.dateEntry >= Utils.getTodayDateInLong(dateFormat(date1)))
         }
     }
 
@@ -156,14 +152,14 @@ class FiltersTest {
             null,
             null,
             null,
-            minDateInLong = Utils.getTodayDateInLong(test(date3)),
+            minDateInLong = Utils.getTodayDateInLong(dateFormat(date3)),
             sold = true
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
         assertTrue(data.isNotEmpty())
         for (realEstate in data) {
             assertTrue(realEstate.realEstate.dateSale != null)
-            assertTrue(realEstate.realEstate.dateSale!! >= Utils.getTodayDateInLong(test(date1)))
+            assertTrue(realEstate.realEstate.dateSale!! >= Utils.getTodayDateInLong(dateFormat(date1)))
         }
     }
 
@@ -225,7 +221,7 @@ class FiltersTest {
             null,
             true,
             null,
-            minDateInLong = Utils.getTodayDateInLong(test(date1)),
+            minDateInLong = Utils.getTodayDateInLong(dateFormat(date1)),
             sold = null,
             "Washington",
             3
@@ -235,7 +231,7 @@ class FiltersTest {
         for(realEstate in data){
             assertTrue(realEstate.photos?.size!! >= 3)
             assertTrue(realEstate.realEstate.address.contains("Washington"))
-            assertTrue(realEstate.realEstate.dateEntry >= Utils.getTodayDateInLong(test(date1)))
+            assertTrue(realEstate.realEstate.dateEntry >= Utils.getTodayDateInLong(dateFormat(date1)))
             assertTrue(realEstate.realEstate.nearbyRestaurant == true)
             assertTrue(realEstate.realEstate.price >= 100000)
             assertTrue(realEstate.realEstate.price <= 200000)
@@ -258,8 +254,8 @@ class FiltersTest {
                 description = "Proche de ST Emilion, Superbe propriété en pierre composée : d'une Girondine, 385 m2 hab., décorée avec goût, les volumes des pièces sont très spacieux, tournés vers le parc de 1.3 Hectares parfaitement entretenu. Une entrée vous mènera à un salon avec grande cheminée, prolongé par un jardin d'hiver. Au centre de la bâtisse, une cuisine équipée est encadrée par des arches en pierre, le coin repas offre une approche moderne , une cheminée avec insert à bois la complète. Une buanderie, une salle de bains, et wc au rez-de-chaussée.",
                 address = "600 Maryland Ave SW, Long Island, DC 20002, États-Unis",
                 propertyStatus = false,
-                dateEntry = Utils.getTodayDateInLong(test(date2)),
-                dateSale = Utils.getTodayDateInLong(test(date3)),
+                dateEntry = Utils.getTodayDateInLong(dateFormat(date2)),
+                dateSale = Utils.getTodayDateInLong(dateFormat(date3)),
                 realEstateAgent = null,
                 latitude = null,
                 longitude = null,
@@ -289,8 +285,8 @@ class FiltersTest {
                 description = "Proche de ST Emilion, Superbe propriété en pierre composée : d'une Girondine, 385 m2 hab., décorée avec goût, les volumes des pièces sont très spacieux, tournés vers le parc de 1.3 Hectares parfaitement entretenu. Une entrée vous mènera à un salon avec grande cheminée, prolongé par un jardin d'hiver. Au centre de la bâtisse, une cuisine équipée est encadrée par des arches en pierre, le coin repas offre une approche moderne , une cheminée avec insert à bois la complète. Une buanderie, une salle de bains, et wc au rez-de-chaussée.",
                 address = "600 Maryland Ave SW, Washington, DC 20002, États-Unis",
                 propertyStatus = false,
-                dateEntry = Utils.getTodayDateInLong(test(date1)),
-                dateSale = Utils.getTodayDateInLong(test(date2)),
+                dateEntry = Utils.getTodayDateInLong(dateFormat(date1)),
+                dateSale = Utils.getTodayDateInLong(dateFormat(date2)),
                 realEstateAgent = null,
                 latitude = null,
                 longitude = null,
@@ -319,7 +315,7 @@ class FiltersTest {
                 description = "Proche de ST Emilion, Superbe propriété en pierre composée : d'une Girondine, 385 m2 hab., décorée avec goût, les volumes des pièces sont très spacieux, tournés vers le parc de 1.3 Hectares parfaitement entretenu. Une entrée vous mènera à un salon avec grande cheminée, prolongé par un jardin d'hiver. Au centre de la bâtisse, une cuisine équipée est encadrée par des arches en pierre, le coin repas offre une approche moderne , une cheminée avec insert à bois la complète. Une buanderie, une salle de bains, et wc au rez-de-chaussée.",
                 address = "600 Maryland Ave SW, Long Island, DC 20002, États-Unis",
                 propertyStatus = false,
-                dateEntry = Utils.getTodayDateInLong(test(date3)),
+                dateEntry = Utils.getTodayDateInLong(dateFormat(date3)),
                 dateSale = null,
                 realEstateAgent = null,
                 latitude = null,

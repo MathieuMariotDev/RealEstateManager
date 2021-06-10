@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.domain
+package com.openclassrooms.realestatemanager.domain.repository
 
 import android.content.Context
 import android.location.Address

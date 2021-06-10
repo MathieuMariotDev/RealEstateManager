@@ -7,6 +7,8 @@ import com.openclassrooms.realestatemanager.domain.dao.PhotoDao
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
+import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.Constants.DATABASE_NAME
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +35,7 @@ abstract class RealEstateDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                         context.applicationContext,
                         RealEstateDatabase::class.java,
-                "real_estate_database"
+                        DATABASE_NAME
                 )
                         .fallbackToDestructiveMigration() // Wipes and rebuilds instead of migrating if no Migration object.
                         .addCallback(RealEstateDatabaseCallback(scope))

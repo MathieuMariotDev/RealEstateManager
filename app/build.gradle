@@ -57,6 +57,9 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.3.0'// For Material Design
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
 
     /* FOR TEST  */
@@ -107,14 +110,22 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    def fragment_version = "1.3.3"
+    def fragment_version = "1.3.4"
     // Kotlin fragment
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
+
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+    // Dependency to include Maps SDK for Android
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    // For location
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
     // For NearbySeach
     implementation 'com.google.maps:google-maps-services:0.18.1'
-    implementation 'org.slf4j:slf4j-simple:1.7.25'
-    //*
-    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+
+    // For developers using AndroidX in their application
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+
 }
 

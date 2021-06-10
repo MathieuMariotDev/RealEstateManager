@@ -12,10 +12,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.openclassrooms.realestatemanager.databinding.FilterDialogBinding
+import java.util.*
 
 class FilterDialogFragment : DialogFragment(){
 
-
+    var dateSelected : Long? = null
     lateinit var viewModel  : RealEstateViewModel
     lateinit var filterBinding : FilterDialogBinding
     private val datePicker = MaterialDatePicker.Builder.datePicker()
@@ -57,6 +58,9 @@ class FilterDialogFragment : DialogFragment(){
         filterBinding.ButtonDatePicker.setOnClickListener {
             val fragmentManager = parentFragmentManager
             datePicker.show(fragmentManager,"DatePicker")
+            datePicker.addOnPositiveButtonClickListener { selection: Long->
+                dateSelected = Date(selection).time
+            }
         }
     }
 
@@ -79,6 +83,8 @@ class FilterDialogFragment : DialogFragment(){
             viewModel.setNearbySchool(filterBinding.checkNearbySchool.isChecked)
             viewModel.setNearbyRestaurant(filterBinding.checkNearbyRestaurant.isChecked)
             viewModel.setSold(filterBinding.checkSold.isChecked)
+            viewModel.setNbPhoto(filterBinding.textFieldPhotoMin.editText?.text.toString().toIntOrNull())
+            viewModel.setMinDate(dateSelected)
             viewModel.validationUpdateQuery()
             dismiss()
         }

@@ -155,12 +155,15 @@ class CreateRealEstateFragment : Fragment() {
                 if (BuildConfig.DEBUG && mock) {
                     //viewModel.insertMockPhoto()
                 } else {
-                    val photo = Photo(
-                        path = listPhoto[0].path,
-                        label = listPhoto[0].label,
-                        idProperty = livedata
-                    )
-                    viewModel.insertPhoto(photo)
+                    for (photoItem in listPhoto){
+                        val photo = Photo(
+                            path = photoItem.path,
+                            label = photoItem.label,
+                            idProperty = livedata
+                        )
+                        viewModel.insertPhoto(photo)
+                    }
+
                 }
             })
         }
@@ -200,7 +203,7 @@ class CreateRealEstateFragment : Fragment() {
         }
 
     private fun createImageFile(): File {
-        val timeStamp = SimpleDateFormat.getDateTimeInstance().format(Date()).trim()
+        val timeStamp = SimpleDateFormat.getDateTimeInstance().format(Date()).replace(":", "").replace("?", "")
         val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
         return File.createTempFile(
@@ -249,7 +252,7 @@ class CreateRealEstateFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
             .setView(editText)
-            .setPositiveButton(requireContext().resources.getString(R.string.validate)){ dialog,which ->
+            .setPositiveButton(requireContext().resources.getString(R.string.validate)){ dialog, _ ->
                 if(!editText.text.isNullOrEmpty()){
                     photo.label = editText.text.toString()
                     listPhoto.add(photo)
@@ -274,7 +277,7 @@ class CreateRealEstateFragment : Fragment() {
 
     private fun setupRecyclerView() {
         recyclerView = createBinding.recyclerviewPhoto
-        linearLayoutManager = LinearLayoutManager(requireContext())
+        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
         recyclerView.layoutManager = linearLayoutManager
         createBinding.recyclerviewPhoto.adapter = adapter
         updateRecycler()
