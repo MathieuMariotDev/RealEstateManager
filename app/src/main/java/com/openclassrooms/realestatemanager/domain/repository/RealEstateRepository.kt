@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.domain.repository
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
@@ -18,8 +20,21 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
 
     private var flowListRealEstate = realEstateDao.getRealEstate()
 
+    private val liveDataIdRealEstate: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>()
+    }
 
     fun getFlowListRealEstate() = flowListRealEstate
+
+
+    fun setIdRealEstate(id : Long) {
+        liveDataIdRealEstate.value = id
+    }
+
+    fun getIdRealEstate() = liveDataIdRealEstate
+
+
+
 
 /*
     suspend fun addMockRealEstate() : RealEstate {

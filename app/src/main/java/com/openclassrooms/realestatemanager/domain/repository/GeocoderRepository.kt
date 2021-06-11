@@ -25,7 +25,11 @@ class GeocoderRepository(private val context: Context){
 
     fun getLatLng(textAddress : String) : MutableList<Address>? {
         geocoder = Geocoder(context)
-        return geocoder.getFromLocationName(textAddress,1)
+        return try{
+            geocoder.getFromLocationName(textAddress,1)
+        }catch (error : IOException){
+            null
+        }
     }
 
 

@@ -35,6 +35,8 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.details.DetailsActivity"
             />
+        <activity android:name=".ui.update.UpdateActivity"
+            />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

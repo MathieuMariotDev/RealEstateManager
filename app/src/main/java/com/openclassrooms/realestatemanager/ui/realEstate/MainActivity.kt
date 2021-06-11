@@ -7,6 +7,8 @@ import android.view.MenuInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
@@ -14,6 +16,8 @@ import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
 import com.openclassrooms.realestatemanager.ui.details.DetailsFragment
+import com.openclassrooms.realestatemanager.ui.update.UpdateActivity
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mToolbar: Toolbar
     private var isLargeLayout = false
+    private var idForUpdateIntent : Long? = null
+
 
     private val viewModel: RealEstateViewModel by viewModels() {
         RealEstateViewModelFactory(
@@ -43,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         setNavigationOnClick()
         setOnMenuItemClick()
         isLargeLayout = resources.getBoolean(R.bool.large_layout)
+        if(isLargeLayout){
+            idObserver()
+        }
         showFragments()
 
     }
@@ -52,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .add(R.id.frame_layout_real_estate, mFragmentRealEstate)
                 .commit()
-        if(isLargeLayout){
+        /*if(isLargeLayout){
             mFragmentDetails = DetailsFragment()
 
             supportFragmentManager.beginTransaction()
@@ -60,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 .commit()
 
 
-        }
+        }*/
     }
 
 
@@ -73,6 +82,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.top_app_bar, menu)
+        if(!isLargeLayout){
+            menu?.findItem(R.id.realestate_update)?.isVisible = false
+        }
         return true;
     }
 
@@ -101,10 +113,26 @@ class MainActivity : AppCompatActivity() {
                     showDialog()
                     true
                 }
+                R.id.realestate_update -> {
+
+                    if(idForUpdateIntent != null){
+                        val updateIntent = Intent(this,UpdateActivity::class.java)
+                        updateIntent.putExtra("idRealEstate",idForUpdateIntent)
+                        startActivity(updateIntent)
+                    }
+                    true
+                }
                 else -> false
             }
         }
     }
+
+    fun idObserver(){
+        viewModel.liveDataIdRealEstate.observe(this, Observer {
+            idForUpdateIntent = it
+        })
+    }
+
 
     fun showDialog() {
         val fragmentManager = supportFragmentManager

@@ -27,7 +27,7 @@ class CreateRealEstateViewModel(
     }
 
     val liveDataAddress by lazy {
-        MutableLiveData<List<Address>>()
+        MutableLiveData<List<Address>?>()
     }
 
     val liveDataNearbyPOI by lazy {
@@ -39,7 +39,7 @@ class CreateRealEstateViewModel(
     }
 
     val liveDataListPhoto by lazy {
-        MutableLiveData<List<Photo>>()
+        MutableLiveData<ArrayList<Photo>>()
     }
 
     var PlacesSearchResult: Array<PlacesSearchResult>? = null
@@ -72,9 +72,10 @@ class CreateRealEstateViewModel(
         }
     }
 
-    fun getNearbyPoi(location: LatLng) {
+    fun getNearbyPoi(location: LatLng? = null) {
         //viewModelScope.launch(Dispatchers.IO) {
         val nearbyPoi = NearbyPOI()
+        if(location != null){
         for (type in listPlaceType) {
             PlacesSearchResult =
                 (geocoderRepository.getNearbyPoi(location = location, type).results)
@@ -93,6 +94,7 @@ class CreateRealEstateViewModel(
             }
             }
         }
+        }
         liveDataNearbyPOI.postValue(nearbyPoi)
     }
 
@@ -104,7 +106,7 @@ class CreateRealEstateViewModel(
         var nearbyStore: Boolean? = null
     )
 
-    fun setPhoto(listPhoto: List<Photo>){
+    fun setPhoto(listPhoto: ArrayList<Photo>){
         liveDataListPhoto.value = listPhoto
     }
 

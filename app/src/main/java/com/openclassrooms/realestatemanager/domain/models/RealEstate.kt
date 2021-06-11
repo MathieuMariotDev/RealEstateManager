@@ -43,10 +43,10 @@ data class RealEstate(
         var dateEntry: Long,
 
         @ColumnInfo(name = "date_sale")
-        var dateSale: Long?,
+        var dateSold: Long?,
 
         @ColumnInfo(name = "real_estate_agent")
-        var realEstateAgent: String?,
+        var realEstateAgent: String,
 
         @ColumnInfo(name = "latitude")
         var latitude: Float?,

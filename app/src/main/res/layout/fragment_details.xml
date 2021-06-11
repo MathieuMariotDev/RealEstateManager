@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.openclassrooms.realestatemanager.ui.details.DetailsFragment">
-<LinearLayout
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -38,7 +39,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView_description"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:hint="Default desicription ////////////////////////////////////////////////////////////////////////////////////////////////////////////////" />
 
         <LinearLayout

@@ -158,8 +158,8 @@ class FiltersTest {
         data = liveDataListRealEstate.getOrAwaitValue()
         assertTrue(data.isNotEmpty())
         for (realEstate in data) {
-            assertTrue(realEstate.realEstate.dateSale != null)
-            assertTrue(realEstate.realEstate.dateSale!! >= Utils.getTodayDateInLong(dateFormat(date1)))
+            assertTrue(realEstate.realEstate.dateSold != null)
+            assertTrue(realEstate.realEstate.dateSold!! >= Utils.getTodayDateInLong(dateFormat(date1)))
         }
     }
 
@@ -255,8 +255,8 @@ class FiltersTest {
                 address = "600 Maryland Ave SW, Long Island, DC 20002, États-Unis",
                 propertyStatus = false,
                 dateEntry = Utils.getTodayDateInLong(dateFormat(date2)),
-                dateSale = Utils.getTodayDateInLong(dateFormat(date3)),
-                realEstateAgent = null,
+                dateSold = Utils.getTodayDateInLong(dateFormat(date3)),
+                realEstateAgent = "Math",
                 latitude = null,
                 longitude = null,
                 nearbyStore = true,
@@ -286,8 +286,8 @@ class FiltersTest {
                 address = "600 Maryland Ave SW, Washington, DC 20002, États-Unis",
                 propertyStatus = false,
                 dateEntry = Utils.getTodayDateInLong(dateFormat(date1)),
-                dateSale = Utils.getTodayDateInLong(dateFormat(date2)),
-                realEstateAgent = null,
+                dateSold = Utils.getTodayDateInLong(dateFormat(date2)),
+                realEstateAgent = "Math",
                 latitude = null,
                 longitude = null,
                 nearbyStore = false,
@@ -316,8 +316,8 @@ class FiltersTest {
                 address = "600 Maryland Ave SW, Long Island, DC 20002, États-Unis",
                 propertyStatus = false,
                 dateEntry = Utils.getTodayDateInLong(dateFormat(date3)),
-                dateSale = null,
-                realEstateAgent = null,
+                dateSold = null,
+                realEstateAgent = "Math",
                 latitude = null,
                 longitude = null,
                 nearbyStore = false,

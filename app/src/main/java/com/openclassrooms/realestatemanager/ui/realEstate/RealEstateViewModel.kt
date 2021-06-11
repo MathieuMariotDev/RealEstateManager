@@ -16,6 +16,7 @@ RealEstateViewModel(
 
     private val liveDataRealEstateRequest = MutableLiveData<RealEstateRequest>(RealEstateRequest())
 
+    val liveDataIdRealEstate : LiveData<Long> = realEstateRepository.getIdRealEstate()
 
 
     val liveDataMinSurface: MutableLiveData<Float?> by lazy {

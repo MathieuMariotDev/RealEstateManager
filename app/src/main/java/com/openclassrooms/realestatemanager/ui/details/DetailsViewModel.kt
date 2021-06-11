@@ -19,6 +19,7 @@ class DetailsViewModel(private val realEstateRepository: RealEstateRepository) :
 
     fun setId(id : Long){
         liveDataIdRealEstate.value = id
+        realEstateRepository.setIdRealEstate(id)  // For modification
         liveDataRealEstate = Transformations.switchMap(liveDataIdRealEstate){ it ->
             realEstateRepository.getRealEstateWithId(it).asLiveData()
         }
