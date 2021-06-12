@@ -69,17 +69,17 @@ class RealEstateAdapter :
             binding.textRealEstateType.text = item.realEstate.type
 
             binding.constraintlayoutItemRealestate.setOnClickListener {
-                /*val intent = Intent(context,DetailsActivity::class.java)
+                val intent = Intent(context,DetailsActivity::class.java)
                 intent.putExtra("idRealEstate",item.realEstate.idRealEstate)
-                context.startActivity(intent)*/
+                context.startActivity(intent)
                 //if(isLargeLayout){
-                val bundle = Bundle()
+                /*val bundle = Bundle()
                 bundle.putLong("idRealEstate",item.realEstate.idRealEstate )
                     mFragmentDetails = DetailsFragment()
                     context = context as MainActivity
                     mainActivity.supportFragmentManager.beginTransaction()
                         .add(R.id.frame_layout_details, DetailsFragment::class.java,bundle)
-                        .commit()
+                        .commit()*/
 
 
                 //}
