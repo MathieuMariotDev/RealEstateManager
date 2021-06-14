@@ -28,7 +28,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/frame_layout_details"
+            android:id="@+id/frame_layout_details_dual"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="50" />

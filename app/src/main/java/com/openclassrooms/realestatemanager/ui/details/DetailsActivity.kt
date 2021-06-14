@@ -1,23 +1,94 @@
 package com.openclassrooms.realestatemanager.ui.details
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.RealEstateApplication
+import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
+import com.openclassrooms.realestatemanager.databinding.ActivityDetailsBinding
+import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
+import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateFragment
+import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
+import com.openclassrooms.realestatemanager.ui.update.UpdateActivity
 
 class DetailsActivity : AppCompatActivity(){
-
+    private lateinit var mToolbar: Toolbar
+    private lateinit var detailbinding: ActivityDetailsBinding
+    private val detailsViewModel: DetailsViewModel by viewModels() {
+        RealEstateViewModelFactory(
+            (application as RealEstateApplication).realEstateRepository,
+            photoRepository = (application as RealEstateApplication).photoRepository,
+            GeocoderRepository(context = applicationContext)
+        )
+    }
+    private var idForUpdateIntent : Long? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
-
+        detailbinding = ActivityDetailsBinding.inflate(layoutInflater)
+        val view = detailbinding.root
+        setContentView(view)
+        setupToolbar()
+        idObserver()
+        setOnMenuItemClick()
         if (savedInstanceState == null) {
             val bundle = Bundle()
             bundle.putLong("idRealEstate", intent.getLongExtra("idRealEstate",0))
             supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container_details, DetailsFragment::class.java,bundle)
+                .replace(R.id.fragment_container_details, DetailsFragment::class.java,bundle)
                 .commit()
         }
     }
 
+    private fun setupToolbar() {
+        mToolbar = detailbinding.materialToolbar
+        setSupportActionBar(mToolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.top_app_bar, menu)
+        menu?.findItem(R.id.realestate_filters)?.isVisible = false
+        return true
+    }
+
+
+    private fun setOnMenuItemClick() {
+        mToolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.realestate_add -> {
+                    //viewModel.insert()
+                    val createIntent = Intent(
+                        this,
+                        CreateRealEstateActivity::class.java
+                    )
+                    startActivity(createIntent)
+                    true
+                }
+                R.id.realestate_update -> {
+                    if(idForUpdateIntent != null){
+                        val updateIntent = Intent(this, UpdateActivity::class.java)
+                        updateIntent.putExtra("idRealEstate",idForUpdateIntent)
+                        startActivity(updateIntent)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun idObserver(){
+        detailsViewModel.liveDataIdRealEstate.observe(this, Observer {
+            idForUpdateIntent = it
+        })
+    }
 }

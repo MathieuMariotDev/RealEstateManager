@@ -8,6 +8,7 @@ import com.openclassrooms.realestatemanager.domain.repository.RealEstateReposito
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateViewModel
 import com.openclassrooms.realestatemanager.ui.details.DetailsViewModel
 import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
+import com.openclassrooms.realestatemanager.ui.update.UpdateViewModel
 import java.lang.IllegalArgumentException
 
 class RealEstateViewModelFactory(private val realEstateRepository: RealEstateRepository, private val photoRepository: PhotoRepository, private val geocoderRepository: GeocoderRepository) : ViewModelProvider.Factory{
@@ -24,6 +25,10 @@ class RealEstateViewModelFactory(private val realEstateRepository: RealEstateRep
         else if(modelClass.isAssignableFrom(DetailsViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")
             return DetailsViewModel(realEstateRepository) as T
+        }
+        else if(modelClass.isAssignableFrom(UpdateViewModel::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return UpdateViewModel(realEstateRepository,photoRepository,geocoderRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

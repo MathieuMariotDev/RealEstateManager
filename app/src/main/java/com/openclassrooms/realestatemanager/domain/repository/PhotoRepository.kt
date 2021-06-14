@@ -19,14 +19,8 @@ class PhotoRepository(private val photoDao: PhotoDao) {
         photoDao.insert(photo)
     }
 
-/*
-    fun addMockPhoto(idProperty: Long): Photo {
-        val photo = Photo(
-                path = mock.getRandomPhoto(),
-                label = null,
-                idProperty = idProperty)
-        return photo;
-    }*/
-
+    suspend fun deletePhoto(photo: Photo){
+        photoDao.delete(photo)
+    }
 
 }

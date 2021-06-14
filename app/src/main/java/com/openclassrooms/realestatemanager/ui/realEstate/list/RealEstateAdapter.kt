@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
+import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ItemRealestateBinding
+import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
 import com.openclassrooms.realestatemanager.ui.details.DetailsActivity
 import com.openclassrooms.realestatemanager.ui.details.DetailsFragment
@@ -69,20 +71,19 @@ class RealEstateAdapter :
             binding.textRealEstateType.text = item.realEstate.type
 
             binding.constraintlayoutItemRealestate.setOnClickListener {
-                val intent = Intent(context,DetailsActivity::class.java)
-                intent.putExtra("idRealEstate",item.realEstate.idRealEstate)
-                context.startActivity(intent)
-                //if(isLargeLayout){
-                /*val bundle = Bundle()
+                if(context.resources.getBoolean(R.bool.large_layout)){
+                val bundle = Bundle()
                 bundle.putLong("idRealEstate",item.realEstate.idRealEstate )
                     mFragmentDetails = DetailsFragment()
                     context = context as MainActivity
                     mainActivity.supportFragmentManager.beginTransaction()
-                        .add(R.id.frame_layout_details, DetailsFragment::class.java,bundle)
-                        .commit()*/
-
-
-                //}
+                        .add(R.id.frame_layout_details_dual, DetailsFragment::class.java,bundle)
+                        .commit()
+                }else{
+                    val intent = Intent(context,DetailsActivity::class.java)
+                    intent.putExtra("idRealEstate",item.realEstate.idRealEstate)
+                    context.startActivity(intent)
+                }
             }
 
 

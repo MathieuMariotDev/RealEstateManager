@@ -19,7 +19,7 @@ data class Photo(
 
         /*      FOREIGNKEY          */
         @ColumnInfo(name = "id_property",index = true)
-        val idProperty:Long=0,
+        var idProperty:Long=0,
 
         @ColumnInfo(name = "label")
         var label:String="NoLabel")

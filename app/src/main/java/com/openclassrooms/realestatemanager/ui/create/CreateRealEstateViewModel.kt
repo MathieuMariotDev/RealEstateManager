@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.maps.model.LatLng
 import com.google.maps.model.PlaceType
 import com.google.maps.model.PlacesSearchResult
+import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
 import com.openclassrooms.realestatemanager.domain.repository.PhotoRepository
 import com.openclassrooms.realestatemanager.domain.repository.RealEstateRepository
@@ -97,14 +98,6 @@ class CreateRealEstateViewModel(
         }
         liveDataNearbyPOI.postValue(nearbyPoi)
     }
-
-
-    data class NearbyPOI(
-        var nearbySchool: Boolean? = null,
-        var nearbyRestaurant: Boolean? = null,
-        var nearbyPark: Boolean? = null,
-        var nearbyStore: Boolean? = null
-    )
 
     fun setPhoto(listPhoto: ArrayList<Photo>){
         liveDataListPhoto.value = listPhoto

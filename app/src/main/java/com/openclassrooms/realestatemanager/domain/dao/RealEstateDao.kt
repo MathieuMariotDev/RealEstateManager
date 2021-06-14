@@ -46,6 +46,9 @@ interface RealEstateDao {
     @Query("DELETE FROM REAL_ESTATE_TABLE")
     suspend fun allDelete()
 
+    @Update
+    suspend fun updateRealEstate(vararg realEstate: RealEstate)
+
     @RawQuery(observedEntities = [RealEstate::class])
     fun getRealEstateWithQuery(query: SupportSQLiteQuery): Flow<List<RealEstateWithPhoto>>
 

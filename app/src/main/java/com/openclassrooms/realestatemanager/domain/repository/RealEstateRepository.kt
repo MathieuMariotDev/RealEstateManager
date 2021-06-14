@@ -33,33 +33,7 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
 
     fun getIdRealEstate() = liveDataIdRealEstate
 
-
-
-
-/*
-    suspend fun addMockRealEstate() : RealEstate {
-            val realEstate = RealEstate(
-                    type = mock.getRandomPropertyType(),
-                    price = mock.getRandomPrice(),
-                    surface = mock.getRandomSurface(),
-                    nbRooms = mock.getRandomNbRooms(),
-                    nbBathrooms = mock.getRandomNbRoom(),
-                    nbBedrooms = mock.getRandomNbRoom(),
-                    description = mock.getDefaultDescription(),
-                    address = mock.getRandomAddress(),
-                    propertyStatus = false,
-                    dateEntry = null,
-                    dateSale = null,
-                    realEstateAgent = null,
-                    latitude = null,
-                    longitude = null,
-                    nearbyStore = mock.getRandomNearbyPOI(),
-                    nearbyPark = mock.getRandomNearbyPOI(),
-                    nearbyRestaurant = mock.getRandomNearbyPOI(),
-                    nearbySchool = mock.getRandomNearbyPOI()
-                    )
-        return realEstate
-    }*/
+    suspend fun updateRealEstate(realEstate: RealEstate) = realEstateDao.updateRealEstate(realEstate)
 
     @WorkerThread
     suspend fun insertRealEstate(realEstate: RealEstate) = withContext(Dispatchers.IO){  //Used for take the value return(id autogenrate) by the insert method

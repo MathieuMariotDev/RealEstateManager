@@ -12,7 +12,7 @@ class DetailsViewModel(private val realEstateRepository: RealEstateRepository) :
     var livedataListRealEstate  : LiveData<List<RealEstate>> = realEstateRepository.getFlowListRealEstate().asLiveData()
 
 
-    private val liveDataIdRealEstate: MutableLiveData<Long> by lazy {
+    val liveDataIdRealEstate: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
     }
 

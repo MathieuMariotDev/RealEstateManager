@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/create_container"
+    android:id="@+id/scroll_update"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui">
+    tools:context=".ui.update.UpdateFragment"
+    android:fillViewport="true"
+    >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView3"
@@ -152,7 +154,6 @@
             android:id="@+id/materialCardView2"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:layout_constraintBottom_toTopOf="@+id/textField_realEstateAgent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textField_description">
@@ -180,25 +181,28 @@
                 android:layout_gravity="center|right|bottom"
                 android:background="@color/colorPrimary"
                 android:drawableBottom="@drawable/ic_baseline_folder_upload_24" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_photo"
+                android:id="@+id/recyclerview_photo_update"
                 android:layout_width="300dp"
                 android:layout_height="170dp"
                 android:layout_gravity="bottom|left"
-                tools:listitem="@layout/item_photo"
                 android:orientation="horizontal"
-                />
+                tools:listitem="@layout/item_update_photo" />
+
         </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_price"
+            style="@style/TextInputLayout"
             android:layout_width="162dp"
             android:layout_height="wrap_content"
-            style="@style/TextInputLayout"
             android:hint="Edit text type"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:startIconDrawable="@drawable/ic_baseline_money_24"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/Button_date_picker"
+            app:startIconDrawable="@drawable/ic_baseline_money_24">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -206,34 +210,29 @@
                 tools:layout_editor_absoluteY="687dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField_realEstateAgent"
-            android:layout_width="162dp"
-            android:layout_height="wrap_content"
-            style="@style/TextInputLayout"
-            android:hint="Your name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textField_price"
-            app:startIconDrawable="@drawable/ic_baseline_people_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="133dp"
-                tools:layout_editor_absoluteY="666dp" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/Button_add"
+            android:id="@+id/Button_update"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@color/colorPrimary"
             android:drawableBottom="@drawable/ic_baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Button_date_picker" />
 
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Button_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_baseline_calendar_24"
+            android:layout_margin="8dp"
+            android:text="Select date of sale"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</ScrollView>

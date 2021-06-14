@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,6 +48,7 @@ import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateFragment
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateViewModel
 import com.openclassrooms.realestatemanager.ui.create.PhotoAdapter
+import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.openclassrooms.realestatemanager.utils.PermissionsUtils
@@ -63,11 +65,11 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var bitmapMarker : Bitmap
     //private lateinit var mToolbar: Toolbar
-    private val viewModelDetails: DetailsViewModel by viewModels {
+    private val viewModelDetails : DetailsViewModel by activityViewModels() {
         RealEstateViewModelFactory(
-            (activity?.application as RealEstateApplication).realEstateRepository,
-            photoRepository = (activity?.application as RealEstateApplication).photoRepository,
-            (activity?.application as RealEstateApplication).geocoderRepository
+            (requireActivity().application as RealEstateApplication).realEstateRepository,
+            photoRepository = (requireActivity().application as RealEstateApplication).photoRepository,
+            (requireActivity().application as RealEstateApplication).geocoderRepository
         )
     }
 
@@ -160,7 +162,7 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         detailsBinding = FragmentDetailsBinding.inflate(inflater, container, false)
         setupRecyclerView()
         updateUi()
