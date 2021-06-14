@@ -53,7 +53,11 @@ class UpdateViewModel(
             photoRepository.insertPhoto(photo)
         }
     }
-
+    fun updatePhoto(photo: Photo) {
+        viewModelScope.launch {
+            photoRepository.updatePhoto(photo)
+        }
+    }
     fun getLatLng(textAddress: String) {
         viewModelScope.launch(Dispatchers.IO) {
             liveDataAddress.postValue(geocoderRepository.getLatLng(textAddress))

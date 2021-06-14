@@ -116,12 +116,38 @@ class UpdateFragment : Fragment() {
 
     fun setupAdapter(){
         adapter = PhotoUpdateAdapter() {
-            if(realEstateActual.photos?.size!! > 1){
-                updateViewModel.deletePhoto(it)
-            }else{
-                Toast.makeText(requireContext(),"At least one photo must be present",Toast.LENGTH_LONG).show()
-            }
+           alertDialogUpdateOrDelete(it)
         }
+
+    }
+
+    fun alertDialogUpdateOrDelete(photo : Photo){
+        var editText = EditText(requireContext())
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Enter Photo Name")
+            .setView(editText)
+            .setPositiveButton("Update") { dialog, _ ->
+                if (!editText.text.isNullOrEmpty()) {
+                    photo.label = editText.text.toString()
+                    photo.idProperty = realEstateActual.realEstate.idRealEstate
+                    updateViewModel.updatePhoto(photo)
+                    dialog.dismiss()
+                }
+            }
+            .setNegativeButton("Delete definitely"){dialog, _ ->
+                if(realEstateActual.photos?.size!! > 1){
+                    updateViewModel.deletePhoto(photo)
+                    dialog.dismiss()
+                }else{
+                    Toast.makeText(requireContext(),"At least one photo must be present",Toast.LENGTH_LONG).show()
+                    dialog.dismiss()
+                }
+
+            }
+            .setNeutralButton("Cancel"){dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private val takePitcure =

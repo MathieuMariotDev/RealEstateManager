@@ -54,7 +54,7 @@ class PhotoUpdateAdapter(private val listenerPhoto: (Photo) -> Unit) : RecyclerV
                 .centerCrop()
                 .dontAnimate()// For photo display correctly
                 .into(binding.imgViewPhoto)
-            binding.buttonDelete.setOnClickListener {
+            binding.buttonEdit.setOnClickListener {
                 listenerPhoto(item)
             }
         }
