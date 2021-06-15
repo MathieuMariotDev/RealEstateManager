@@ -1,6 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
-    <color name="colorPrimary">#81d4fa</color>
-    <color name="colorPrimaryDark">#4ba3c7</color>
-    <color name="colorAccent">#b6ffff</color>
+  <color name="primaryColor">#232f3e</color>
+  <color name="primaryLightColor">#4c5869</color>
+  <color name="primaryDarkColor">#000518</color>
+  <color name="secondaryColor">#febd69</color>
+  <color name="secondaryLightColor">#ffef99</color>
+  <color name="secondaryDarkColor">#c88d3b</color>
+  <color name="primaryTextColor">#ffffff</color>
+  <color name="secondaryTextColor">#000000</color>
+
+  <color name="red_200">#cf6679</color> <!--Color error (dark)-->
+  <color name="red_600">#b00020</color> <!--Color error -->
+
+  <!--Color surface (light), color on error (light), -->
+  <!--color on surface (dark), color on surface (dark)-->
+  <color name="white_50">#ffffff</color>
+
+  <color name="black_800">#121212</color> <!--Color surface (dark)-->
+  <!--Color on secondary (light), color on background (light),-->
+  <!--color on surface (light)-->
+  <color name="black_900">#000000</color>
 </resources>

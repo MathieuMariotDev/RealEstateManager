@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.RealEstateApplication
@@ -53,6 +54,8 @@ class RealEstateFragment : Fragment(){
         recyclerView = realEstateBinding.recyclerviewRealEstate
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,linearLayoutManager.orientation)
+        recyclerView.addItemDecoration(dividerItemDecoration)
         realEstateBinding.recyclerviewRealEstate.adapter = adapter
         viewModelFrag.listRealEstateWithPhoto.observe(viewLifecycleOwner, Observer { listRealEstatesWithPhoto->
             listRealEstatesWithPhoto.let { adapter.data=it }

@@ -5,7 +5,8 @@
         android:id="@+id/realestate_update"
         android:icon="@drawable/ic_baseline_edit_24"
         android:title="Update"
-        app:showAsAction="ifRoom">
+        app:showAsAction="ifRoom"
+        >
     </item>
     <item
         android:id="@+id/realestate_filters"

@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -299,6 +300,8 @@ class CreateRealEstateFragment : Fragment() {
         recyclerView = createBinding.recyclerviewPhoto
         linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,linearLayoutManager.orientation)
+        recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = linearLayoutManager
         createBinding.recyclerviewPhoto.adapter = adapter
         updateRecycler()

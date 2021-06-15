@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -109,6 +110,8 @@ class UpdateFragment : Fragment() {
         recyclerView = updateBinding.recyclerviewPhotoUpdate
         linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,linearLayoutManager.orientation)
+        recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = linearLayoutManager
         setupAdapter()
         updateBinding.recyclerviewPhotoUpdate.adapter = adapter

@@ -133,27 +133,30 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/Button_date_picker"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/colorPrimary"
-                android:drawableBottom="@drawable/ic_baseline_calendar_24" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_baseline_calendar_24"
+                app:fabSize="mini"
+                />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/check_sold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Sold" />
+                android:hint="Sold"
+                />
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/Button_validation_filter"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_margin="3dp"
             android:layout_gravity="bottom|right"
-            android:background="@color/colorPrimary"
-            android:drawableBottom="@drawable/ic_baseline_check_24" />
+            android:text="Validation filter"
+            app:icon="@drawable/ic_baseline_check_24"/>
 
     </LinearLayout>
 
