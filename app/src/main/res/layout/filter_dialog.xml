@@ -15,6 +15,7 @@
             android:id="@+id/textField_surface_min"
             style="@style/TextInputLayout"
             android:layout_width="250dp"
+            android:padding="2dp"
             android:layout_height="wrap_content"
             android:hint="Surface minimum"
             app:startIconDrawable="@drawable/ic_baseline_aspect_ratio_24">
@@ -29,7 +30,7 @@
             style="@style/TextInputLayout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-
+            android:padding="2dp"
             android:hint="Surface maximum"
             app:startIconDrawable="@drawable/ic_baseline_aspect_ratio_24">
 
@@ -41,6 +42,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_city"
             style="@style/TextInputLayout"
+            android:padding="2dp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Region"
@@ -54,6 +56,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_price_min"
             style="@style/TextInputLayout"
+            android:padding="2dp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Price minimum"
@@ -67,6 +70,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_price_max"
             style="@style/TextInputLayout"
+            android:padding="2dp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Price maximum"
@@ -79,6 +83,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_photo_min"
             style="@style/TextInputLayout"
+            android:padding="2dp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Number of photos"
@@ -92,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="2dp"
             android:orientation="horizontal">
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -111,6 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="2dp"
             android:orientation="horizontal">
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -131,13 +138,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="2dp">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/Button_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_baseline_calendar_24"
+                app:srcCompat="@drawable/ic_baseline_calendar_24"
                 app:fabSize="mini"
                 />
 

@@ -30,6 +30,7 @@
                 app:errorEnabled="true"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:layout_gravity="start"
                 android:hint="Type Real Estate"
                 app:startIconDrawable="@drawable/ic_baseline_home_24">
@@ -46,6 +47,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_margin="3dp"
                 android:hint="Adresse"
                 app:startIconDrawable="@drawable/ic_baseline_add_location_24">
 
@@ -60,74 +62,100 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView3">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField_nbRooms"
-                style="@style/TextInputLayout"
-                app:errorEnabled="true"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|right"
-                android:hint="Number of rooms"
-                app:startIconDrawable="@drawable/ic_baseline_room_24">
-
-                <com.google.android.material.textfield.TextInputEditText
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField_surface"
-                style="@style/TextInputLayout"
-                app:errorEnabled="true"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:hint="Surface"
-                app:startIconDrawable="@drawable/ic_baseline_aspect_ratio_24">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_nbRooms"
+                        style="@style/TextInputLayout"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|right"
+                        android:layout_margin="3dp"
+                        android:hint="Number of rooms"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/ic_baseline_room_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:layout_editor_absoluteX="0dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_surface"
+                        style="@style/TextInputLayout"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:layout_margin="3dp"
+                        android:hint="Surface"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/ic_baseline_aspect_ratio_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:layout_editor_absoluteX="0dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField_nbBedrooms"
-                style="@style/TextInputLayout"
-                app:errorEnabled="true"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|left"
-                android:hint="Number of bedrooms"
-                app:startIconDrawable="@drawable/ic_baseline_bed_24">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_nbBedrooms"
+                        style="@style/TextInputLayout"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|left"
+                        android:layout_margin="3dp"
+                        android:hint="Number of bedrooms"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/ic_baseline_bed_24">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField_nbBathrooms"
-                style="@style/TextInputLayout"
-                app:errorEnabled="true"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:hint="Number of bathrooms"
-                app:startIconDrawable="@drawable/ic_baseline_bath_24">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:layout_editor_absoluteX="0dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField_nbBathrooms"
+                        style="@style/TextInputLayout"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:layout_margin="3dp"
+                        android:hint="Number of bathrooms"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/ic_baseline_bath_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:layout_editor_absoluteX="0dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -135,6 +163,7 @@
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="130dp"
+            android:layout_margin="3dp"
             android:hint="Edit text Description"
             app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -154,6 +183,7 @@
             android:id="@+id/materialCardView2"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_margin="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textField_description">
@@ -166,22 +196,24 @@
                 android:text="Add a picture"
                 android:textAppearance="?attr/textAppearanceHeadline6"></TextView>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/Button_add_photo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:layout_gravity="center|right"
-                android:background="@color/colorPrimary"
-                android:drawableBottom="@drawable/ic_baseline_photo_24" />
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_baseline_photo_24" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/Button_add_photo_from_folder"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:layout_gravity="center|right|bottom"
-                android:background="@color/colorPrimary"
-                android:drawableBottom="@drawable/ic_baseline_folder_upload_24" />
-
+                android:drawableBottom="@drawable/ic_baseline_folder_upload_24"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_baseline_folder_upload_24" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_photo_update"
                 android:layout_width="300dp"
@@ -197,41 +229,44 @@
             style="@style/TextInputLayout"
             android:layout_width="162dp"
             android:layout_height="wrap_content"
+            android:layout_margin="3dp"
             android:hint="Edit text type"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Button_date_picker"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
             app:startIconDrawable="@drawable/ic_baseline_money_24">
-
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="687dp" />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/Button_update"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
-            android:drawableBottom="@drawable/ic_baseline_add_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Button_date_picker" />
-
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/Button_date_picker"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
-            android:drawableLeft="@drawable/ic_baseline_calendar_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_marginEnd="16dp"
             android:text="Select date of sale"
+            app:icon="@drawable/ic_baseline_calendar_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textField_price" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/Button_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="640dp"
+            android:text="Validation"
+            app:icon="@drawable/ic_baseline_add_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Button_date_picker" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
