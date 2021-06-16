@@ -33,8 +33,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_delete_forever_24" />
-                            <entry key="sourceFile" value="F:\Dev\PROJET\OC_Remise\Projet 9\house.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_currency_euro_black_24dp" />
+                            <entry key="sourceFile" value="F:\Dev\PROJET\OC_Remise\Projet 9\euro_black_24dp.svg" />
                           </map>
                         </option>
                       </PersistentState>

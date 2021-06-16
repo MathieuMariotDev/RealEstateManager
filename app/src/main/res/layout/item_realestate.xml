@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="125dp"
     android:id="@+id/constraintlayout_item_realestate"
@@ -45,4 +46,15 @@
         app:layout_constraintStart_toEndOf="@+id/image_realEstate"
         app:layout_constraintTop_toBottomOf="@+id/text_realEstate_city" />
 
+
+    <ImageView
+        android:id="@+id/image_currency"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="24dp"
+        app:srcCompat="@drawable/ic_currency_dollar_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/text_realEstate_price" />
 </androidx.constraintlayout.widget.ConstraintLayout>

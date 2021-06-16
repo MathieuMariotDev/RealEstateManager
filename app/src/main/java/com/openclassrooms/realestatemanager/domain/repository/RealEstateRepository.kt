@@ -16,7 +16,8 @@ import kotlinx.coroutines.withContext
 class RealEstateRepository(private val realEstateDao: RealEstateDao) {
 
 
-    private var floxRealEstateWithPhoto : Flow<List<RealEstateWithPhoto>> = realEstateDao.getRealEstateWithPhoto()
+    private var floxRealEstateWithPhoto: Flow<List<RealEstateWithPhoto>> =
+        realEstateDao.getRealEstateWithPhoto()
 
     private var flowListRealEstate = realEstateDao.getRealEstate()
 
@@ -24,23 +25,33 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
         MutableLiveData<Long>()
     }
 
+    private val liveDataDollarOrEuro: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+
     fun getFlowListRealEstate() = flowListRealEstate
 
 
-    fun setIdRealEstate(id : Long) {
+    fun setIdRealEstate(id: Long) {
         liveDataIdRealEstate.value = id
     }
 
     fun getIdRealEstate() = liveDataIdRealEstate
 
-    suspend fun updateRealEstate(realEstate: RealEstate) = realEstateDao.updateRealEstate(realEstate)
-
-    @WorkerThread
-    suspend fun insertRealEstate(realEstate: RealEstate) = withContext(Dispatchers.IO){  //Used for take the value return(id autogenrate) by the insert method
-        realEstateDao.insert(realEstate)
+    fun setDollarOrEuro(codeCurrency: Int) {
+        liveDataDollarOrEuro.value = codeCurrency
     }
 
-    fun getRealEstateWithId(id : Long) : Flow<RealEstateWithPhoto>{
+    suspend fun updateRealEstate(realEstate: RealEstate) =
+        realEstateDao.updateRealEstate(realEstate)
+
+    @WorkerThread
+    suspend fun insertRealEstate(realEstate: RealEstate) =
+        withContext(Dispatchers.IO) {  //Used for take the value return(id autogenrate) by the insert method
+            realEstateDao.insert(realEstate)
+        }
+
+    fun getRealEstateWithId(id: Long): Flow<RealEstateWithPhoto> {
         return realEstateDao.getRealEstateWithId(id)
     }
 
