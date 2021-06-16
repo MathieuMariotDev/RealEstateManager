@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.update
 
+import android.content.Intent
 import android.location.Address
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.google.maps.model.LatLng
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
@@ -31,6 +33,7 @@ import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
+import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.utils.PhotoFileUtils
 import com.openclassrooms.realestatemanager.utils.Utils
 import java.io.FileOutputStream
@@ -48,7 +51,7 @@ class UpdateFragment : Fragment() {
         )
     }
     private lateinit var realEstateActual: RealEstateWithPhoto
-    private lateinit var adapter : PhotoUpdateAdapter
+    private lateinit var adapter: PhotoUpdateAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var latlngAddress: Address? = null
@@ -57,8 +60,8 @@ class UpdateFragment : Fragment() {
         .setTitleText("Select date of sale")
         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
         .build()
-    private var dateSelectedSold : Long? = null
-    private lateinit var uri : Uri
+    private var dateSelectedSold: Long? = null
+    private lateinit var uri: Uri
     private var photo = Photo()
     private var listPhoto = ArrayList<Photo>()
 
@@ -110,21 +113,22 @@ class UpdateFragment : Fragment() {
         recyclerView = updateBinding.recyclerviewPhotoUpdate
         linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,linearLayoutManager.orientation)
+        val dividerItemDecoration =
+            DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = linearLayoutManager
         setupAdapter()
         updateBinding.recyclerviewPhotoUpdate.adapter = adapter
     }
 
-    fun setupAdapter(){
+    fun setupAdapter() {
         adapter = PhotoUpdateAdapter() {
-           alertDialogUpdateOrDelete(it)
+            alertDialogUpdateOrDelete(it)
         }
 
     }
 
-    fun alertDialogUpdateOrDelete(photo : Photo){
+    fun alertDialogUpdateOrDelete(photo: Photo) {
         var editText = EditText(requireContext())
         val alertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
@@ -137,17 +141,21 @@ class UpdateFragment : Fragment() {
                     dialog.dismiss()
                 }
             }
-            .setNegativeButton("Delete definitely"){dialog, _ ->
-                if(realEstateActual.photos?.size!! > 1){
+            .setNegativeButton("Delete definitely") { dialog, _ ->
+                if (realEstateActual.photos?.size!! > 1) {
                     updateViewModel.deletePhoto(photo)
                     dialog.dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"At least one photo must be present",Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "At least one photo must be present",
+                        Toast.LENGTH_LONG
+                    ).show()
                     dialog.dismiss()
                 }
 
             }
-            .setNeutralButton("Cancel"){dialog, _ ->
+            .setNeutralButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
@@ -167,21 +175,25 @@ class UpdateFragment : Fragment() {
                 alertDialog()
             }
         }
+
     private fun onClickPhotoFromFile() {
-       updateBinding.ButtonAddPhotoFromFolder.setOnClickListener {
+        updateBinding.ButtonAddPhotoFromFolder.setOnClickListener {
             getPicture.launch("image/*")
         }
     }
+
     private val getPicture =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
-                val filename = PhotoFileUtils.createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+                val filename =
+                    PhotoFileUtils.createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
                 photo.path = filename.name
                 val fileOutputStream = FileOutputStream(filename)
                 fileOutputStream.write(readBytes(uri))
                 alertDialog()
             }
         }
+
     @Throws(IOException::class)
     private fun readBytes(uri: Uri): ByteArray? =
         requireContext().contentResolver.openInputStream(uri)?.buffered().use {
@@ -218,43 +230,48 @@ class UpdateFragment : Fragment() {
 
     private fun onValidationClick() {
         updateBinding.ButtonUpdate.setOnClickListener {
-            if(updateBinding.textFieldAdresse.editText?.text.toString() != realEstateActual.realEstate.address){
-            updateViewModel.getLatLng(updateBinding.textFieldAdresse.editText?.text.toString())
-            updateViewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { it ->
-                if (it.isNullOrEmpty()) {
-                    updateViewModel.getNearbyPoi()
+            if (validate()) {
+                if (updateBinding.textFieldAdresse.editText?.text.toString() != realEstateActual.realEstate.address) {
+                    updateViewModel.getLatLng(updateBinding.textFieldAdresse.editText?.text.toString())
+                    updateViewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { it ->
+                        if (it.isNullOrEmpty()) {
+                            updateViewModel.getNearbyPoi()
+                        } else {
+                            latlngAddress = it[0]
+                            updateViewModel.getNearbyPoi(
+                                LatLng(
+                                    latlngAddress!!.latitude,
+                                    latlngAddress!!.longitude
+                                )
+                            )
+                        }
+                        updateViewModel.liveDataNearbyPOI.observe(
+                            viewLifecycleOwner,
+                            Observer { liveDataNearbyPOI ->
+                                nearbyPOI = liveDataNearbyPOI
+                                updateRealEstate()
+                            })
+                    })
+
                 } else {
-                    latlngAddress = it[0]
-                    updateViewModel.getNearbyPoi(
-                        LatLng(
-                            latlngAddress!!.latitude,
-                            latlngAddress!!.longitude
-                        )
-                    )
-                }
-                updateViewModel.liveDataNearbyPOI.observe(viewLifecycleOwner, Observer {liveDataNearbyPOI ->
-                    nearbyPOI = liveDataNearbyPOI
+                    nearbyPOI.nearbyPark = realEstateActual.realEstate.nearbyPark
+                    nearbyPOI.nearbyRestaurant = realEstateActual.realEstate.nearbyRestaurant
+                    nearbyPOI.nearbySchool = realEstateActual.realEstate.nearbySchool
+                    nearbyPOI.nearbyStore = realEstateActual.realEstate.nearbyStore
+                    if (realEstateActual.realEstate.latitude != null && realEstateActual.realEstate.longitude != null) {
+                        latlngAddress?.latitude = realEstateActual.realEstate.latitude!!.toDouble()
+                        latlngAddress?.longitude =
+                            realEstateActual.realEstate.longitude!!.toDouble()
+                    }
                     updateRealEstate()
-                })
-            })
 
-            }else{
-                nearbyPOI.nearbyPark = realEstateActual.realEstate.nearbyPark
-                nearbyPOI.nearbyRestaurant = realEstateActual.realEstate.nearbyRestaurant
-                nearbyPOI.nearbySchool = realEstateActual.realEstate.nearbySchool
-                nearbyPOI.nearbyStore = realEstateActual.realEstate.nearbyStore
-                if(realEstateActual.realEstate.latitude != null && realEstateActual.realEstate.longitude != null){
-                    latlngAddress?.latitude  = realEstateActual.realEstate.latitude!!.toDouble()
-                    latlngAddress?.longitude  = realEstateActual.realEstate.longitude!!.toDouble()
                 }
-                updateRealEstate()
-
             }
         }
     }
 
 
-    private fun updateRealEstate(){
+    private fun updateRealEstate() {
         val realEstateToUpdate = RealEstate(
             idRealEstate = realEstateActual.realEstate.idRealEstate,
             type = updateBinding.textFieldType.editText?.text.toString(),
@@ -275,7 +292,7 @@ class UpdateFragment : Fragment() {
             dateSold = dateSold(),
             realEstateAgent = realEstateActual.realEstate.realEstateAgent,
             latitude = latlngAddress?.longitude?.toFloat(),
-            longitude =latlngAddress?.latitude?.toFloat(),
+            longitude = latlngAddress?.latitude?.toFloat(),
             nearbyStore = nearbyPOI.nearbyStore,
             nearbyPark = nearbyPOI.nearbyPark,
             nearbyRestaurant = nearbyPOI.nearbyRestaurant,
@@ -286,18 +303,44 @@ class UpdateFragment : Fragment() {
                 .show()
         } else {
             updateViewModel.updateRealEstate(realEstateToUpdate)
+            val intent = Intent(requireActivity(),MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
     private fun onDateClicked() {
         updateBinding.ButtonDatePicker.setOnClickListener {
             val fragmentManager = parentFragmentManager
-            datePicker.show(fragmentManager,"DatePicker")
-            datePicker.addOnPositiveButtonClickListener { selection: Long->
+            datePicker.show(fragmentManager, "DatePicker")
+            datePicker.addOnPositiveButtonClickListener { selection: Long ->
                 dateSelectedSold = Date(selection).time
             }
         }
     }
 
     private fun dateSold(): Long? = dateSelectedSold
+
+    private fun hasText(textInputLayout: TextInputLayout, error_message: String): Boolean {
+        val text = textInputLayout.editText?.text.toString().trim()
+        textInputLayout.error = null
+        if (text.isEmpty()) {
+            textInputLayout.error = error_message
+            return false
+        }
+        return true
+    }
+
+    private fun validate(): Boolean {
+        var check = true
+        if (!hasText(updateBinding.textFieldAdresse, "This field must be completed")) check = false
+        if (!hasText(updateBinding.textFieldType, "This field must be completed")) check = false
+        if (!hasText(updateBinding.textFieldNbBathrooms, "This field must be completed")) check =
+            false
+        if (!hasText(updateBinding.textFieldNbBedrooms, "This field must be completed")) check =
+            false
+        if (!hasText(updateBinding.textFieldNbRooms, "This field must be completed")) check = false
+        if (!hasText(updateBinding.textFieldPrice, "This field must be completed")) check = false
+        if (!hasText(updateBinding.textFieldSurface, "This field must be completed")) check = false
+        return check
+    }
 }
