@@ -19,7 +19,7 @@ data class RealEstate(
         var price: Int,
 
         @ColumnInfo(name = "surface")
-        var surface: Float,
+        var surface: Int,
 
         @ColumnInfo(name = "nb_rooms")
         var nbRooms: Int,
@@ -42,7 +42,7 @@ data class RealEstate(
         @ColumnInfo(name = "date_entry")
         var dateEntry: Long,
 
-        @ColumnInfo(name = "date_sale")
+        @ColumnInfo(name = "date_sold")
         var dateSold: Long?,
 
         @ColumnInfo(name = "real_estate_agent")

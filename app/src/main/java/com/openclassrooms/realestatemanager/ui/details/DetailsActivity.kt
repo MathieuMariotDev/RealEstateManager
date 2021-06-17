@@ -1,15 +1,20 @@
 package com.openclassrooms.realestatemanager.ui.details
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.R.drawable.ic_baseline_arrow_back_24
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailsBinding
@@ -17,6 +22,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateFragment
+import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
 import com.openclassrooms.realestatemanager.ui.update.UpdateActivity
 
@@ -50,8 +56,11 @@ class DetailsActivity : AppCompatActivity(){
 
     private fun setupToolbar() {
         mToolbar = detailbinding.materialToolbar
+        mToolbar.title = "Details"
         setSupportActionBar(mToolbar)
+        setupBackButton()
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -60,6 +69,14 @@ class DetailsActivity : AppCompatActivity(){
         return true
     }
 
+
+    private fun setupBackButton() {
+        mToolbar.navigationIcon = ContextCompat.getDrawable(this, ic_baseline_arrow_back_24)
+        mToolbar.setNavigationOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     private fun setOnMenuItemClick() {
         mToolbar.setOnMenuItemClickListener { menuItem ->

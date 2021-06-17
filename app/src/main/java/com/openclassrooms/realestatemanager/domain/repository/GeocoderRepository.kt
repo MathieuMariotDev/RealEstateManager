@@ -21,8 +21,6 @@ class GeocoderRepository(private val context: Context){
 
     private lateinit var geocoder : Geocoder
 
-    private val API_KEY = BuildConfig.ApiKey
-
     fun getLatLng(textAddress : String) : MutableList<Address>? {
         geocoder = Geocoder(context)
         return try{
@@ -38,7 +36,7 @@ class GeocoderRepository(private val context: Context){
     fun getNearbyPoi(location : LatLng,placeType: PlaceType) : PlacesSearchResponse {
         var request = PlacesSearchResponse()
         val context =  GeoApiContext.Builder()
-            .apiKey(API_KEY)
+            .apiKey(BuildConfig.ApiKey)
             .build()
         try {
             request = PlacesApi.nearbySearchQuery(context,location)

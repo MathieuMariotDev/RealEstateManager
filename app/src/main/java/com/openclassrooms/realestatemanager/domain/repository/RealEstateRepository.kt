@@ -1,13 +1,11 @@
 package com.openclassrooms.realestatemanager.domain.repository
 
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.realestatemanager.domain.dao.RealEstateDao
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
-import com.openclassrooms.realestatemanager.utils.debug.Mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -65,7 +63,7 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
         nearbyRestaurant: Boolean? = null,
         nearbySchool: Boolean? = null,
         minDateInLong: Long? = null,
-        sold: Boolean? = null,
+        minDateSoldInLong: Long? = null,
         city: String? = null,
         nbPhoto: Int? = null
     ): Flow<List<RealEstateWithPhoto>> {
@@ -98,16 +96,15 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
             queryString += " AND nearby_school = ${convertToInt(nearbySchool)}"
         }
         if (minDateInLong != null) {
-            if (sold == false) {
-                queryString += " AND date_entry >= $minDateInLong"
-            } else if (sold == true) {
-                queryString += " AND date_sale IS NOT NULL AND date_sale >= $minDateInLong"
-            }
+            queryString += " AND date_entry >= $minDateInLong"
+        }
+        if (minDateSoldInLong != null) {
+            queryString += " And date_sold >= $minDateSoldInLong"
         }
         if (city != null) {
             queryString += " AND address LIKE '%$city%'"
         }
-        if(queryStringEnd != null){
+        if (queryStringEnd != null) {
             queryString += queryStringEnd
         }
         val query = SimpleSQLiteQuery((queryString))

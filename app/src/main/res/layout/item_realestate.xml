@@ -36,25 +36,28 @@
         app:layout_constraintStart_toEndOf="@+id/image_realEstate"
         app:layout_constraintTop_toBottomOf="@+id/text_realEstate_type" />
 
-    <TextView
-        android:id="@+id/text_realEstate_price"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:text="17,870,000"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/image_realEstate"
-        app:layout_constraintTop_toBottomOf="@+id/text_realEstate_city" />
+        app:layout_constraintTop_toBottomOf="@+id/text_realEstate_city">
+
+        <TextView
+            android:id="@+id/text_realEstate_price"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:text="17,870,000"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
 
-    <ImageView
-        android:id="@+id/image_currency"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="24dp"
-        app:srcCompat="@drawable/ic_currency_dollar_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_realEstate_price" />
+        <ImageView
+            android:id="@+id/image_currency"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="2dp"
+            app:layout_constraintStart_toEndOf="@+id/text_realEstate_price"
+            app:srcCompat="@drawable/ic_currency_dollar_black_24dp"
+            tools:layout_editor_absoluteY="75dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

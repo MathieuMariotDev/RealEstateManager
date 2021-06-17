@@ -2,26 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/currency"
+        android:icon="@drawable/ic_currency_dollar_black_24dp"
+        android:title="Currency"
+        app:showAsAction="always"></item>
+    <item
         android:id="@+id/realestate_update"
         android:icon="@drawable/ic_baseline_edit_24"
         android:title="Update"
-        app:showAsAction="ifRoom"
-        >
-    </item>
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/realestate_filters"
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="Filters"
-        app:showAsAction="ifRoom">
-    </item>
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/realestate_add"
         android:icon="@drawable/ic_baseline_create_24"
         android:title="Add"
-        app:showAsAction="ifRoom">
-    </item>
-
-
+        app:showAsAction="always"></item>
 
 
 </menu>

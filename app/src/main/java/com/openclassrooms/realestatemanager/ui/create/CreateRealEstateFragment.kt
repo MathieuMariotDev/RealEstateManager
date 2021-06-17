@@ -20,6 +20,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -37,7 +38,10 @@ import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.utils.Notification
+import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.hasText
+import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.isNumber
 import com.openclassrooms.realestatemanager.utils.Utils
+import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -64,6 +68,7 @@ class CreateRealEstateFragment : Fragment() {
     private var adapter = PhotoAdapter()
     private lateinit var createBinding: FragmentCreateRealEstateBinding
     private var alertDialogNoNetworkSaw = false
+    private var nearbyPOI = NearbyPOI()
 
     companion object {
         fun newInstance() = CreateRealEstateFragment()
@@ -126,6 +131,7 @@ class CreateRealEstateFragment : Fragment() {
                         Observer { liveDataAddress ->
                             if (liveDataAddress.isNullOrEmpty()) {
                                 viewModel.getNearbyPoi()
+                                alertDialogBadAdresseLocation()
                             } else {
                                 latlng = liveDataAddress[0]
                                 Log.d(
@@ -142,41 +148,17 @@ class CreateRealEstateFragment : Fragment() {
                             viewModel.liveDataNearbyPOI.observe(
                                 viewLifecycleOwner,
                                 Observer { liveDataNearbyPOI ->
-                                    val realEstate = RealEstate(
-                                        type = createBinding.textFieldType.editText?.text.toString(),
-                                        price = createBinding.textFieldPrice.editText?.text.toString()
-                                            .toInt(),
-                                        surface = createBinding.textFieldSurface.editText?.text.toString()
-                                            .toFloat(),
-                                        nbRooms = createBinding.textFieldNbRooms.editText?.text.toString()
-                                            .toInt(),
-                                        nbBathrooms = createBinding.textFieldNbBathrooms.editText?.text.toString()
-                                            .toInt(),
-                                        nbBedrooms = createBinding.textFieldNbBedrooms.editText?.text.toString()
-                                            .toInt(),
-                                        description = createBinding.textFieldDescription.editText?.text.toString(),
-                                        address = createBinding.textFieldAdresse.editText?.text.toString(),
-                                        propertyStatus = false,
-                                        dateEntry = Utils.getTodayDateInLong(Utils.getTodayDate()),
-                                        dateSold = null,
-                                        realEstateAgent = createBinding.textFieldRealEstateAgent.editText?.text.toString(),
-                                        latitude = latlng?.latitude?.toFloat(),
-                                        longitude = latlng?.longitude?.toFloat(),
-                                        nearbyStore = liveDataNearbyPOI.nearbyStore,
-                                        nearbyPark = liveDataNearbyPOI.nearbyPark,
-                                        nearbyRestaurant = liveDataNearbyPOI.nearbyRestaurant,
-                                        nearbySchool = liveDataNearbyPOI.nearbySchool
-                                    )
-                                    viewModel.insertRealEstate(realEstate)
+                                    nearbyPOI = liveDataNearbyPOI
+                                    insertRealEstate()
                                 })
                         })
-                    viewModel.liveData.observe(viewLifecycleOwner, Observer { livedata ->
+                    viewModel.liveData.observe(viewLifecycleOwner, Observer { idRealEstate ->
                         notificationIfAddCorrectly()
                         for (photoItem in listPhoto) {
                             val photo = Photo(
                                 path = photoItem.path,
                                 label = photoItem.label,
-                                idProperty = livedata
+                                idProperty = idRealEstate
                             )
                             viewModel.insertPhoto(photo)
                         }
@@ -186,6 +168,46 @@ class CreateRealEstateFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun alertDialogBadAdresseLocation() {
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("The address is invalid")
+            .setMessage("Some functionality such as the display of marker on the map and nearby points of interest will therefore not be available for this property.")
+            .setNeutralButton("Ok") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+
+    private fun insertRealEstate() {
+        val realEstate = RealEstate(
+            type = createBinding.textFieldType.editText?.text.toString(),
+            price = createBinding.textFieldPrice.editText?.text.toString()
+                .toInt(),
+            surface = createBinding.textFieldSurface.editText?.text.toString()
+                .toInt(),
+            nbRooms = createBinding.textFieldNbRooms.editText?.text.toString()
+                .toInt(),
+            nbBathrooms = createBinding.textFieldNbBathrooms.editText?.text.toString()
+                .toInt(),
+            nbBedrooms = createBinding.textFieldNbBedrooms.editText?.text.toString()
+                .toInt(),
+            description = createBinding.textFieldDescription.editText?.text.toString(),
+            address = createBinding.textFieldAdresse.editText?.text.toString(),
+            propertyStatus = false,
+            dateEntry = Utils.getTodayDateInLong(Utils.getTodayDate()),
+            dateSold = null,
+            realEstateAgent = createBinding.textFieldRealEstateAgent.editText?.text.toString(),
+            latitude = latlng?.latitude?.toFloat(),
+            longitude = latlng?.longitude?.toFloat(),
+            nearbyStore = nearbyPOI.nearbyStore,
+            nearbyPark = nearbyPOI.nearbyPark,
+            nearbyRestaurant = nearbyPOI.nearbyRestaurant,
+            nearbySchool = nearbyPOI.nearbySchool
+        )
+        viewModel.insertRealEstate(realEstate)
     }
 
     private fun onClickPhoto() {
@@ -258,10 +280,10 @@ class CreateRealEstateFragment : Fragment() {
     }
 
     private fun notificationIfAddCorrectly() { //TODO
-            notification.createNotificationChannel()
-            notification.buildNotif()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
+        notification.createNotificationChannel()
+        notification.buildNotif()
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
     }
 
 
@@ -288,11 +310,9 @@ class CreateRealEstateFragment : Fragment() {
     }
 
 
-
-
     private fun updateRecycler() {
         viewModel.liveDataListPhoto.observe(viewLifecycleOwner, Observer {
-            it.let { adapter.data = it ;listPhoto = it}
+            it.let { adapter.data = it;listPhoto = it }
         })
     }
 
@@ -300,39 +320,56 @@ class CreateRealEstateFragment : Fragment() {
         recyclerView = createBinding.recyclerviewPhoto
         linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,linearLayoutManager.orientation)
+        val dividerItemDecoration =
+            DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = linearLayoutManager
         createBinding.recyclerviewPhoto.adapter = adapter
         updateRecycler()
     }
 
-    private fun hasText(textInputLayout: TextInputLayout, error_message: String): Boolean {
-        val text = textInputLayout.editText?.text.toString().trim()
-        textInputLayout.error = null
-        if (text.isEmpty()) {
-            textInputLayout.error = error_message
-            return false
-        }
-        return true
-    }
 
     private fun validate(): Boolean {
         var check = true
         if (!hasText(createBinding.textFieldAdresse, "This field must be completed")) check = false
         if (!hasText(createBinding.textFieldType, "This field must be completed")) check = false
-        if (!hasText(createBinding.textFieldNbBathrooms, "This field must be completed")) check =
-            false
-        if (!hasText(createBinding.textFieldNbBedrooms, "This field must be completed")) check =
-            false
-        if (!hasText(createBinding.textFieldNbRooms, "This field must be completed")) check = false
-        if (!hasText(createBinding.textFieldPrice, "This field must be completed")) check = false
+        if (!hasText(
+                createBinding.textFieldNbBathrooms,
+                "This field must be completed"
+            ) || !isNumber(
+                createBinding.textFieldNbBathrooms,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(
+                createBinding.textFieldNbBedrooms,
+                "This field must be completed"
+            ) || !isNumber(
+                createBinding.textFieldNbBedrooms,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(createBinding.textFieldNbRooms, "This field must be completed") || !isNumber(
+                createBinding.textFieldNbRooms,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(createBinding.textFieldPrice, "This field must be completed") || !isNumber(
+                createBinding.textFieldPrice,
+                "This field must only contain numbers"
+            )
+        ) check = false
         if (!hasText(
                 createBinding.textFieldRealEstateAgent,
                 "This field must be completed"
             )
         ) check = false
-        if (!hasText(createBinding.textFieldSurface, "This field must be completed")) check = false
+        if (!hasText(createBinding.textFieldSurface, "This field must be completed") || !isNumber(
+                createBinding.textFieldSurface,
+                "This field must only contain numbers"
+            )
+        ) check = false
         return check
     }
+
 }

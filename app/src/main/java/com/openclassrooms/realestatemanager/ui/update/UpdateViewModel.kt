@@ -26,13 +26,19 @@ class UpdateViewModel(
     val liveDataNearbyPOI by lazy {
         MutableLiveData<NearbyPOI>()
     }
-
+    val liveDataIdRealEstate: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>()
+    }
 
 
     lateinit var liveDataRealEstate: LiveData<RealEstateWithPhoto>
 
     fun setId(id: Long) {
         liveDataRealEstate = realEstateRepository.getRealEstateWithId(id).asLiveData()
+    }
+
+    fun getId() {
+        liveDataIdRealEstate.value = realEstateRepository.getIdRealEstate().value
     }
 
 
@@ -59,8 +65,8 @@ class UpdateViewModel(
         }
     }
     fun getLatLng(textAddress: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            liveDataAddress.postValue(geocoderRepository.getLatLng(textAddress))
+        viewModelScope.launch {
+            liveDataAddress.value = geocoderRepository.getLatLng(textAddress)
         }
     }
 

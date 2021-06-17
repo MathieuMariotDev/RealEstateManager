@@ -19,46 +19,6 @@ RealEstateViewModel(
     val liveDataIdRealEstate : LiveData<Long> = realEstateRepository.getIdRealEstate()
 
 
-    val liveDataMinSurface: MutableLiveData<Float?> by lazy {
-        MutableLiveData<Float?>()
-    }
-
-    val liveDataMaxSurface: MutableLiveData<Float?> by lazy {
-        MutableLiveData<Float?>()
-    }
-    val liveDataMinPrice: MutableLiveData<Int?> by lazy {
-        MutableLiveData<Int?>()
-    }
-    val liveDataMaxPrice: MutableLiveData<Int?> by lazy {
-        MutableLiveData<Int?>()
-    }
-    val liveDataNearbyStore: MutableLiveData<Boolean?> by lazy {
-        MutableLiveData<Boolean?>()
-    }
-    val liveDataNearbyPark: MutableLiveData<Boolean?> by lazy {
-        MutableLiveData<Boolean?>()
-    }
-    val liveDataNearbyRestaurant: MutableLiveData<Boolean?> by lazy {
-        MutableLiveData<Boolean?>()
-    }
-    val liveDataNearbySchool: MutableLiveData<Boolean?> by lazy {
-        MutableLiveData<Boolean?>()
-    }
-    val liveDataMinDateInLong: MutableLiveData<Long?> by lazy {
-        MutableLiveData<Long?>()
-    }
-    val liveDataSold: MutableLiveData<Boolean?> by lazy {
-        MutableLiveData<Boolean?>()
-    }
-    val liveDataCity: MutableLiveData<String?> by lazy {
-        MutableLiveData<String?>()
-    }
-    val liveDataNbPhoto: MutableLiveData<Int?> by lazy {
-        MutableLiveData<Int?>()
-    }
-
-
-
     //var listRealEstateWithPhoto = realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
     var realEstate = MutableLiveData<RealEstate>()
 
@@ -73,9 +33,10 @@ RealEstateViewModel(
             realEstateRequest.nearbyRestaurant,
             realEstateRequest.nearbySchool,
             realEstateRequest.minDateInLong,
-            realEstateRequest.sold,
+            realEstateRequest.minDateSoldInLong,
             realEstateRequest.city,
-            realEstateRequest.nbPhoto).asLiveData()
+            realEstateRequest.nbPhoto
+        ).asLiveData()
     }
 
     fun setMinSurface(minSurface: Float?) {
@@ -130,8 +91,8 @@ RealEstateViewModel(
         liveDataRealEstateRequest.value?.minDateInLong = date
     }
 
-    fun setSold(sold: Boolean?) {
-        liveDataRealEstateRequest.value?.sold = sold
+    fun setMinDateSold(date: Long?) {
+        liveDataRealEstateRequest.value?.minDateSoldInLong = date
     }
 
     fun setNbPhoto(nbPhoto: Int?) {

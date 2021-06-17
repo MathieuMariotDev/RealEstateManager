@@ -1,28 +1,33 @@
 package com.openclassrooms.realestatemanager.ui.realEstate
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.openclassrooms.realestatemanager.databinding.FilterDialogBinding
+import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.isNumber
 import java.util.*
 
-class FilterDialogFragment : DialogFragment(){
+class FilterDialogFragment : DialogFragment() {
 
-    var dateSelected : Long? = null
-    lateinit var viewModel  : RealEstateViewModel
-    lateinit var filterBinding : FilterDialogBinding
-    private val datePicker = MaterialDatePicker.Builder.datePicker()
-        .setTitleText("Select date")
+    var datePublication: Long? = null
+    var dateSold: Long? = null
+    lateinit var viewModel: RealEstateViewModel
+    lateinit var filterBinding: FilterDialogBinding
+    private val datePickerPublication = MaterialDatePicker.Builder.datePicker()
+        .setTitleText("Selected the minimum publication date")
         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
         .build()
+    private val datePickerSold = MaterialDatePicker.Builder.datePicker()
+        .setTitleText("Selected the minimum sold date")
+        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+        .build()
+
     /** The system calls this to get the DialogFragment's layout, regardless
     of whether it's being displayed as a dialog or an embedded fragment. */
     override fun onCreateView(
@@ -30,11 +35,12 @@ class FilterDialogFragment : DialogFragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        filterBinding = FilterDialogBinding.inflate(inflater,container,false)
+        filterBinding = FilterDialogBinding.inflate(inflater, container, false)
 
         // Inflate the layout to use as dialog or embedded fragment
         //return inflater.inflate(R.layout.filter_dialog, container, false)  // Need to check on large screen
         onClickDatePicker()
+        onClickDatePickerSold()
         onClickValidation()
         viewModel = ViewModelProvider(requireActivity()).get(RealEstateViewModel::class.java)
         return filterBinding.root
@@ -54,40 +60,87 @@ class FilterDialogFragment : DialogFragment(){
         return dialog
     }
 
-    private fun onClickDatePicker(){
+    private fun onClickDatePicker() {
         filterBinding.ButtonDatePicker.setOnClickListener {
             val fragmentManager = parentFragmentManager
-            datePicker.show(fragmentManager,"DatePicker")
-            datePicker.addOnPositiveButtonClickListener { selection: Long->
-                dateSelected = Date(selection).time
+            datePickerPublication.show(fragmentManager, "DatePicker")
+            datePickerPublication.addOnPositiveButtonClickListener { selection: Long ->
+                datePublication = Date(selection).time
             }
         }
     }
 
-    private fun onClickValidation(){
+    private fun onClickDatePickerSold() {
+        filterBinding.ButtonDatePickerSold.setOnClickListener {
+            val fragmentManager = parentFragmentManager
+            datePickerSold.show(fragmentManager, "DatePickerSold")
+            datePickerSold.addOnPositiveButtonClickListener { selection: Long ->
+                dateSold = Date(selection).time
+            }
+        }
+    }
+
+    private fun onClickValidation() {
         filterBinding.ButtonValidationFilter.setOnClickListener {
+            if (validate()) {
                 viewModel.setMinPrice(
                     filterBinding.textFieldPriceMin.editText?.text.toString()
-                    .toIntOrNull())
-            viewModel.setMaxPrice(
-                filterBinding.textFieldPriceMax.editText?.text.toString()
-                    .toIntOrNull())
-            viewModel.setMinSurface(
-                filterBinding.textFieldSurfaceMin.editText?.text.toString().toFloatOrNull())
-            viewModel.setMaxSurface(
-                filterBinding.textFieldSurfaceMax.editText?.text.toString()
-                    .toFloatOrNull())
-            viewModel.setCityName(filterBinding.textFieldCity.editText?.text.toString())
-            viewModel.setNearbyPark(filterBinding.checkNearbyPark.isChecked)
-            viewModel.setNearbyStore(filterBinding.checkNearbyStore.isChecked)
-            viewModel.setNearbySchool(filterBinding.checkNearbySchool.isChecked)
-            viewModel.setNearbyRestaurant(filterBinding.checkNearbyRestaurant.isChecked)
-            viewModel.setSold(filterBinding.checkSold.isChecked)
-            viewModel.setNbPhoto(filterBinding.textFieldPhotoMin.editText?.text.toString().toIntOrNull())
-            viewModel.setMinDate(dateSelected)
-            viewModel.validationUpdateQuery()
-            dismiss()
+                        .toIntOrNull()
+                )
+                viewModel.setMaxPrice(
+                    filterBinding.textFieldPriceMax.editText?.text.toString()
+                        .toIntOrNull()
+                )
+                viewModel.setMinSurface(
+                    filterBinding.textFieldSurfaceMin.editText?.text.toString().toFloatOrNull()
+                )
+                viewModel.setMaxSurface(
+                    filterBinding.textFieldSurfaceMax.editText?.text.toString()
+                        .toFloatOrNull())
+                viewModel.setCityName(filterBinding.textFieldCity.editText?.text.toString())
+                viewModel.setNearbyPark(filterBinding.checkNearbyPark.isChecked)
+                viewModel.setNearbyStore(filterBinding.checkNearbyStore.isChecked)
+                viewModel.setNearbySchool(filterBinding.checkNearbySchool.isChecked)
+                viewModel.setNearbyRestaurant(filterBinding.checkNearbyRestaurant.isChecked)
+                viewModel.setMinDateSold(dateSold)
+                viewModel.setNbPhoto(
+                    filterBinding.textFieldPhotoMin.editText?.text.toString().toIntOrNull()
+                )
+                viewModel.setMinDate(datePublication)
+                viewModel.validationUpdateQuery()
+                dismiss()
+            }
         }
+    }
+
+    fun validate(): Boolean {
+        var check = true
+        if (!isNumber(
+                filterBinding.textFieldPriceMin,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!isNumber(
+                filterBinding.textFieldSurfaceMin,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!isNumber(
+                filterBinding.textFieldPriceMin,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!isNumber(
+                filterBinding.textFieldSurfaceMax,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!isNumber(
+                filterBinding.textFieldPhotoMin,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        return check
     }
 
 }

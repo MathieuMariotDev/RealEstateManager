@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 import com.google.maps.model.LatLng
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
@@ -33,9 +33,11 @@ import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.domain.relation.RealEstateWithPhoto
+import com.openclassrooms.realestatemanager.ui.details.DetailsViewModel
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.utils.PhotoFileUtils
-import com.openclassrooms.realestatemanager.utils.Utils
+import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.hasText
+import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.isNumber
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
@@ -43,11 +45,11 @@ import java.util.*
 class UpdateFragment : Fragment() {
 
     private lateinit var updateBinding: FragmentUpdateBinding
-    private val updateViewModel: UpdateViewModel by viewModels() {
+    private val updateViewModel: UpdateViewModel by activityViewModels() {
         RealEstateViewModelFactory(
-            (activity?.application as RealEstateApplication).realEstateRepository,
-            photoRepository = (activity?.application as RealEstateApplication).photoRepository,
-            (activity?.application as RealEstateApplication).geocoderRepository
+            (requireActivity().application as RealEstateApplication).realEstateRepository,
+            photoRepository = (requireActivity().application as RealEstateApplication).photoRepository,
+            (requireActivity().application as RealEstateApplication).geocoderRepository
         )
     }
     private lateinit var realEstateActual: RealEstateWithPhoto
@@ -64,7 +66,7 @@ class UpdateFragment : Fragment() {
     private lateinit var uri: Uri
     private var photo = Photo()
     private var listPhoto = ArrayList<Photo>()
-
+    private var showDialog = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -172,7 +174,7 @@ class UpdateFragment : Fragment() {
                     it.moveToFirst()
                     photo.path = it.getString(nameFile)
                 }
-                alertDialog()
+                alertDialogPhoto()
             }
         }
 
@@ -190,7 +192,7 @@ class UpdateFragment : Fragment() {
                 photo.path = filename.name
                 val fileOutputStream = FileOutputStream(filename)
                 fileOutputStream.write(readBytes(uri))
-                alertDialog()
+                alertDialogPhoto()
             }
         }
 
@@ -211,7 +213,7 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    private fun alertDialog() {
+    private fun alertDialogPhoto() {
         var editText = EditText(requireContext())
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
@@ -228,6 +230,21 @@ class UpdateFragment : Fragment() {
             .show()
     }
 
+    private fun alertDialogBadAdresseLocation() {
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("The address is invalid")
+            .setMessage("Some functionality such as the display of marker on the map and nearby points of interest will therefore not be available for this property.")
+            .setNeutralButton("Ok") { dialog, _ ->
+                intentMainActivity()
+                dialog.dismiss()
+            }
+            .setPositiveButton("Stay and update") { dialog, _ ->
+                dialog.dismiss()
+                showDialog = true
+            }
+            .show()
+    }
+
     private fun onValidationClick() {
         updateBinding.ButtonUpdate.setOnClickListener {
             if (validate()) {
@@ -235,6 +252,8 @@ class UpdateFragment : Fragment() {
                     updateViewModel.getLatLng(updateBinding.textFieldAdresse.editText?.text.toString())
                     updateViewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { it ->
                         if (it.isNullOrEmpty()) {
+                            showDialog = false
+                            alertDialogBadAdresseLocation()
                             updateViewModel.getNearbyPoi()
                         } else {
                             latlngAddress = it[0]
@@ -278,7 +297,7 @@ class UpdateFragment : Fragment() {
             price = updateBinding.textFieldPrice.editText?.text.toString()
                 .toInt(),
             surface = updateBinding.textFieldSurface.editText?.text.toString()
-                .toFloat(),
+                .toInt(),
             nbRooms = updateBinding.textFieldNbRooms.editText?.text.toString()
                 .toInt(),
             nbBathrooms = updateBinding.textFieldNbBathrooms.editText?.text.toString()
@@ -303,9 +322,15 @@ class UpdateFragment : Fragment() {
                 .show()
         } else {
             updateViewModel.updateRealEstate(realEstateToUpdate)
-            val intent = Intent(requireActivity(),MainActivity::class.java)
-            startActivity(intent)
+            if (showDialog) {
+                intentMainActivity()
+            }
         }
+    }
+
+    fun intentMainActivity() {
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onDateClicked() {
@@ -320,27 +345,42 @@ class UpdateFragment : Fragment() {
 
     private fun dateSold(): Long? = dateSelectedSold
 
-    private fun hasText(textInputLayout: TextInputLayout, error_message: String): Boolean {
-        val text = textInputLayout.editText?.text.toString().trim()
-        textInputLayout.error = null
-        if (text.isEmpty()) {
-            textInputLayout.error = error_message
-            return false
-        }
-        return true
-    }
-
     private fun validate(): Boolean {
         var check = true
         if (!hasText(updateBinding.textFieldAdresse, "This field must be completed")) check = false
         if (!hasText(updateBinding.textFieldType, "This field must be completed")) check = false
-        if (!hasText(updateBinding.textFieldNbBathrooms, "This field must be completed")) check =
-            false
-        if (!hasText(updateBinding.textFieldNbBedrooms, "This field must be completed")) check =
-            false
-        if (!hasText(updateBinding.textFieldNbRooms, "This field must be completed")) check = false
-        if (!hasText(updateBinding.textFieldPrice, "This field must be completed")) check = false
-        if (!hasText(updateBinding.textFieldSurface, "This field must be completed")) check = false
+        if (!hasText(
+                updateBinding.textFieldNbBathrooms,
+                "This field must be completed"
+            ) || !isNumber(
+                updateBinding.textFieldNbBathrooms,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(
+                updateBinding.textFieldNbBedrooms,
+                "This field must be completed"
+            ) || !isNumber(
+                updateBinding.textFieldNbBedrooms,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(updateBinding.textFieldNbRooms, "This field must be completed") || !isNumber(
+                updateBinding.textFieldNbRooms,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(updateBinding.textFieldPrice, "This field must be completed") || !isNumber(
+                updateBinding.textFieldPrice,
+                "This field must only contain numbers"
+            )
+        ) check = false
+        if (!hasText(updateBinding.textFieldSurface, "This field must be completed") || !isNumber(
+                updateBinding.textFieldSurface,
+                "This field must only contain numbers"
+            )
+        ) check = false
         return check
+
     }
 }

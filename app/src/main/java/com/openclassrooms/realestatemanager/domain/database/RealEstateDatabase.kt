@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 41,exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 43, exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 
