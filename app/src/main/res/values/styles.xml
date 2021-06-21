@@ -48,7 +48,11 @@
     </style>
 
 
-    ....
+    <style name="AppTheme.RealEstateManager.Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="trackColorActive" tools:ignore="NewApi">@color/secondaryColor</item>
+        <item name="thumbColor">@color/secondaryColor</item>
+        <item name="trackColorInactive">@color/secondaryLightColor</item>
+    </style>
 
     <!-- TOOLBAR THEME -->
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary">

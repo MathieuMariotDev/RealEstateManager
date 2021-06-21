@@ -64,7 +64,7 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var bitmapMarker : Bitmap
-    //private lateinit var mToolbar: Toolbar
+
     private val viewModelDetails : DetailsViewModel by activityViewModels() {
         RealEstateViewModelFactory(
             (requireActivity().application as RealEstateApplication).realEstateRepository,

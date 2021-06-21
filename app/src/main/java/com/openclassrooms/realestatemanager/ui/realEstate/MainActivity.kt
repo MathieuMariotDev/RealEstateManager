@@ -16,6 +16,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateActivity
 import com.openclassrooms.realestatemanager.ui.details.DetailsFragment
+import com.openclassrooms.realestatemanager.ui.loan.LoanActivity
 import com.openclassrooms.realestatemanager.ui.update.UpdateActivity
 import kotlin.properties.Delegates
 
@@ -115,11 +116,16 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.realestate_update -> {
 
-                    if(idForUpdateIntent != null){
-                        val updateIntent = Intent(this,UpdateActivity::class.java)
-                        updateIntent.putExtra("idRealEstate",idForUpdateIntent)
+                    if (idForUpdateIntent != null) {
+                        val updateIntent = Intent(this, UpdateActivity::class.java)
+                        updateIntent.putExtra("idRealEstate", idForUpdateIntent)
                         startActivity(updateIntent)
                     }
+                    true
+                }
+                R.id.loan -> {
+                    val loanIntent = Intent(this, LoanActivity::class.java)
+                    startActivity(loanIntent)
                     true
                 }
                 else -> false
