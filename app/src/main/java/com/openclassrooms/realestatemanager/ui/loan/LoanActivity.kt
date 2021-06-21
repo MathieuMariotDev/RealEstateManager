@@ -33,7 +33,7 @@ class LoanActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         mToolbar = loanBinding.materialToolbar
-        mToolbar.title = "Details"
+        mToolbar.title = "Loan simulator"
         setSupportActionBar(mToolbar)
         setupBackButton()
     }

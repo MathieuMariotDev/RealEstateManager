@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.slider.Slider
 import com.openclassrooms.realestatemanager.databinding.FragmentLoanBinding
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils
+import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.hasText
 import kotlin.math.pow
 
 class LoanFragment : Fragment() {
@@ -105,26 +106,35 @@ class LoanFragment : Fragment() {
         })
     }
 
-    fun validation(): Boolean {
+    private fun validation(): Boolean {
         var check = true
-        if (!TextFieldUtils.isNumber(
+        if (!hasText(
                 loanBinding.textFieldAmout,
                 "This field must be completed"
+            ) || !TextFieldUtils.isNumber(
+                loanBinding.textFieldAmout,
+                "This field must only contain numbers"
             )
         ) check = false
-        if (!TextFieldUtils.isNumber(
+        if (!hasText(
                 loanBinding.textFieldInsuranceRate,
                 "This field must be completed"
+            ) || !TextFieldUtils.isNumber(
+                loanBinding.textFieldInsuranceRate,
+                "This field must only contain numbers"
             )
         ) check = false
-        if (!TextFieldUtils.isNumber(
+        if (!hasText(
                 loanBinding.textFieldInterestRate,
                 "This field must be completed"
+            ) || !TextFieldUtils.isNumber(
+                loanBinding.textFieldInterestRate,
+                "This field must only contain numbers"
             )
         ) check = false
         if (!TextFieldUtils.isNumber(
                 loanBinding.textFieldContribution,
-                "This field must be completed"
+                "This field must only contain numbers"
             )
         ) check = false
         return check
