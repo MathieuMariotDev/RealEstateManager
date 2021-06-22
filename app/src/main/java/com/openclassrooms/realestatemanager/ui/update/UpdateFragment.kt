@@ -133,7 +133,7 @@ class UpdateFragment : Fragment() {
 
     fun alertDialogUpdateOrDelete(photo: Photo) {
         var editText = EditText(requireContext())
-        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
             .setView(editText)
             .setPositiveButton("Update") { dialog, _ ->
@@ -232,7 +232,7 @@ class UpdateFragment : Fragment() {
     }
 
     private fun alertDialogBadAdresseLocation() {
-        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("The address is invalid")
             .setMessage("Some functionality such as the display of marker on the map and nearby points of interest will therefore not be available for this property.")
             .setNeutralButton("Ok") { dialog, _ ->
@@ -252,18 +252,20 @@ class UpdateFragment : Fragment() {
                 if (Utils.isInternetAvailable(requireContext())) {
                     if (updateBinding.textFieldAdresse.editText?.text.toString() != realEstateActual.realEstate.address) {
                         updateViewModel.getLatLng(updateBinding.textFieldAdresse.editText?.text.toString())
-                        updateViewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { it ->
-                            if (it.isNullOrEmpty()) {
-                                showDialog = false
-                                alertDialogBadAdresseLocation()
-                                updateViewModel.getNearbyPoi()
-                            } else {
-                                latlngAddress = it[0]
-                                updateViewModel.getNearbyPoi(
-                                    LatLng(
-                                        latlngAddress!!.latitude,
-                                        latlngAddress!!.longitude
-                                    )
+                        updateViewModel.liveDataAddress.observe(
+                            viewLifecycleOwner,
+                            Observer { location ->
+                                if (location.isNullOrEmpty()) {
+                                    showDialog = false
+                                    alertDialogBadAdresseLocation()
+                                    updateViewModel.getNearbyPoi()
+                                } else {
+                                    latlngAddress = location[0]
+                                    updateViewModel.getNearbyPoi(
+                                        LatLng(
+                                            latlngAddress!!.latitude,
+                                            latlngAddress!!.longitude
+                                        )
                                 )
                             }
                             updateViewModel.liveDataNearbyPOI.observe(
@@ -395,11 +397,12 @@ class UpdateFragment : Fragment() {
     }
 
     private fun alertDialogNoNetwork() {
-        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setMessage("The marker for the location and nearby points of interest will not be available for this property")
             .setTitle("Network not available")
             .setPositiveButton("Ok") { dialog, _ ->
                 alertDialogNoNetworkSaw = true
+                dialog.dismiss()
 
             }
             .show()
