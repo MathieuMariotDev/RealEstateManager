@@ -8,6 +8,7 @@
     android:id="@+id/constraintlayout_item_realestate"
     android:layout_margin="3dp">
 
+
     <ImageView
         android:id="@+id/image_realEstate"
         android:layout_width="125dp"
@@ -16,48 +17,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_realEstate_type"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:text="Flat"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintStart_toEndOf="@+id/image_realEstate"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_realEstate_city"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:text="Manhattan"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        app:layout_constraintStart_toEndOf="@+id/image_realEstate"
-        app:layout_constraintTop_toBottomOf="@+id/text_realEstate_type" />
-
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_realEstate"
-        app:layout_constraintTop_toBottomOf="@+id/text_realEstate_city">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/text_realEstate_price"
+            android:id="@+id/text_realEstate_type"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
-            android:text="17,870,000"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+            android:layout_gravity="top"
+            android:text="Flat"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintStart_toEndOf="@+id/image_realEstate"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_realEstate_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Manhattan"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:layout_constraintStart_toEndOf="@+id/image_realEstate"
+            app:layout_constraintTop_toBottomOf="@+id/text_realEstate_type" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toEndOf="@+id/image_realEstate"
+            app:layout_constraintTop_toBottomOf="@+id/text_realEstate_city">
+
+            <TextView
+                android:id="@+id/text_realEstate_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="17,870,000"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/primaryColor" />
 
 
-        <ImageView
-            android:id="@+id/image_currency"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_margin="2dp"
-            app:layout_constraintStart_toEndOf="@+id/text_realEstate_price"
-            app:srcCompat="@drawable/ic_currency_dollar_black_24dp"
-            tools:layout_editor_absoluteY="75dp" />
+            <ImageView
+                android:id="@+id/image_currency"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="2dp"
+                app:layout_constraintStart_toEndOf="@+id/text_realEstate_price"
+                app:srcCompat="@drawable/ic_currency_dollar_black_24dp"
+                app:tint="@color/primaryColor"
+                tools:layout_editor_absoluteY="75dp" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

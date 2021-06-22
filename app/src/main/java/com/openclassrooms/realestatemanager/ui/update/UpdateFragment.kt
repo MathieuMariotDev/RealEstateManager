@@ -38,6 +38,7 @@ import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
 import com.openclassrooms.realestatemanager.utils.PhotoFileUtils
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.hasText
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.isNumber
+import com.openclassrooms.realestatemanager.utils.Utils
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
@@ -67,7 +68,7 @@ class UpdateFragment : Fragment() {
     private var photo = Photo()
     private var listPhoto = ArrayList<Photo>()
     private var showDialog = true
-
+    private var alertDialogNoNetworkSaw = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -248,47 +249,57 @@ class UpdateFragment : Fragment() {
     private fun onValidationClick() {
         updateBinding.ButtonUpdate.setOnClickListener {
             if (validate()) {
-                if (updateBinding.textFieldAdresse.editText?.text.toString() != realEstateActual.realEstate.address) {
-                    updateViewModel.getLatLng(updateBinding.textFieldAdresse.editText?.text.toString())
-                    updateViewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { it ->
-                        if (it.isNullOrEmpty()) {
-                            showDialog = false
-                            alertDialogBadAdresseLocation()
-                            updateViewModel.getNearbyPoi()
-                        } else {
-                            latlngAddress = it[0]
-                            updateViewModel.getNearbyPoi(
-                                LatLng(
-                                    latlngAddress!!.latitude,
-                                    latlngAddress!!.longitude
+                if (Utils.isInternetAvailable(requireContext())) {
+                    if (updateBinding.textFieldAdresse.editText?.text.toString() != realEstateActual.realEstate.address) {
+                        updateViewModel.getLatLng(updateBinding.textFieldAdresse.editText?.text.toString())
+                        updateViewModel.liveDataAddress.observe(viewLifecycleOwner, Observer { it ->
+                            if (it.isNullOrEmpty()) {
+                                showDialog = false
+                                alertDialogBadAdresseLocation()
+                                updateViewModel.getNearbyPoi()
+                            } else {
+                                latlngAddress = it[0]
+                                updateViewModel.getNearbyPoi(
+                                    LatLng(
+                                        latlngAddress!!.latitude,
+                                        latlngAddress!!.longitude
+                                    )
                                 )
-                            )
-                        }
-                        updateViewModel.liveDataNearbyPOI.observe(
-                            viewLifecycleOwner,
-                            Observer { liveDataNearbyPOI ->
-                                nearbyPOI = liveDataNearbyPOI
-                                updateRealEstate()
-                            })
-                    })
-
-                } else {
-                    nearbyPOI.nearbyPark = realEstateActual.realEstate.nearbyPark
-                    nearbyPOI.nearbyRestaurant = realEstateActual.realEstate.nearbyRestaurant
-                    nearbyPOI.nearbySchool = realEstateActual.realEstate.nearbySchool
-                    nearbyPOI.nearbyStore = realEstateActual.realEstate.nearbyStore
-                    if (realEstateActual.realEstate.latitude != null && realEstateActual.realEstate.longitude != null) {
-                        latlngAddress?.latitude = realEstateActual.realEstate.latitude!!.toDouble()
-                        latlngAddress?.longitude =
-                            realEstateActual.realEstate.longitude!!.toDouble()
+                            }
+                            updateViewModel.liveDataNearbyPOI.observe(
+                                viewLifecycleOwner,
+                                Observer { liveDataNearbyPOI ->
+                                    nearbyPOI = liveDataNearbyPOI
+                                    updateRealEstate()
+                                })
+                        })
+                    } else {
+                        noUpdatePoiAndLocation()
                     }
-                    updateRealEstate()
-
+                } else {
+                    if (!alertDialogNoNetworkSaw) {
+                        alertDialogNoNetwork()
+                    } else {
+                        noUpdatePoiAndLocation()
+                    }
                 }
             }
         }
     }
 
+    private fun noUpdatePoiAndLocation() {
+        nearbyPOI.nearbyPark = realEstateActual.realEstate.nearbyPark
+        nearbyPOI.nearbyRestaurant = realEstateActual.realEstate.nearbyRestaurant
+        nearbyPOI.nearbySchool = realEstateActual.realEstate.nearbySchool
+        nearbyPOI.nearbyStore = realEstateActual.realEstate.nearbyStore
+        if (realEstateActual.realEstate.latitude != null && realEstateActual.realEstate.longitude != null) {
+            latlngAddress?.latitude =
+                realEstateActual.realEstate.latitude!!.toDouble()
+            latlngAddress?.longitude =
+                realEstateActual.realEstate.longitude!!.toDouble()
+        }
+        updateRealEstate()
+    }
 
     private fun updateRealEstate() {
         val realEstateToUpdate = RealEstate(
@@ -381,6 +392,16 @@ class UpdateFragment : Fragment() {
             )
         ) check = false
         return check
+    }
 
+    private fun alertDialogNoNetwork() {
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+            .setMessage("The marker for the location and nearby points of interest will not be available for this property")
+            .setTitle("Network not available")
+            .setPositiveButton("Ok") { dialog, _ ->
+                alertDialogNoNetworkSaw = true
+
+            }
+            .show()
     }
 }

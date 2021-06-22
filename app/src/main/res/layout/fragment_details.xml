@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="ui.details.DetailsFragment">
 
     <LinearLayout
@@ -18,6 +17,7 @@
             android:layout_margin="3dp"
             android:hint="Media"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColorHint="@color/black_800"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -31,17 +31,18 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
             android:layout_margin="3dp"
+            android:hint="Description"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColorHint="@color/black_800"
             android:textStyle="bold" />
 
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView_description"
-            android:layout_margin="3dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_margin="3dp"
             android:hint="Default desicription" />
 
         <LinearLayout
@@ -56,126 +57,140 @@
                 android:layout_weight="50"
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="3dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_aspect_ratio_24"
-                        android:drawableTint="#000000"
+                        android:drawablePadding="5dp"
                         android:hint="Surface"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_aspect_ratio_24"
+                        app:drawableTint="#000000" />
 
                     <TextView
                         android:id="@+id/nb_Surface"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="22dp"
-                        android:layout_marginTop="22dp"
-                        android:hint="Surface Descritpion"
+                        android:layout_marginStart="29dp"
+                        android:hint="X"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="3dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_home_24"
-                        android:drawableTint="#000000"
+                        android:drawablePadding="5dp"
                         android:hint="Number of rooms"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_room_24"
+                        app:drawableTint="#000000" />
 
                     <TextView
                         android:id="@+id/nb_Rooms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="22dp"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginStart="29dp"
                         android:hint="X"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-                <com.google.android.material.card.MaterialCardView
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="3dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_bath_24"
-                        android:drawableTint="#000000"
+                        android:drawablePadding="5dp"
                         android:hint="Number of bathrooms"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_bath_24"
+                        app:drawableTint="#000000" />
 
                     <TextView
                         android:id="@+id/nb_Bathrooms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="22dp"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginStart="29dp"
                         android:hint="X"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-                <com.google.android.material.card.MaterialCardView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_home_24"
-                        android:drawableTint="#000000"
                         android:hint="Number of bedrooms"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_bed_24"
+                        app:drawableTint="#000000" />
 
                     <TextView
                         android:id="@+id/nb_Bedroooms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="22dp"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginStart="29dp"
                         android:hint="X"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-                <com.google.android.material.card.MaterialCardView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_home_24"
-                        android:drawableTint="#000000"
+                        android:drawablePadding="5dp"
                         android:hint="Location"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_location_on_24"
+                        app:drawableTint="#000000" />
 
                     <TextView
                         android:id="@+id/textView_adresse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="22dp"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginStart="29dp"
                         android:hint="444 Rue victor hugo , 49000 Angers"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-                </com.google.android.material.card.MaterialCardView>
-
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -183,7 +198,7 @@
                 android:layout_width="0px"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
-                android:padding="8dp">
+                android:padding="3dp">
 
                 <fragment
                     android:id="@+id/map_fragment"

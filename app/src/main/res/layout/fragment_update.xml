@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="?android:attr/actionBarSize">
+            >
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField_type"
@@ -221,9 +221,11 @@
                 android:drawableBottom="@drawable/ic_baseline_folder_upload_24"
                 app:fabSize="mini"
                 app:srcCompat="@drawable/ic_baseline_folder_upload_24" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_photo_update"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="55dp"
                 android:layout_height="170dp"
                 android:layout_gravity="bottom|left"
                 android:orientation="horizontal"
