@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.create
 
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -67,6 +68,7 @@ class CreateRealEstateFragment : Fragment() {
     private var alertDialogNoNetworkSaw = false
     private var nearbyPOI = NearbyPOI()
     private var createInProgress = true
+
     companion object {
         fun newInstance() = CreateRealEstateFragment()
     }
@@ -169,6 +171,7 @@ class CreateRealEstateFragment : Fragment() {
             }
         }
     }
+
     private fun alertDialogBadAdresseLocation() {
         val alertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("The address is invalid")
@@ -216,6 +219,10 @@ class CreateRealEstateFragment : Fragment() {
                 BuildConfig.APPLICATION_ID + ".provider",
                 createImageFile()
             )
+
+            takePitcure.contract.createIntent(requireContext(), uri).flags =
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+
             takePitcure.launch(uri)
         }
     }
@@ -226,10 +233,21 @@ class CreateRealEstateFragment : Fragment() {
         }
     }
 
-
     private val takePitcure =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { sucess ->
-            if (sucess) {
+        registerForActivityResult(object : ActivityResultContracts.TakePicture() {
+            override fun createIntent(
+                context: Context,
+                input: Uri
+            ): Intent {
+                val intent = super.createIntent(context, input)
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                    intent.clipData = ClipData.newRawUri("", input)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                return intent
+            }
+        }) { success ->
+            if (success) {
                 val nameFile: Int
                 uri.let {
                     requireContext().contentResolver.query(uri, null, null, null, null)
@@ -240,6 +258,7 @@ class CreateRealEstateFragment : Fragment() {
                 }
                 alertDialog()
             }
+
         }
 
     private fun createImageFile(): File {

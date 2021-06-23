@@ -45,7 +45,7 @@ class GeocoderRepository(private val context: Context) {
             .build()
 
         var service: RetrofitMaps = retrofit.create(RetrofitMaps::class.java)
-        var call: Call<Example> = service.getNearbyPlaces(placeType, latLng, 2500)
+        var call: Call<Example> = service.getNearbyPlaces(placeType, latLng, 1500)
 
         try {
             return call.execute()

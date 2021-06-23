@@ -1,8 +1,11 @@
 package com.openclassrooms.realestatemanager.ui.update
 
+import android.content.ClipData
+import android.content.Context
 import android.content.Intent
 import android.location.Address
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
@@ -164,8 +167,21 @@ class UpdateFragment : Fragment() {
             .show()
     }
 
+
     private val takePitcure =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { sucess ->
+        registerForActivityResult(object : ActivityResultContracts.TakePicture() {
+            override fun createIntent(
+                context: Context,
+                input: Uri
+            ): Intent {
+                val intent = super.createIntent(context, input)
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                    intent.clipData = ClipData.newRawUri("", input)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                return intent
+            }
+        }) { sucess ->
             if (sucess) {
                 val nameFile: Int
                 uri.let {
@@ -178,6 +194,7 @@ class UpdateFragment : Fragment() {
                 alertDialogPhoto()
             }
         }
+
 
     private fun onClickPhotoFromFile() {
         updateBinding.ButtonAddPhotoFromFolder.setOnClickListener {
