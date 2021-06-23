@@ -62,15 +62,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .add(R.id.frame_layout_real_estate, mFragmentRealEstate)
                 .commit()
-        /*if(isLargeLayout){
-            mFragmentDetails = DetailsFragment()
-
-            supportFragmentManager.beginTransaction()
-                .add(R.id.frame_layout_details, mFragmentDetails)
-                .commit()
-
-
-        }*/
     }
 
 

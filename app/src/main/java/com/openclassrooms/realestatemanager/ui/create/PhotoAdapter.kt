@@ -34,7 +34,6 @@ class PhotoAdapter :
         // Create a new view, which defines the UI of the list item
         val binding = ItemPhotoBinding
             .inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-
         return ViewHolder(binding)
     }
 
@@ -47,8 +46,6 @@ class PhotoAdapter :
 
 
     class ViewHolder(val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root) {
-
-
         fun bind(item: Photo) {
             val context = binding.root.context
             binding.label.text = item.label
@@ -61,8 +58,6 @@ class PhotoAdapter :
                 .centerCrop()
                 .dontAnimate()// For photo display correctly
                 .into(binding.imgViewPhoto)
-
-
         }
     }
 

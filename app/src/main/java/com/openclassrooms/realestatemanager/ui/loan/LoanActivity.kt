@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.ui.loan
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.openclassrooms.realestatemanager.R
@@ -39,13 +40,14 @@ class LoanActivity : AppCompatActivity() {
     }
 
     private fun setupBackButton() {
-        mToolbar.navigationIcon = ContextCompat.getDrawable(
+        mToolbar.navigationIcon = AppCompatResources.getDrawable(
             this,
             R.drawable.ic_baseline_arrow_back_24
         )
         mToolbar.setNavigationOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

@@ -52,7 +52,7 @@ class LoanFragment : Fragment() {
                     loanBinding.textFieldInsuranceRate.editText?.text.toString().toDouble()
                 val monthlyPayment = calculateMonthlyPayment(amount, interestRate, durationYear)
                 val monthlyPaymentInsurance =
-                    calculateMonthlyInsurance(insuranceRate, amount, durationYear)
+                    calculateMonthlyInsurance(insuranceRate, amount)
                 val totalLoan = totalLoan(monthlyPayment, monthlyPaymentInsurance, durationYear)
                 loanBinding.textviewMonthlyPayment.text = monthlyPayment.toInt().toString()
                 loanBinding.textviewMonthlyInsurance.text =
@@ -75,7 +75,6 @@ class LoanFragment : Fragment() {
     private fun calculateMonthlyInsurance(
         insuranceRate: Double,
         amount: Int,
-        durationYear: Int
     ): Double {
         val insuranceRatePourcent = insuranceRate / 100
         return insuranceRatePourcent * amount / 12

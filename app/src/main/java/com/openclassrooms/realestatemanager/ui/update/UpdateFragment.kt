@@ -21,9 +21,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.maps.model.LatLng
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
@@ -323,8 +323,8 @@ class UpdateFragment : Fragment() {
             dateEntry = realEstateActual.realEstate.dateEntry,
             dateSold = dateSold(),
             realEstateAgent = realEstateActual.realEstate.realEstateAgent,
-            latitude = latlngAddress?.longitude?.toFloat(),
-            longitude = latlngAddress?.latitude?.toFloat(),
+            latitude = latlngAddress?.latitude?.toFloat(),
+            longitude = latlngAddress?.longitude?.toFloat(),
             nearbyStore = nearbyPOI.nearbyStore,
             nearbyPark = nearbyPOI.nearbyPark,
             nearbyRestaurant = nearbyPOI.nearbyRestaurant,

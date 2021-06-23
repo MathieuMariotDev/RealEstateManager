@@ -4,9 +4,9 @@ import android.location.Address
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.maps.model.LatLng
-import com.google.maps.model.PlaceType
-import com.google.maps.model.PlacesSearchResult
+import com.google.android.gms.maps.model.LatLng
+import com.openclassrooms.realestatemanager.domain.googlemapsretrofit.Example
+
 import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import com.openclassrooms.realestatemanager.domain.repository.GeocoderRepository
 import com.openclassrooms.realestatemanager.domain.repository.PhotoRepository
@@ -15,6 +15,8 @@ import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class CreateRealEstateViewModel(
     private val realEstateRepository: RealEstateRepository,
@@ -35,7 +37,7 @@ class CreateRealEstateViewModel(
         MutableLiveData<NearbyPOI>()
     }
 
-    val liveDataValidation by lazy{
+    val liveDataValidation by lazy {
         MutableLiveData<Long>()
     }
 
@@ -43,13 +45,13 @@ class CreateRealEstateViewModel(
         MutableLiveData<ArrayList<Photo>>()
     }
 
-    var PlacesSearchResult: Array<PlacesSearchResult>? = null
+    // var PlacesSearchResult: Array<PlacesSearchResult>? = null
 
-    val listPlaceType = listOf<com.google.maps.model.PlaceType>(
-        com.google.maps.model.PlaceType.RESTAURANT,
-        com.google.maps.model.PlaceType.PARK,
-        com.google.maps.model.PlaceType.SCHOOL,
-        com.google.maps.model.PlaceType.STORE
+    val listPlaceType = listOf<String>(
+        "restaurant",
+        "park",
+        "school",
+        "store"
     )
 
     fun insertRealEstate(realEstate: RealEstate?) {
@@ -74,29 +76,33 @@ class CreateRealEstateViewModel(
     }
 
     fun getNearbyPoi(location: LatLng? = null) {
-        //viewModelScope.launch(Dispatchers.IO) {
-        val nearbyPoi = NearbyPOI()
-        if(location != null){
-        for (type in listPlaceType) {
-            PlacesSearchResult =
-                (geocoderRepository.getNearbyPoi(location = location, type).results)
-            if(PlacesSearchResult !=null){
-            for (placeSearchResult in PlacesSearchResult!!) {
-                for (placeType in placeSearchResult.types) {
-                    when (placeType) {
-                        PlaceType.RESTAURANT.toString() -> nearbyPoi.nearbyRestaurant = true
-                        PlaceType.PARK.toString() -> nearbyPoi.nearbyPark = true
-                        PlaceType.STORE.toString() -> nearbyPoi.nearbyStore = true
-                        PlaceType.SCHOOL.toString() -> nearbyPoi.nearbySchool = true
-                        PlaceType.PRIMARY_SCHOOL.toString() -> nearbyPoi.nearbySchool = true
-                        PlaceType.SECONDARY_SCHOOL.toString() -> nearbyPoi.nearbySchool = true
+        viewModelScope.launch() {
+            val nearbyPoi = NearbyPOI()
+            if (location != null) {
+                nearbyPoi.nearbyRestaurant = false
+                nearbyPoi.nearbyPark = false
+                nearbyPoi.nearbySchool = false
+                nearbyPoi.nearbyStore = false
+                for (type in listPlaceType) {
+                    var reponse: Response<Example>? = withContext(Dispatchers.IO) {
+                        geocoderRepository.getNearbyPoi(location = location, type)
+                    }
+                    for (result in reponse?.body()?.results!!) {
+                        for (type in result.types) {
+                            when (type) {
+                                "restaurant" -> nearbyPoi.nearbyRestaurant =
+                                    true
+                                "park" -> nearbyPoi.nearbyPark = true
+                                "school" -> nearbyPoi.nearbySchool =
+                                    true
+                                "store" -> nearbyPoi.nearbyStore = true
+                            }
+                        }
                     }
                 }
             }
-            }
+            liveDataNearbyPOI.postValue(nearbyPoi)
         }
-        }
-        liveDataNearbyPOI.postValue(nearbyPoi)
     }
 
     fun setPhoto(listPhoto: ArrayList<Photo>){

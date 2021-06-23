@@ -45,45 +45,43 @@ class RealEstateAdapter :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = data[position]
         var binding = viewHolder.binding
-        var context = binding.root.context
-        val mainActivity: MainActivity = context as MainActivity
+
         binding.textRealEstateCity.text = item.realEstate.address
         binding.textRealEstatePrice.text = item.realEstate.price.toString()
         binding.textRealEstateType.text = item.realEstate.type
         binding.constraintlayoutItemRealestate.setOnClickListener {
             indexSelected = position
             notifyDataSetChanged()
-            if (context.resources.getBoolean(R.bool.large_layout)) {
+            if (viewHolder.context.resources.getBoolean(R.bool.large_layout)) {
                 val bundle = Bundle()
                 bundle.putLong("idRealEstate", item.realEstate.idRealEstate)
-                context = context as MainActivity
-                mainActivity.supportFragmentManager.beginTransaction()
+                viewHolder.mainActivity.supportFragmentManager.beginTransaction()
                     .add(R.id.frame_layout_details_dual, DetailsFragment::class.java, bundle)
                     .commit()
             } else {
-                val intent = Intent(context, DetailsActivity::class.java)
+                val intent = Intent(viewHolder.context, DetailsActivity::class.java)
                 intent.putExtra("idRealEstate", item.realEstate.idRealEstate)
-                context.startActivity(intent)
+                viewHolder.context.startActivity(intent)
             }
         }
             if (indexSelected == position) {
                 binding.constraintlayoutItemRealestate.setBackgroundColor(
                     ContextCompat.getColor(
-                        context,
+                        viewHolder.context,
                         R.color.secondaryColor
                     )
                 )
             } else {
                 binding.constraintlayoutItemRealestate.setBackgroundColor(
                     ContextCompat.getColor(
-                        context,
+                        viewHolder.context,
                         R.color.white_50
                     )
                 )
             }
         if (item.photos?.isNotEmpty() == true) {
             val file = File(
-                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                viewHolder.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 item.photos[0].path
             )
             Glide.with(binding.root)
@@ -96,6 +94,8 @@ class RealEstateAdapter :
 
     class ViewHolder(val binding: ItemRealestateBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        var context = binding.root.context
+        val mainActivity: MainActivity = context as MainActivity
     }
 }
 

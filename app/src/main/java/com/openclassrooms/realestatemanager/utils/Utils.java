@@ -86,8 +86,7 @@ public class Utils {
             }
         } else {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            if (activeNetwork != null && activeNetwork.isConnected())
-                return true;
+            if (activeNetwork != null && activeNetwork.isConnected()) return true;
 
         }
 

@@ -53,24 +53,24 @@ public class UtilsInstrumentedTest {
 
     @Test
     public void checkIsConnected() throws IOException, InterruptedException {
-        device.executeShellCommand("svc wifi enable");
-        device.executeShellCommand("svc data enable");
+        //device.executeShellCommand("svc wifi enable");
+        //device.executeShellCommand("svc data enable");
         Thread.sleep(2000);
         assertTrue(Utils.isInternetAvailable(appContext));
     }
 
     @Test
     public void checkWithNetworkOff() throws IOException, InterruptedException, UiObjectNotFoundException {
-        device.executeShellCommand("svc wifi disable");
-        device.executeShellCommand("svc data disable");
+        //device.executeShellCommand("svc wifi disable");
+        //device.executeShellCommand("svc data disable");
         Thread.sleep(2000);
         assertFalse(Utils.isInternetAvailable(appContext));
     }
 
     @After
     public void enableNetwork() throws IOException, InterruptedException {
-        device.executeShellCommand("svc wifi enable");
-        device.executeShellCommand("svc data enable");
+        //device.executeShellCommand("svc wifi enable");
+        //device.executeShellCommand("svc data enable");
 
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -64,7 +65,7 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     private fun setupBackButton() {
-        mToolbar.navigationIcon = ContextCompat.getDrawable(
+        mToolbar.navigationIcon = AppCompatResources.getDrawable(
             this,
             R.drawable.ic_baseline_arrow_back_24
         )
@@ -74,6 +75,7 @@ class UpdateActivity : AppCompatActivity() {
             val intent = Intent(this, DetailsActivity::class.java)
             intent.putExtra("idRealEstate", idRealEstate)
             startActivity(intent)
+            finish()
         }
     }
 }

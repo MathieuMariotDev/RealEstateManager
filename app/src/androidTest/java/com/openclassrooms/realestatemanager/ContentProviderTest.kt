@@ -79,7 +79,7 @@ class ContentProviderTest {
         id = realEstateDatabase.RealEstateDao().insert(realEstate = RealEstate(
             type = "Appartement",
             price = 1000999,
-            surface = 500.toFloat(),
+            surface = 500,
             nbRooms = 12,
             nbBathrooms = 2,
             nbBedrooms = 3,

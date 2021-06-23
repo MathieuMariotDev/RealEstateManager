@@ -55,7 +55,7 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1") // For over 65,536 methods
 
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation 'com.google.android.material:material:1.3.0'// For Material Design
@@ -118,17 +118,18 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
 
-    implementation 'org.slf4j:slf4j-simple:1.7.25'
+
     // Dependency to include Maps SDK for Android
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     // For location
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-    // For NearbySeach
-    implementation 'com.google.maps:google-maps-services:0.18.1'
 
     // For developers using AndroidX in their application
     implementation 'pub.devrel:easypermissions:3.0.0'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    implementation('com.squareup.okhttp3:okhttp') { version { strictly '3.12.12'  } }
 }
 

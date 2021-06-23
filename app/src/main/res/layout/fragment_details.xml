@@ -11,15 +11,48 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:hint="Media"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textColorHint="@color/black_800"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:hint="Media"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textColorHint="@color/black_800"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="3dp"
+                android:hint="Publication date :"
+                android:textColorHint="@color/black_800"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tw_property_publication_date"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tw_property_publication_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="3dp"
+                android:layout_marginEnd="4dp"
+                android:textColorHint="@color/black_800"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_photo_details"
             android:layout_width="match_parent"

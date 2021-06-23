@@ -153,7 +153,7 @@ class FiltersTest {
             null,
             null,
             minDateInLong = Utils.getTodayDateInLong(dateFormat(date3)),
-            sold = true
+            minDateSoldInLong = null
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
         assertTrue(data.isNotEmpty())
@@ -175,7 +175,7 @@ class FiltersTest {
             null,
             null,
             minDateInLong = null,
-            sold = null,
+            minDateSoldInLong = null,
             "Long Island"
         ).asLiveData()
         data = liveDataListRealEstate.getOrAwaitValue()
@@ -197,7 +197,7 @@ class FiltersTest {
             null,
             null,
             minDateInLong = null,
-            sold = null,
+            minDateSoldInLong = null,
             null,
             3
         ).asLiveData()
@@ -222,7 +222,7 @@ class FiltersTest {
             true,
             null,
             minDateInLong = Utils.getTodayDateInLong(dateFormat(date1)),
-            sold = null,
+            minDateSoldInLong = null,
             "Washington",
             3
         ).asLiveData()
@@ -247,7 +247,7 @@ class FiltersTest {
             realEstate = RealEstate(
                 type = "Appartement",
                 price = 100000,
-                surface = 500.toFloat(),
+                surface = 500,
                 nbRooms = 12,
                 nbBathrooms = 2,
                 nbBedrooms = 3,
@@ -278,7 +278,7 @@ class FiltersTest {
             realEstate = RealEstate(
                 type = "Loft",
                 price = 150000,
-                surface = 750.toFloat(),
+                surface = 750,
                 nbRooms = 12,
                 nbBathrooms = 2,
                 nbBedrooms = 3,
@@ -308,7 +308,7 @@ class FiltersTest {
             realEstate = RealEstate(
                 type = "Castel",
                 price = 200000,
-                surface = 1000.toFloat(),
+                surface = 1000,
                 nbRooms = 12,
                 nbBathrooms = 2,
                 nbBedrooms = 3,

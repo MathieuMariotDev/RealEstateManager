@@ -40,11 +40,11 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.model.LatLng
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding
+import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateFragment
 import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateViewModel
 import com.openclassrooms.realestatemanager.ui.create.PhotoAdapter
@@ -52,9 +52,13 @@ import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.openclassrooms.realestatemanager.utils.PermissionsUtils
+import com.openclassrooms.realestatemanager.utils.Utils
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
+import java.text.DateFormat.getDateInstance
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -181,8 +185,16 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             detailsBinding.nbRooms.text = realEstate.realEstate.nbRooms.toString()
             detailsBinding.nbBathrooms.text = realEstate.realEstate.nbBathrooms.toString()
             detailsBinding.nbBedroooms.text = realEstate.realEstate.nbBedrooms.toString()
+            detailsBinding.twPropertyPublicationDate.text =
+                updateDate(realEstate = realEstate.realEstate)
             adapter.data = realEstate.photos!!
         })
+    }
+
+    fun updateDate(realEstate: RealEstate): String {
+        var dateFormat = getDateInstance()
+        val date = Date(realEstate.dateEntry)
+        return dateFormat.format(date)
     }
 
     private fun setupRecyclerView() {

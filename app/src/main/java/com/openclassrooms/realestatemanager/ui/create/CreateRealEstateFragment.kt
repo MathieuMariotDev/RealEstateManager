@@ -10,30 +10,28 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.AUTOFILL_HINT_NAME
 import android.view.View.AUTOFILL_HINT_POSTAL_ADDRESS
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.text.isDigitsOnly
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
-import com.google.maps.model.LatLng
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentCreateRealEstateBinding
+import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import com.openclassrooms.realestatemanager.domain.models.Photo
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
 import com.openclassrooms.realestatemanager.ui.realEstate.MainActivity
@@ -41,7 +39,6 @@ import com.openclassrooms.realestatemanager.utils.Notification
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.hasText
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.isNumber
 import com.openclassrooms.realestatemanager.utils.Utils
-import com.openclassrooms.realestatemanager.domain.models.NearbyPOI
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -69,7 +66,7 @@ class CreateRealEstateFragment : Fragment() {
     private lateinit var createBinding: FragmentCreateRealEstateBinding
     private var alertDialogNoNetworkSaw = false
     private var nearbyPOI = NearbyPOI()
-
+    private var createInProgress = true
     companion object {
         fun newInstance() = CreateRealEstateFragment()
     }
@@ -125,51 +122,53 @@ class CreateRealEstateFragment : Fragment() {
         createBinding.ButtonAdd.setOnClickListener {
             if (validate()) {
                 if (Utils.isInternetAvailable(requireContext()) || alertDialogNoNetworkSaw) {
-                    getLatLong()
-                    viewModel.liveDataAddress.observe(
-                        viewLifecycleOwner,
-                        Observer { liveDataAddress ->
-                            if (liveDataAddress.isNullOrEmpty()) {
-                                viewModel.getNearbyPoi()
-                                alertDialogBadAdresseLocation()
-                            } else {
-                                latlng = liveDataAddress[0]
-                                Log.d(
-                                    "LatLong geocoder",
-                                    "getLatLong:" + latlng!!.latitude + latlng!!.longitude
-                                )
-                                viewModel.getNearbyPoi(
-                                    LatLng(
-                                        latlng!!.latitude,
-                                        latlng!!.longitude
+                    if (createInProgress) {
+                        createInProgress = false
+                        getLatLong()
+                        viewModel.liveDataAddress.observe(
+                            viewLifecycleOwner,
+                            Observer { liveDataAddress ->
+                                if (liveDataAddress.isNullOrEmpty()) {
+                                    viewModel.getNearbyPoi()
+                                    alertDialogBadAdresseLocation()
+                                } else {
+                                    latlng = liveDataAddress[0]
+                                    Log.d(
+                                        "LatLong geocoder",
+                                        "getLatLong:" + latlng!!.latitude + latlng!!.longitude
                                     )
+                                    viewModel.getNearbyPoi(
+                                        LatLng(
+                                            latlng!!.latitude,
+                                            latlng!!.longitude
+                                        )
+                                    )
+                                }
+                                viewModel.liveDataNearbyPOI.observe(
+                                    viewLifecycleOwner,
+                                    Observer { liveDataNearbyPOI ->
+                                        nearbyPOI = liveDataNearbyPOI
+                                        insertRealEstate()
+                                    })
+                            })
+                        viewModel.liveData.observe(viewLifecycleOwner, Observer { idRealEstate ->
+                            for (photoItem in listPhoto) {
+                                val photo = Photo(
+                                    path = photoItem.path,
+                                    label = photoItem.label,
+                                    idProperty = idRealEstate
                                 )
+                                viewModel.insertPhoto(photo)
                             }
-                            viewModel.liveDataNearbyPOI.observe(
-                                viewLifecycleOwner,
-                                Observer { liveDataNearbyPOI ->
-                                    nearbyPOI = liveDataNearbyPOI
-                                    insertRealEstate()
-                                })
+                            notificationIfAddCorrectly()
                         })
-                    viewModel.liveData.observe(viewLifecycleOwner, Observer { idRealEstate ->
-                        notificationIfAddCorrectly()
-                        for (photoItem in listPhoto) {
-                            val photo = Photo(
-                                path = photoItem.path,
-                                label = photoItem.label,
-                                idProperty = idRealEstate
-                            )
-                            viewModel.insertPhoto(photo)
-                        }
-                    })
-                } else {
-                    alertDialogNoNetwork()
+                    } else {
+                        alertDialogNoNetwork()
+                    }
                 }
             }
         }
     }
-
     private fun alertDialogBadAdresseLocation() {
         val alertDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("The address is invalid")
@@ -282,6 +281,7 @@ class CreateRealEstateFragment : Fragment() {
     private fun notificationIfAddCorrectly() { //TODO
         notification.createNotificationChannel()
         notification.buildNotif()
+        createInProgress = false
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
     }
