@@ -115,6 +115,7 @@ class UpdateFragment : Fragment() {
     }
 
 
+
     private fun setupRecyclerView() {
         recyclerView = updateBinding.recyclerviewPhotoUpdate
         linearLayoutManager =
@@ -147,7 +148,7 @@ class UpdateFragment : Fragment() {
                     dialog.dismiss()
                 }
             }
-            .setNegativeButton("Delete definitely") { dialog, _ ->
+            .setNegativeButton("Delete") { dialog, _ ->
                 if (realEstateActual.photos?.size!! > 1) {
                     updateViewModel.deletePhoto(photo)
                     dialog.dismiss()

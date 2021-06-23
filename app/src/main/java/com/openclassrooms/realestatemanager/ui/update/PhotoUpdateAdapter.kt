@@ -1,11 +1,15 @@
 package com.openclassrooms.realestatemanager.ui.update
 
+import android.os.Build
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ItemPhotoBinding
 import com.openclassrooms.realestatemanager.databinding.ItemUpdatePhotoBinding
 import com.openclassrooms.realestatemanager.domain.models.Photo
@@ -58,8 +62,6 @@ class PhotoUpdateAdapter(private val listenerPhoto: (Photo) -> Unit) : RecyclerV
                 listenerPhoto(item)
             }
         }
-
-
     }
 
     override fun getItemCount() = data.size
