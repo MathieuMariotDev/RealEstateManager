@@ -9,7 +9,7 @@
         app:showAsAction="always"></item>
     <item
         android:id="@+id/currency"
-        android:icon="@drawable/ic_currency_dollar_black_24dp"
+        android:icon="@drawable/ic_currency_exchange_24"
         android:title="Currency"
         app:showAsAction="always"></item>
     <item

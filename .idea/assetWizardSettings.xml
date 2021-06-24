@@ -33,9 +33,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="febd69" />
-                            <entry key="outputName" value="ic_baseline_mode_edit_24" />
-                            <entry key="sourceFile" value="F:\Dev\PROJET\OC_Remise\Projet 9\account_balance_black_24dp.svg" />
+                            <entry key="outputName" value="ic_currency_exchange_24" />
+                            <entry key="sourceFile" value="F:\Dev\PROJET\OC_Remise\Projet 9\foreign-currency-exchange-svgrepo-com.svg" />
                           </map>
                         </option>
                       </PersistentState>

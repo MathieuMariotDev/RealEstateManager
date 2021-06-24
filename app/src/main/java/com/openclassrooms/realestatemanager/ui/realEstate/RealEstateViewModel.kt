@@ -18,8 +18,8 @@ RealEstateViewModel(
 
     val liveDataIdRealEstate : LiveData<Long> = realEstateRepository.getIdRealEstate()
 
+    val liveDataCurrencyCode: LiveData<Int> = realEstateRepository.getCurrencyCode()
 
-    //var listRealEstateWithPhoto = realEstateRepository.customQueryOrGetSimpleFlow().asLiveData()
     var realEstate = MutableLiveData<RealEstate>()
 
     var listRealEstateWithPhoto: LiveData<List<RealEstateWithPhoto>> = Transformations.switchMap(liveDataRealEstateRequest){ realEstateRequest ->
@@ -37,6 +37,10 @@ RealEstateViewModel(
             realEstateRequest.city,
             realEstateRequest.nbPhoto
         ).asLiveData()
+    }
+
+    fun setCurrencyCode(currencyId: Int) {
+        realEstateRepository.setCurrencyCode(currencyId = currencyId)
     }
 
     fun setMinSurface(minSurface: Float?) {

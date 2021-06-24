@@ -4,17 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.slider.Slider
+import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.RealEstateApplication
+import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentLoanBinding
+import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateViewModel
+import com.openclassrooms.realestatemanager.ui.details.DetailsViewModel
+import com.openclassrooms.realestatemanager.utils.Constants.CODE_DOLLAR
+import com.openclassrooms.realestatemanager.utils.Constants.CODE_EURO
+import com.openclassrooms.realestatemanager.utils.LoanSimUtils
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils
 import com.openclassrooms.realestatemanager.utils.TextFieldUtils.Companion.hasText
+import com.openclassrooms.realestatemanager.utils.Utils
 import kotlin.math.pow
 
 class LoanFragment : Fragment() {
 
     lateinit var loanBinding: FragmentLoanBinding
     var durationYear: Int = 1
+    private var currencyCode = 0
+    private var monthlyPayment: Double? = null
+    private var monthlyPaymentInsurance: Double? = null
+    private var totalLoan: Double? = null
+
+    private val viewModelLoan: LoanViewModel by activityViewModels() {
+        RealEstateViewModelFactory(
+            (requireActivity().application as RealEstateApplication).realEstateRepository,
+            photoRepository = (requireActivity().application as RealEstateApplication).photoRepository,
+            (requireActivity().application as RealEstateApplication).geocoderRepository
+        )
+    }
 
     companion object {
         fun newInstance() = LoanFragment()
@@ -33,6 +59,7 @@ class LoanFragment : Fragment() {
         onValidation()
         sliderTracking()
         hideShow(false)
+        observeCurrency()
         return loanBinding.root
     }
 
@@ -50,43 +77,88 @@ class LoanFragment : Fragment() {
                     loanBinding.textFieldInterestRate.editText?.text.toString().toDouble()
                 val insuranceRate =
                     loanBinding.textFieldInsuranceRate.editText?.text.toString().toDouble()
-                val monthlyPayment = calculateMonthlyPayment(amount, interestRate, durationYear)
-                val monthlyPaymentInsurance =
-                    calculateMonthlyInsurance(insuranceRate, amount)
-                val totalLoan = totalLoan(monthlyPayment, monthlyPaymentInsurance, durationYear)
-                loanBinding.textviewMonthlyPayment.text = monthlyPayment.toInt().toString()
-                loanBinding.textviewMonthlyInsurance.text =
-                    monthlyPaymentInsurance.toInt().toString()
-                loanBinding.textviewTotalLoan.text = totalLoan.toInt().toString()
+                monthlyPayment =
+                    LoanSimUtils.calculateMonthlyPayment(amount, interestRate, durationYear)
+                monthlyPaymentInsurance =
+                    LoanSimUtils.calculateMonthlyInsurance(insuranceRate, amount)
+                totalLoan = LoanSimUtils.totalLoan(
+                    monthlyPayment!!,
+                    monthlyPaymentInsurance!!,
+                    durationYear
+                )
+                currencySwitchAndDisplay()
             }
         }
     }
 
-    private fun calculateMonthlyPayment(
-        amount: Int,
-        interestRate: Double,
-        durationYear: Int
-    ): Double {
-        val monthlyInterest: Double = (interestRate / 100) / 12
-        val durationMonth: Double = (durationYear.toDouble() * 12)
-        return (amount * monthlyInterest) / (1 - (1 + monthlyInterest).pow(-durationMonth))
+    private fun currencySwitchAndDisplay() {
+        when (currencyCode) {
+            CODE_DOLLAR -> {
+                if (monthlyPayment != null && monthlyPaymentInsurance != null) {
+                    loanBinding.textviewMonthlyPayment.text = monthlyPayment!!.toInt().toString()
+                    loanBinding.currency1.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_currency_dollar_black_24dp
+                        )
+                    )
+                    loanBinding.textviewTotalLoan.text = totalLoan!!.toInt().toString()
+                    loanBinding.currency3.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_currency_dollar_black_24dp
+                        )
+                    )
+                }
+                if (monthlyPaymentInsurance != null) {
+                    loanBinding.textviewMonthlyInsurance.text =
+                        monthlyPaymentInsurance!!.toInt().toString()
+                    loanBinding.currency2.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_currency_dollar_black_24dp
+                        )
+                    )
+                }
+            }
+            CODE_EURO -> {
+                if (monthlyPayment != null && totalLoan != null) {
+                    loanBinding.textviewMonthlyPayment.text =
+                        Utils.convertDollarToEuro(monthlyPayment!!.toInt()).toString()
+                    loanBinding.currency1.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_currency_euro_black_24dp
+                        )
+                    )
+                    loanBinding.textviewTotalLoan.text =
+                        Utils.convertDollarToEuro(totalLoan!!.toInt()).toString()
+                    loanBinding.currency3.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_currency_euro_black_24dp
+                        )
+                    )
+                }
+                if (monthlyPaymentInsurance != null) {
+                    loanBinding.textviewMonthlyInsurance.text =
+                        Utils.convertDollarToEuro(monthlyPaymentInsurance!!.toInt()).toString()
+                    loanBinding.currency2.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_currency_euro_black_24dp
+                        )
+                    )
+                }
+            }
+        }
     }
 
-    private fun calculateMonthlyInsurance(
-        insuranceRate: Double,
-        amount: Int,
-    ): Double {
-        val insuranceRatePourcent = insuranceRate / 100
-        return insuranceRatePourcent * amount / 12
-    }
-
-    private fun totalLoan(
-        monthlyPayment: Double,
-        monthlyPaymentInsurance: Double,
-        durationYear: Int
-    ): Double {
-        val durationMonth: Double = (durationYear.toDouble() * 12)
-        return (monthlyPayment + monthlyPaymentInsurance) * durationMonth
+    private fun observeCurrency() {
+        viewModelLoan.liveDataCurrencyCode.observe(viewLifecycleOwner, Observer {
+            currencyCode = it
+            currencySwitchAndDisplay()
+        })
     }
 
     private fun sliderTracking() {

@@ -54,12 +54,21 @@ class RealEstateFragment : Fragment(){
         recyclerView = realEstateBinding.recyclerviewRealEstate
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context,linearLayoutManager.orientation)
+        val dividerItemDecoration =
+            DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
         realEstateBinding.recyclerviewRealEstate.adapter = adapter
-        viewModelFrag.listRealEstateWithPhoto.observe(viewLifecycleOwner, Observer { listRealEstatesWithPhoto->
-            listRealEstatesWithPhoto.let { adapter.data=it }
-        })
+        viewModelFrag.listRealEstateWithPhoto.observe(
+            viewLifecycleOwner,
+            Observer { listRealEstatesWithPhoto ->
+                listRealEstatesWithPhoto.let { adapter.data = it }
+            })
+        observeCurrencyCode()
+    }
 
+    fun observeCurrencyCode() {
+        viewModelFrag.liveDataCurrencyCode.observe(this, Observer {
+            adapter.currency = it
+        })
     }
 }

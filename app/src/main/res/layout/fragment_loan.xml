@@ -140,7 +140,8 @@
                     android:layout_margin="3dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -155,6 +156,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         style="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <ImageView
+                        android:id="@+id/currency1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_currency_dollar_black_24dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -176,6 +183,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         style="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <ImageView
+                        android:id="@+id/currency2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_currency_dollar_black_24dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -197,6 +210,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         style="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <ImageView
+                        android:id="@+id/currency3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_currency_dollar_black_24dp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

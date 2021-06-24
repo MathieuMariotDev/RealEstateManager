@@ -8,9 +8,9 @@ object Constants {
 
     const val REQUEST_CODE_LOCATION_PERMISSION = 0
 
-    const val CODE_DOLLAR = 1
+    const val CODE_DOLLAR = 0
 
-    const val CODE_EURO = 2
+    const val CODE_EURO = 1
 
     const val API_KEY = BuildConfig.ApiKey
 }
