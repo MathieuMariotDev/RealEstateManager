@@ -68,6 +68,7 @@ class CreateRealEstateFragment : Fragment() {
     private var alertDialogNoNetworkSaw = false
     private var nearbyPOI = NearbyPOI()
     private var createInProgress = true
+    private var badAdrresse = false
 
     companion object {
         fun newInstance() = CreateRealEstateFragment()
@@ -132,7 +133,7 @@ class CreateRealEstateFragment : Fragment() {
                             Observer { liveDataAddress ->
                                 if (liveDataAddress.isNullOrEmpty()) {
                                     viewModel.getNearbyPoi()
-                                    alertDialogBadAdresseLocation()
+                                    badAdrresse = true
                                 } else {
                                     latlng = liveDataAddress[0]
                                     Log.d(
@@ -164,10 +165,11 @@ class CreateRealEstateFragment : Fragment() {
                             }
                             notificationIfAddCorrectly()
                         })
-                    } else {
-                        alertDialogNoNetwork()
                     }
+                } else {
+                    alertDialogNoNetwork()
                 }
+
             }
         }
     }
@@ -178,6 +180,7 @@ class CreateRealEstateFragment : Fragment() {
             .setMessage("Some functionality such as the display of marker on the map and nearby points of interest will therefore not be available for this property.")
             .setNeutralButton("Ok") { dialog, _ ->
                 dialog.dismiss()
+                startMainActivity()
             }
             .show()
     }
@@ -300,6 +303,14 @@ class CreateRealEstateFragment : Fragment() {
     private fun notificationIfAddCorrectly() { //TODO
         notification.createNotificationChannel()
         notification.buildNotif()
+        if (badAdrresse) {
+            alertDialogBadAdresseLocation()
+        } else {
+            startMainActivity()
+        }
+    }
+
+    private fun startMainActivity() {
         createInProgress = false
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
