@@ -18,6 +18,7 @@ import android.view.View.AUTOFILL_HINT_POSTAL_ADDRESS
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -124,54 +125,69 @@ class CreateRealEstateFragment : Fragment() {
     fun onClickAdd() {
         createBinding.ButtonAdd.setOnClickListener {
             if (validate()) {
-                if (Utils.isInternetAvailable(requireContext()) || alertDialogNoNetworkSaw) {
-                    if (createInProgress) {
-                        createInProgress = false
-                        getLatLong()
-                        viewModel.liveDataAddress.observe(
-                            viewLifecycleOwner,
-                            Observer { liveDataAddress ->
-                                if (liveDataAddress.isNullOrEmpty()) {
-                                    viewModel.getNearbyPoi()
-                                    badAdrresse = true
-                                } else {
-                                    latlng = liveDataAddress[0]
-                                    Log.d(
-                                        "LatLong geocoder",
-                                        "getLatLong:" + latlng!!.latitude + latlng!!.longitude
-                                    )
-                                    viewModel.getNearbyPoi(
-                                        LatLng(
-                                            latlng!!.latitude,
-                                            latlng!!.longitude
+                if (listPhoto.size >= 1) {
+                    if (Utils.isInternetAvailable(requireContext()) || alertDialogNoNetworkSaw) {
+                        if (createInProgress) {
+                            createInProgress = false
+                            getLatLong()
+                            viewModel.liveDataAddress.observe(
+                                viewLifecycleOwner,
+                                Observer { liveDataAddress ->
+                                    if (liveDataAddress.isNullOrEmpty()) {
+                                        viewModel.getNearbyPoi()
+                                        badAdrresse = true
+                                    } else {
+                                        latlng = liveDataAddress[0]
+                                        Log.d(
+                                            "LatLong geocoder",
+                                            "getLatLong:" + latlng!!.latitude + latlng!!.longitude
                                         )
-                                    )
-                                }
-                                viewModel.liveDataNearbyPOI.observe(
-                                    viewLifecycleOwner,
-                                    Observer { liveDataNearbyPOI ->
-                                        nearbyPOI = liveDataNearbyPOI
-                                        insertRealEstate()
-                                    })
-                            })
-                        viewModel.liveData.observe(viewLifecycleOwner, Observer { idRealEstate ->
-                            for (photoItem in listPhoto) {
-                                val photo = Photo(
-                                    path = photoItem.path,
-                                    label = photoItem.label,
-                                    idProperty = idRealEstate
-                                )
-                                viewModel.insertPhoto(photo)
-                            }
-                            notificationIfAddCorrectly()
-                        })
+                                        viewModel.getNearbyPoi(
+                                            LatLng(
+                                                latlng!!.latitude,
+                                                latlng!!.longitude
+                                            )
+                                        )
+                                    }
+                                    viewModel.liveDataNearbyPOI.observe(
+                                        viewLifecycleOwner,
+                                        Observer { liveDataNearbyPOI ->
+                                            nearbyPOI = liveDataNearbyPOI
+                                            insertRealEstate()
+                                        })
+                                })
+                            viewModel.liveData.observe(
+                                viewLifecycleOwner,
+                                Observer { idRealEstate ->
+                                    for (photoItem in listPhoto) {
+                                        val photo = Photo(
+                                            path = photoItem.path,
+                                            label = photoItem.label,
+                                            idProperty = idRealEstate
+                                        )
+                                        viewModel.insertPhoto(photo)
+                                    }
+                                    notificationIfAddCorrectly()
+                                })
+                        }
+                    } else {
+                        alertDialogNoNetwork()
                     }
                 } else {
-                    alertDialogNoNetwork()
+                    alertDialogMinPhoto()
                 }
-
             }
         }
+    }
+
+    private fun alertDialogMinPhoto() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Least one photo")
+            .setMessage("You need at least one photo")
+            .setNeutralButton("Ok") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun alertDialogBadAdresseLocation() {
@@ -319,6 +335,12 @@ class CreateRealEstateFragment : Fragment() {
 
     private fun alertDialog() {
         var editText = EditText(requireContext())
+        editText.setTextColor(
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.white_50
+            )
+        )
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
             .setView(editText)

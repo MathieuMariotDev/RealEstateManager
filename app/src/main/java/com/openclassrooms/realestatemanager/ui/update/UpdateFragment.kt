@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -137,6 +138,12 @@ class UpdateFragment : Fragment() {
 
     fun alertDialogUpdateOrDelete(photo: Photo) {
         var editText = EditText(requireContext())
+        editText.setTextColor(
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.white_50
+            )
+        )
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
             .setView(editText)
@@ -234,6 +241,12 @@ class UpdateFragment : Fragment() {
 
     private fun alertDialogPhoto() {
         var editText = EditText(requireContext())
+        editText.setTextColor(
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.white_50
+            )
+        )
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Enter Photo Name")
             .setView(editText)
