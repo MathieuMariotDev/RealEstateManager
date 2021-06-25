@@ -111,12 +111,12 @@ class CreateRealEstateFragment : Fragment() {
     }
 
     private fun alertDialogNoNetwork() {
-        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setMessage("The marker and nearby points of interest will not be available for this property")
             .setTitle("Network not available")
             .setPositiveButton("Ok") { dialog, _ ->
                 alertDialogNoNetworkSaw = true
-
+                dialog.dismiss()
             }
             .show()
     }
@@ -175,7 +175,7 @@ class CreateRealEstateFragment : Fragment() {
     }
 
     private fun alertDialogBadAdresseLocation() {
-        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("The address is invalid")
             .setMessage("Some functionality such as the display of marker on the map and nearby points of interest will therefore not be available for this property.")
             .setNeutralButton("Ok") { dialog, _ ->
