@@ -64,7 +64,7 @@ class CreateRealEstateFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private var adapter = PhotoAdapter()
-    private lateinit var createBinding: FragmentCreateRealEstateBinding
+    lateinit var createBinding: FragmentCreateRealEstateBinding
     private var alertDialogNoNetworkSaw = false
     private var nearbyPOI = NearbyPOI()
     private var createInProgress = true

@@ -13,19 +13,19 @@ import kotlin.properties.Delegates
 class LoanUnitTest {
 
     @Test
-    fun monthlyPayment() {
+    fun CheckMonthlyPaymentCalculate() {
         val monthlyPayment = LoanSimUtils.calculateMonthlyPayment(100000, 5.toDouble(), 10)
         assertEquals(1061, monthlyPayment.toFloat().roundToInt())
     }
 
     @Test
-    fun monthlyInsurance() {
+    fun CheckMonthlyInsuranceCalculate() {
         val monthlyPaymentInsurance = LoanSimUtils.calculateMonthlyInsurance(5.toDouble(), 100000)
         assertEquals(417, monthlyPaymentInsurance.roundToInt())
     }
 
     @Test
-    fun totalLoan() {
+    fun CheckTotalLoan() {
         val totalLoan = LoanSimUtils.totalLoan(1060.66, 416.67, 10)
         assertEquals(177280, totalLoan.roundToInt())
     }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 2, exportSchema = false)
+@Database(entities = arrayOf(RealEstate::class, Photo::class), version = 100, exportSchema = false)
 abstract class RealEstateDatabase : RoomDatabase() {
     abstract fun RealEstateDao(): RealEstateDao
 
@@ -38,7 +38,7 @@ abstract class RealEstateDatabase : RoomDatabase() {
                         DATABASE_NAME
                 )
                         .fallbackToDestructiveMigration() // Wipes and rebuilds instead of migrating if no Migration object.
-                        .addCallback(RealEstateDatabaseCallback(scope))
+                    //.addCallback(RealEstateDatabaseCallback(scope))
                         .build()
                 INSTANCE = instance
                 instance
