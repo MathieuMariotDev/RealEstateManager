@@ -55,8 +55,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_photo_details"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_width="@dimen/size_recycler_width_item_photo"
+            android:layout_height="@dimen/size_recycler_height_item_photo"
             android:layout_margin="3dp"
             android:orientation="horizontal"
             tools:listitem="@layout/item_photo" />
@@ -74,7 +74,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView_description"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="@dimen/size_description_height_details"
             android:layout_margin="3dp"
             android:hint="Default desicription" />
 
