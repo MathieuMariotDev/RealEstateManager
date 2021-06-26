@@ -27,9 +27,6 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
     private val liveDataCurrencyCode: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
     }
-    private val liveDataDollarOrEuro: MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>()
-    }
 
     fun getFlowListRealEstate() = flowListRealEstate
 
@@ -45,9 +42,6 @@ class RealEstateRepository(private val realEstateDao: RealEstateDao) {
 
     fun getIdRealEstate() = liveDataIdRealEstate
 
-    fun setDollarOrEuro(codeCurrency: Int) {
-        liveDataDollarOrEuro.value = codeCurrency
-    }
 
     suspend fun updateRealEstate(realEstate: RealEstate) =
         realEstateDao.updateRealEstate(realEstate)

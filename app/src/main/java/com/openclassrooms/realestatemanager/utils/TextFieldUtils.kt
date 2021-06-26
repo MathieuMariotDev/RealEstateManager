@@ -18,7 +18,7 @@ class TextFieldUtils {
 
         fun isNumber(textInputLayout: TextInputLayout, error_message: String): Boolean {
             val text = textInputLayout.editText?.text.toString()
-            if (!text.isDigitsOnly() /*&& textInputLayout.error.isNullOrEmpty()*/) {
+            if (!text.isDigitsOnly()) {
                 textInputLayout.error = error_message
                 return false
             }

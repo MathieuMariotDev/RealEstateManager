@@ -13,6 +13,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.MediaStore.Images.Media.getBitmap
 import android.util.Log
@@ -31,8 +32,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -67,15 +67,18 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private var adapter = PhotoAdapter()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    lateinit var bitmapMarker : Bitmap
-
-    private val viewModelDetails : DetailsViewModel by activityViewModels() {
+    lateinit var bitmapMarker: Bitmap
+    private lateinit var locationCallback: LocationCallback
+    private var requestLocationUpdate: Boolean = true
+    private val viewModelDetails: DetailsViewModel by activityViewModels() {
         RealEstateViewModelFactory(
             (requireActivity().application as RealEstateApplication).realEstateRepository,
             photoRepository = (requireActivity().application as RealEstateApplication).photoRepository,
             (requireActivity().application as RealEstateApplication).geocoderRepository
         )
     }
+    private lateinit var googleMap: GoogleMap
+
 
     companion object {
         fun newInstance() = DetailsFragment()
@@ -88,9 +91,10 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             Log.d("DEBUG", "onCreate: DetailFragment " + requireArguments().getLong("idRealEstate"))
         }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        onLocationCallBack()
     }
 
-    fun requestPermissions() {
+    private fun requestPermissions() {
         if (PermissionsUtils.hasLocationPermissions(requireContext())) {
             setupMap()
         }
@@ -118,9 +122,10 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
         mapFragment?.getMapAsync { googleMap ->
+            this.googleMap = googleMap
             addMarker(googleMap)
             googleMap.setOnMapLoadedCallback {
-                moveCameraOnCurrentLocation(googleMap)
+                startLocationUpdates()
             }
             googleMap.setOnMarkerClickListener {
                 viewModelDetails.setId(it.tag as Long)
@@ -139,27 +144,51 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     @SuppressLint("MissingPermission")
-    private fun moveCameraOnCurrentLocation(googleMap: GoogleMap) {
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            val bounds = LatLngBounds.builder()
-            if (location != null) {
-                bounds.include(
-                    com.google.android.gms.maps.model.LatLng(
-                        location.latitude,
-                        location.longitude
-                    )
-                )
-                googleMap.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        com.google.android.gms.maps.model.LatLng(
-                            location.latitude,
-                            location.longitude
-                        ),
-                        13.toFloat()
-                    )
-                )
+    private fun onLocationCallBack() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    if (location != null) {
+                        googleMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(// Update UI with location data
+                                com.google.android.gms.maps.model.LatLng(
+                                    location.latitude,
+                                    location.longitude
+                                ),
+                                13.toFloat()
+                            )
+                        )
+                    }
+                }
             }
         }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun startLocationUpdates() {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 100
+            fastestInterval = 50
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            maxWaitTime = 100
+        }
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+        requestLocationUpdate = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onCreateView(
@@ -206,7 +235,9 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun addMarker(googleMap: GoogleMap) {
-        bitmapMarker = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_marker_house)!!.toBitmap()
+        bitmapMarker =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_marker_house)!!
+                .toBitmap()
         viewModelDetails.livedataListRealEstate.observe(
             viewLifecycleOwner,
             Observer { listRealEstate ->
@@ -234,5 +265,9 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onResume() {
         super.onResume()
+        if (requestLocationUpdate) {
+            startLocationUpdates()
+        }
     }
+
 }
