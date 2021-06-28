@@ -1,34 +1,21 @@
 package com.openclassrooms.realestatemanager.ui.details
 
 import android.Manifest
+import android.R.attr.action
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.PictureDrawable
-import android.location.Location
-import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.provider.MediaStore
-import android.provider.MediaStore.Images.Media.getBitmap
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,20 +23,14 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.RealEstateApplication
 import com.openclassrooms.realestatemanager.RealEstateViewModelFactory
 import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding
 import com.openclassrooms.realestatemanager.domain.models.RealEstate
-import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateFragment
-import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateViewModel
 import com.openclassrooms.realestatemanager.ui.create.PhotoAdapter
-import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
-import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Constants.CODE_DOLLAR
 import com.openclassrooms.realestatemanager.utils.Constants.CODE_EURO
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_LOCATION_PERMISSION
@@ -57,10 +38,9 @@ import com.openclassrooms.realestatemanager.utils.PermissionsUtils
 import com.openclassrooms.realestatemanager.utils.Utils
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import java.io.File
 import java.text.DateFormat.getDateInstance
-import java.text.SimpleDateFormat
 import java.util.*
+
 
 class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -162,6 +142,7 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                                 13.toFloat()
                             )
                         )
+                        stopLocationUpdates()
                     }
                 }
             }
@@ -204,9 +185,7 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         updateUi()
         requestPermissions()
         observeCurrency()
-        /*val bounds = LatLngBounds.builder()
-        bounds.include(com.google.android.gms.maps.model.LatLng(47.428794860839844,-0.5276904702186584))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(),20))*/
+        onTouchImgView()
         return detailsBinding.root
     }
 
@@ -305,6 +284,30 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             })
     }
 
+    private fun onTouchImgView() {
+        detailsBinding.transparentImage.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Disallow ScrollView to intercept touch events.
+                    detailsBinding.scrollViewDetails.requestDisallowInterceptTouchEvent(true)
+                    // Disable touch on transparent view
+                    false
+                }
+                MotionEvent.ACTION_UP -> {
+                    // Allow ScrollView to intercept touch events.
+                    detailsBinding.scrollViewDetails.requestDisallowInterceptTouchEvent(false)
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    detailsBinding.scrollViewDetails.requestDisallowInterceptTouchEvent(true)
+                    false
+                }
+                else -> true
+            }
+        }
+    }
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -315,5 +318,4 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             startLocationUpdates()
         }
     }
-
 }

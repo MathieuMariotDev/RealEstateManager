@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.details.DetailsFragment">
+    tools:context="ui.details.DetailsFragment"
+    android:id="@+id/scroll_view_details">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -301,6 +302,13 @@
                     class="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/transparent_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
+
             </FrameLayout>
 
         </LinearLayout>
