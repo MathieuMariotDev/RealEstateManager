@@ -165,7 +165,7 @@
             android:id="@+id/textField_description"
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="@dimen/size_description_height_details"
             android:hint="Description"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
@@ -220,7 +220,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_photo"
                 android:layout_marginEnd="55dp"
-                android:layout_width="@dimen/size_recycler_width_item_photo"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/size_recycler_height_item_photo"
                 android:layout_marginStart="3dp"
                 android:layout_gravity="bottom|left"
