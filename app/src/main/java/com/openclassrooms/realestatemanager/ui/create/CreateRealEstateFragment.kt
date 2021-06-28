@@ -55,9 +55,7 @@ import kotlin.collections.ArrayList
  */
 class CreateRealEstateFragment : Fragment() {
 
-    lateinit var bitmap: Bitmap
     private lateinit var uri: Uri
-    private val mock: Boolean = false
     private var listPhoto = ArrayList<Photo>()
     private lateinit var notification: Notification
     private var latlng: Address? = null
@@ -386,8 +384,7 @@ class CreateRealEstateFragment : Fragment() {
         if (!hasText(createBinding.textFieldAdresse, "This field must be completed")) check = false
         if (!hasText(createBinding.textFieldType, "This field must be completed")) check = false
         if (!hasText(
-                createBinding.textFieldNbBathrooms,
-                "This field must be completed"
+                createBinding.textFieldNbBathrooms, "This field must be completed"
             ) || !isNumber(
                 createBinding.textFieldNbBathrooms,
                 "This field must only contain numbers"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="@dimen/size_recycler_width_item_photo"
+    android:layout_height="@dimen/size_recycler_height_item_photo"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="3dp">
 

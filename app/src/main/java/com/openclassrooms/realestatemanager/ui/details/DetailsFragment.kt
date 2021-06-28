@@ -209,11 +209,13 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun updateUi() {
         viewModelDetails.liveDataRealEstate.observe(viewLifecycleOwner, Observer { realEstate ->
             detailsBinding.textViewDescription.text = realEstate.realEstate.description
-            detailsBinding.nbSurface.text = realEstate.realEstate.surface.toString()
+            detailsBinding.nbSurface.text = realEstate.realEstate.surface.toString().plus(" m²")
             detailsBinding.textViewAdresse.text = realEstate.realEstate.address
             detailsBinding.nbRooms.text = realEstate.realEstate.nbRooms.toString()
             detailsBinding.nbBathrooms.text = realEstate.realEstate.nbBathrooms.toString()
             detailsBinding.nbBedroooms.text = realEstate.realEstate.nbBedrooms.toString()
+            detailsBinding.twPrice.text = realEstate.realEstate.price.toString()
+            detailsBinding.textViewAgent.text = realEstate.realEstate.realEstateAgent
             detailsBinding.twPropertyPublicationDate.text =
                 updateDate(realEstate = realEstate.realEstate)
             adapter.data = realEstate.photos!!

@@ -55,7 +55,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_photo_details"
-            android:layout_width="@dimen/size_recycler_width_item_photo"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/size_recycler_height_item_photo"
             android:layout_margin="3dp"
             android:orientation="horizontal"
@@ -93,7 +93,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:hint="Price"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_money_24"
+                        app:drawableTint="#000000" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tw_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginStart="29dp"
+                            android:hint="X"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                        <ImageView
+                            android:id="@+id/currency3"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            app:srcCompat="@drawable/ic_currency_dollar_black_24dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -121,7 +159,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="4dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -148,7 +186,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="4dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -175,7 +213,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="4dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -202,7 +240,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="4dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -225,13 +263,38 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:hint="Real estate Agent"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColorHint="@color/black_800"
+                        app:drawableLeftCompat="@drawable/ic_baseline_location_on_24"
+                        app:drawableTint="#000000" />
+
+                    <TextView
+                        android:id="@+id/textView_agent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="29dp"
+                        android:hint="Math Oli"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                </LinearLayout>
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="0px"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
-                android:padding="3dp">
+                android:layout_margin="4dp">
 
                 <fragment
                     android:id="@+id/map_fragment"
