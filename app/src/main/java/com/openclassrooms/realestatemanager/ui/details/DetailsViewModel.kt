@@ -9,18 +9,24 @@ class DetailsViewModel(private val realEstateRepository: RealEstateRepository) :
 
     lateinit var liveDataRealEstate: LiveData<RealEstateWithPhoto>
 
-    var livedataListRealEstate  : LiveData<List<RealEstate>> = realEstateRepository.getFlowListRealEstate().asLiveData()
+    var livedataListRealEstate: LiveData<List<RealEstate>> =
+        realEstateRepository.getFlowListRealEstate().asLiveData()
 
+    val liveDataCurrencyCode: LiveData<Int> = realEstateRepository.getCurrencyCode()
+
+    fun setCurrencyCode(currencyId: Int) {
+        realEstateRepository.setCurrencyCode(currencyId = currencyId)
+    }
 
     val liveDataIdRealEstate: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
     }
 
 
-    fun setId(id : Long){
+    fun setId(id: Long) {
         liveDataIdRealEstate.value = id
         realEstateRepository.setIdRealEstate(id)  // For modification
-        liveDataRealEstate = Transformations.switchMap(liveDataIdRealEstate){ it ->
+        liveDataRealEstate = Transformations.switchMap(liveDataIdRealEstate) { it ->
             realEstateRepository.getRealEstateWithId(it).asLiveData()
         }
     }

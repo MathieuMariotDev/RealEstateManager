@@ -50,6 +50,8 @@ import com.openclassrooms.realestatemanager.ui.create.CreateRealEstateViewModel
 import com.openclassrooms.realestatemanager.ui.create.PhotoAdapter
 import com.openclassrooms.realestatemanager.ui.realEstate.RealEstateViewModel
 import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.Constants.CODE_DOLLAR
+import com.openclassrooms.realestatemanager.utils.Constants.CODE_EURO
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.openclassrooms.realestatemanager.utils.PermissionsUtils
 import com.openclassrooms.realestatemanager.utils.Utils
@@ -78,7 +80,8 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         )
     }
     private lateinit var googleMap: GoogleMap
-
+    private var currencyCode = 0
+    private var realEstate: RealEstate? = null
 
     companion object {
         fun newInstance() = DetailsFragment()
@@ -200,6 +203,7 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         setupRecyclerView()
         updateUi()
         requestPermissions()
+        observeCurrency()
         /*val bounds = LatLngBounds.builder()
         bounds.include(com.google.android.gms.maps.model.LatLng(47.428794860839844,-0.5276904702186584))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(),20))*/
@@ -207,20 +211,60 @@ class DetailsFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun updateUi() {
-        viewModelDetails.liveDataRealEstate.observe(viewLifecycleOwner, Observer { realEstate ->
-            detailsBinding.textViewDescription.text = realEstate.realEstate.description
-            detailsBinding.nbSurface.text = realEstate.realEstate.surface.toString().plus(" m²")
-            detailsBinding.textViewAdresse.text = realEstate.realEstate.address
-            detailsBinding.nbRooms.text = realEstate.realEstate.nbRooms.toString()
-            detailsBinding.nbBathrooms.text = realEstate.realEstate.nbBathrooms.toString()
-            detailsBinding.nbBedroooms.text = realEstate.realEstate.nbBedrooms.toString()
-            detailsBinding.twPrice.text = realEstate.realEstate.price.toString()
-            detailsBinding.textViewAgent.text = realEstate.realEstate.realEstateAgent
-            detailsBinding.twPropertyPublicationDate.text =
-                updateDate(realEstate = realEstate.realEstate)
-            adapter.data = realEstate.photos!!
+        viewModelDetails.liveDataRealEstate.observe(
+            viewLifecycleOwner,
+            Observer { realEstateWithPhoto ->
+                this.realEstate = realEstateWithPhoto.realEstate
+                detailsBinding.textViewDescription.text = realEstateWithPhoto.realEstate.description
+                detailsBinding.nbSurface.text =
+                    realEstateWithPhoto.realEstate.surface.toString().plus(" m²")
+                detailsBinding.textViewAdresse.text = realEstateWithPhoto.realEstate.address
+                detailsBinding.nbRooms.text = realEstateWithPhoto.realEstate.nbRooms.toString()
+                detailsBinding.nbBathrooms.text =
+                    realEstateWithPhoto.realEstate.nbBathrooms.toString()
+                detailsBinding.nbBedroooms.text =
+                    realEstateWithPhoto.realEstate.nbBedrooms.toString()
+                currencySwitchAndDisplay()
+                detailsBinding.textViewAgent.text = realEstateWithPhoto.realEstate.realEstateAgent
+                detailsBinding.twPropertyPublicationDate.text =
+                    updateDate(realEstate = realEstateWithPhoto.realEstate)
+                adapter.data = realEstateWithPhoto.photos!!
+            })
+    }
+
+    private fun observeCurrency() {
+        viewModelDetails.liveDataCurrencyCode.observe(viewLifecycleOwner, Observer {
+            currencyCode = it
+            if (realEstate != null) {
+                currencySwitchAndDisplay()
+            }
         })
     }
+
+    private fun currencySwitchAndDisplay() {
+        when (currencyCode) {
+            CODE_DOLLAR -> {
+                detailsBinding.twPrice.text = realEstate!!.price.toString()
+                detailsBinding.currency.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_currency_dollar_black_24dp
+                    )
+                )
+            }
+            CODE_EURO -> {
+                detailsBinding.twPrice.text =
+                    Utils.convertDollarToEuro(realEstate!!.price).toString()
+                detailsBinding.currency.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_currency_euro_black_24dp
+                    )
+                )
+            }
+        }
+    }
+
 
     fun updateDate(realEstate: RealEstate): String {
         var dateFormat = getDateInstance()

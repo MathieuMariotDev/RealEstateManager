@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -115,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                         val updateIntent = Intent(this, UpdateActivity::class.java)
                         updateIntent.putExtra("idRealEstate", idForUpdateIntent)
                         startActivity(updateIntent)
+                    } else {
+                        Toast.makeText(this, "Please select a property", Toast.LENGTH_LONG).show()
                     }
                     true
                 }

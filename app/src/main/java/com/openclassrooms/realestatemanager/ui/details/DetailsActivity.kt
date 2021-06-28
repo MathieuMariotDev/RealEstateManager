@@ -14,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.R.drawable.ic_baseline_arrow_back_24
 import com.openclassrooms.realestatemanager.RealEstateApplication
@@ -37,7 +38,8 @@ class DetailsActivity : AppCompatActivity(){
             GeocoderRepository(context = applicationContext)
         )
     }
-    private var idForUpdateIntent : Long? = null
+    private var checkedItem = 0
+    private var idForUpdateIntent: Long? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         detailbinding = ActivityDetailsBinding.inflate(layoutInflater)
@@ -45,6 +47,7 @@ class DetailsActivity : AppCompatActivity(){
         setContentView(view)
         setupToolbar()
         idObserver()
+        observerCurrencyId()
         setOnMenuItemClick()
         if (savedInstanceState == null) {
             val bundle = Bundle()
@@ -93,11 +96,15 @@ class DetailsActivity : AppCompatActivity(){
                     true
                 }
                 R.id.realestate_update -> {
-                    if(idForUpdateIntent != null){
+                    if (idForUpdateIntent != null) {
                         val updateIntent = Intent(this, UpdateActivity::class.java)
-                        updateIntent.putExtra("idRealEstate",idForUpdateIntent)
+                        updateIntent.putExtra("idRealEstate", idForUpdateIntent)
                         startActivity(updateIntent)
                     }
+                    true
+                }
+                R.id.currency -> {
+                    alertDialogCurrency()
                     true
                 }
                 else -> false
@@ -105,7 +112,30 @@ class DetailsActivity : AppCompatActivity(){
         }
     }
 
-    private fun idObserver(){
+    private fun alertDialogCurrency() {
+        val items = arrayOf("Dollar", "Euro")
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Select for convert currency to :")
+            .setNeutralButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setSingleChoiceItems(items, checkedItem) { dialog, which ->
+                detailsViewModel.setCurrencyCode(which)
+            }
+            .show()
+    }
+
+    fun observerCurrencyId() {
+        detailsViewModel.liveDataCurrencyCode.observe(this, Observer {
+            checkedItem = it
+        })
+    }
+
+
+    private fun idObserver() {
         detailsViewModel.liveDataIdRealEstate.observe(this, Observer {
             idForUpdateIntent = it
         })

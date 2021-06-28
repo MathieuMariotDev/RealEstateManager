@@ -121,7 +121,7 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                         <ImageView
-                            android:id="@+id/currency3"
+                            android:id="@+id/currency"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             app:srcCompat="@drawable/ic_currency_dollar_black_24dp" />
